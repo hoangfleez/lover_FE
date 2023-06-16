@@ -1,24 +1,13 @@
 import { Logout, Settings } from "@mui/icons-material";
 import { ListItemIcon, Menu, MenuItem } from "@mui/material";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { logout } from "../../services/useService";
 import { useNavigate } from "react-router-dom";
 
 const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const profileUser = useSelector((state) => {
-    if (state.user.profile?.data?.length > 0) {
-      return state.user.profile.data[0];
-    }
-    return null;
-  });
-
-
-
-
 
   const handleCloseUserMenu = () => {
     setAnchorUserMenu(null);

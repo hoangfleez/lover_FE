@@ -18,7 +18,6 @@ const theme = extendTheme({
           color: "#fff",
         },
       },
-      
     },
     dark: {
       palette: {
