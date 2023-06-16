@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { editUser, login, logout, showUser } from "../../services/useService";
-
+import { Token } from "@mui/icons-material";
 
 const initialState = {
   currentUser: JSON.parse(localStorage.getItem("token")),
+  profile: {},
 };
 
 const userSlice = createSlice({
@@ -24,7 +25,6 @@ const userSlice = createSlice({
     builder.addCase(logout.fulfilled, (state, action) => {
       state.currentUser = action.payload;
     });
-
 
 
     builder.addCase(showUser.fulfilled, (state, action) => {

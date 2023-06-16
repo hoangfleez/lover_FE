@@ -7,12 +7,15 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
+import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useDispatch } from "react-redux";
-import { otp, register } from "../../services/useService";
-import InputMail from "./InputMail";
-import { TextField } from "@mui/material";
-import { useFormik } from "formik";
+import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import TextFields from "../../components/TextFields";
+import { register } from "../../services/useService";
+// import { email } from "../../utils";
+import { Padding } from "@mui/icons-material";
+import Email from "../../components/Email";
 
 function Copyright(props) {
   return (
@@ -32,7 +35,7 @@ function Copyright(props) {
   );
 }
 
-const validationSchema = yup.object({
+const schema = yup.object({
   username: yup
     .string()
     .required("Không được để trống!")
@@ -41,73 +44,50 @@ const validationSchema = yup.object({
     .string()
     .required("Không được để trống!")
     .min(6, "Mật khẩu phải có ít nhất 6 ký tự"),
-  email: yup.string().required("Không được để trống!"),
-  otpValue: yup.number().required("Hay nhập!"),
+  // email: yup
+  //   .string()
+  //   .required("Không được để trống!")
+  //   .matches(email, "Sai định dạng email"),
 });
 
 export default function Register(props) {
   const dispatch = useDispatch();
 
   const [showInput, setShowInput] = React.useState(false);
-  const [errRegex, setErrRegex] = React.useState("");
-  const [style, setStyle] = React.useState(false);
 
-  const emailRegex = /^[\w.-]+@[\w.-]+\.\w+$/;
+  const handleButtonClick = () => {
+    setShowInput(true);
+  };
+
+  const {
+    handleSubmit,
+    reset,
+    formState: { errors },
+    control,
+  } = useForm({
+    defaultValues: {
+      username: "",
+      // email: "",
+    },
+    resolver: yupResolver(schema),
+  });
 
   const handleChangeLogin = () => {
     props.setSignIn(false);
   };
-  const [errorMessage, setErrorMessage] = React.useState("");
-  const [errUsernameMess, setErrUsernameMess] = React.useState("");
 
-  const formik = useFormik({
-    initialValues: {
-      username: "",
-      password: "",
-      email: "",
-      otpValue: "",
-    },
-    validationSchema: validationSchema,
-    enableReinitialize: true,
-    onSubmit: (values) => {
-      dispatch(register(values))
-        .then((data) => {
-          console.log(data)
-        if (data.payload === "trung tai khoan"){
-          setErrorMessage("Tai khoan da ton tai")
-        }else if(data.payload === "sai otp"){
-          setErrorMessage("")
-          setErrRegex("Sai ma otp")
-        }else{
-          alert("dang ky ok")
-          handleChangeLogin()
-        }
-        })
-        .catch(() => {});
-    },
-  });
+  const [message, setMessage] = React.useState("");
 
-  const handleButtonChange = () => {
-    if (emailRegex.test(formik.values.email)) {
-      setErrRegex("");
-      dispatch(otp(formik.values.email))
-        .then((data) => {
-          if (data.payload === "email đã được đăng kí o tai khoan khac") {
-            setErrRegex("Email này đã được sử dụng");
-          } else {
-            setErrRegex("");
-            alert("Check mail de lay ma");
-            setStyle(true);
-            setShowInput(true);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      setShowInput(false);
-      setErrRegex("Sai định dạng email");
-    }
+  const onSubmit = (user) => {
+    dispatch(register(user)).then((data) => {
+      if (data.payload === "tai khoan da ton tai") {
+        setMessage("Tài khooản đã tồn tại!! Hãy chọn tài khooản khác.");
+      } else {
+        setMessage("");
+        handleChangeLogin();
+        reset()
+      }
+    });
   };
 
   return (
@@ -125,94 +105,43 @@ export default function Register(props) {
         <Typography component="h1" variant="h5">
           Đăng ký
         </Typography>
-        <Box noValidate sx={{ mt: 1 }}>
-          <form onSubmit={formik.handleSubmit}>
-            <TextField
-              sx={{ mt: 3, mb: 2 }}
-              fullWidth
-              id="username"
-              name="username"
-              placeholder="Tài khoản"
-              value={formik.values.username}
-              onChange={formik.handleChange}
-              error={formik.touched.username && Boolean(formik.errors.username)}
-              helperText={formik.touched.username && formik.errors.username}
-            />
-            {errorMessage && (
-              <Typography variant="body2" color="error" sx={{ mb: 2 }}>
-                {errorMessage}
+        <Box
+          component="form"
+          noValidate
+          onSubmit={handleSubmit(onSubmit)}
+          sx={{ mt: 3 }}
+        >
+          <TextFields
+            errors={errors}
+            control={control}
+            name="username"
+            label="Tên đăng nhập"
+          />
+          {message ? (
+            <>
+              <Typography color="error.main" variant="span" fontSize="14px">
+                {message}
               </Typography>
-            )}
-            <TextField
-              sx={{ mt: 3, mb: 2 }}
-              fullWidth
-              id="password"
-              name="password"
-              placeholder="Mat khau"
-              type="password"
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              error={formik.touched.password && Boolean(formik.errors.password)}
-              helperText={formik.touched.password && formik.errors.password}
-            />
-            <Grid
-              container
-              spacing={1}
-              sx={{ alignItems: "center", justifyContent: "space-between" }}
-            >
-              <Grid item>
-                <TextField
-                  sx={{ mt: 3, mb: 2 }}
-                  id="email"
-                  name="email"
-                  placeholder="Email"
-                  type="email"
-                  disabled={style}
-                  value={formik.values.email}
-                  onChange={formik.handleChange}
-                  error={formik.touched.email && Boolean(formik.errors.email)}
-                  helperText={formik.touched.email && formik.errors.email}
-                />
-              </Grid>
-              {showInput && (
-                <Grid item xs={4}>
-                  <TextField
-                    fullWidth
-                    margin="normal"
-                    placeholder="OTP"
-                    name="otpValue"
-                    value={formik.values.otpValue}
-                    onChange={formik.handleChange}
-                    error={formik.touched.otpValue && Boolean(formik.errors.otpValue)}
-                    helperText={formik.touched.otpValue && formik.errors.otpValue}
-                  />
-                </Grid>
-              )}
-              {!showInput && (
-                <Grid item xs={4}>
-                  <Button
-                    variant="contained"
-                    fullWidth
-                    onClick={handleButtonChange}
-                  >
-                    Gửi
-                  </Button>
-                </Grid>
-              )}
-              <Grid item xs={12}>
-                <div style={{ color: "red", fontSize: "14px" }}>{errRegex}</div>
-              </Grid>
-            </Grid>
+            </>
+          ) : (
+            ""
+          )}
+          <TextFields
+            errors={errors}
+            control={control}
+            name="password"
+            label="Mật khẩu"
+            type="password"
+          />
 
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Đăng ký
-            </Button>
-          </form>
+          <Button
+            fullWidth
+            type="submit"
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Đăng ký
+          </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Link

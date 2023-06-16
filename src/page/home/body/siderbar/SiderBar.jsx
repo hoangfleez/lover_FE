@@ -1,7 +1,7 @@
 import { Divider, Drawer, Toolbar } from "@mui/material";
 import React from "react";
 import Free from "../../checkbox/FreeService";
-import Extended from "../../checkbox/ ExtendedService";
+import Extended from "../../checkbox/ExtendedService";
 
 export default function SiderBar({setService}) {
   return (
