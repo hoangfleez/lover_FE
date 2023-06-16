@@ -7,29 +7,45 @@ export const login = createAsyncThunk("users/login", async (user) => {
     let data = "";
     const res = await axios
       .post("http://127.0.0.1:8181/users/login", user)
-      .then((res) => {data = res.data.data})
+      .then((res) => {
+        data = res.data.data;
+      })
       .catch((err) => {
         data = err.response.data.data;
         return err.response.data.data;
       });
-      if(data.length > 30) {
-        return {data}
-      }else{
-      return {err:data}
-      }
-    
+    if (data.length > 30) {
+      return { data };
+    } else {
+      return { err: data };
+    }
   } catch (err) {
     return err.response.data.payload;
   }
 });
 
+export const otp = createAsyncThunk("otp", async (otp) => {
+
+  return axios
+    .post("http://127.0.0.1:8181/otp", { owner: otp })
+    .then((data) => {
+      return data.data.message;
+    })
+    .catch((err) => {
+      return err.response.data.message;
+    });
+});
+
 export const register = createAsyncThunk("users/register", async (user) => {
-  try {
-    const res = await axios.post("http://127.0.0.1:8181/users/register", user);
-    return res.data;
-  } catch (err) {
-    return err.response.data.payload;
-  }
+    return axios
+      .post("http://127.0.0.1:8181/users/register", user)
+      .then((data) => {
+        return data.data.message;
+      })
+      .catch((err) => {
+        return err.response.data.message;
+      });
+  
 });
 
 export const showUser = createAsyncThunk("users/showUser", async (id) => {
