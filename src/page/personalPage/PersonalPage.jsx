@@ -6,34 +6,17 @@ import {
   CardMedia,
   Container,
   Grid,
+  Input,
+  InputBase,
   Typography,
 } from "@mui/material";
-import React, { useEffect } from "react";
 import InforButton from "./Button";
-import { useDispatch, useSelector } from "react-redux";
-import { showUser } from "../../services/useService";
 import SearchInput from "./Search.jsx";
-import { grey } from "@mui/material/colors";
+import {useUserProfile} from "../../customHook/useUserProfile"
+
 
 export default function PersonalPage() {
-  const dispatch = useDispatch();
-
-  const token = localStorage.getItem("token");
-  const decodedToken = JSON.parse(atob(token.split(".")[1]));
-  const userId = decodedToken.idUser;
-
-  const profile = useSelector((state) => {
-    if (state.user.profile?.data?.length > 0) {
-      return state.user.profile.data[0];
-    }
-    return null;
-  });
-
-  console.log(profile, 8888);
-
-  useEffect(() => {
-    dispatch(showUser(userId));
-  }, [dispatch, userId]);
+  const profile = useUserProfile();
 
   return (
     <Box
@@ -79,9 +62,20 @@ export default function PersonalPage() {
             <Grid item xs={6} p={2}>
               <Box
                 bgcolor="customColorSchemes.backgroundColor"
-                sx={{ width: "100%", borderRadius: "5px", padding: "10px" }}
+                sx={{
+                  width: "100%",
+                  borderRadius: "5px",
+                  padding: "15px",
+                  display: "flex",
+                  gap: "10px",
+                }}
               >
                 <Avatar src={profile.avatar} />
+                <InputBase
+                  sx={{ ml: 1, flex: 1 }}
+                  placeholder="Hãy viết gì vào đây"
+                  // inputProps={{ "aria-label": "search google maps" }}
+                />
               </Box>
             </Grid>
             <Grid item xs={3} p={2}>

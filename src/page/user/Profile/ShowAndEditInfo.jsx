@@ -19,10 +19,13 @@ import {faCamera} from '@fortawesome/free-solid-svg-icons';
 import {ref, uploadBytes, getDownloadURL} from "@firebase/storage";
 import {storage} from "../../../services/firebase.js";
 import {v4} from "uuid";
+import { useUserProfile } from '../../../customHook/useUserProfile.js';
 
 const ShowAndEditInfo = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    const profile = useUserProfile();
 
     const [formState, setFormState] = useState({
         username: '',
@@ -39,17 +42,6 @@ const ShowAndEditInfo = () => {
     const [tempAvatar, setTempAvatar] = useState("");
     const [open, setOpen] = useState(false);
 
-
-    const token = localStorage.getItem('token');
-    const decodedToken = JSON.parse(atob(token.split('.')[1]));
-    const userId = decodedToken.idUser;
-
-    const profile = useSelector((state) => {
-        if (state.user.profile?.data?.length > 0) {
-            return state.user.profile.data[0];
-        }
-        return null;
-    });
 
     const handleOpenModal = () => {
         setOpen(true);
@@ -103,9 +95,7 @@ const ShowAndEditInfo = () => {
         }
     };
 
-    useEffect(() => {
-        dispatch(showUser(userId));
-    }, [dispatch, userId]);
+
 
     useEffect(() => {
         if (profile) {
