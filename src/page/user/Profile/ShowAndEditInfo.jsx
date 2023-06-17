@@ -21,6 +21,9 @@ import {storage} from "../../../services/firebase.js";
 import {v4} from "uuid";
 
 const ShowAndEditInfo = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const [formState, setFormState] = useState({
         username: '',
         password: '',
@@ -36,8 +39,6 @@ const ShowAndEditInfo = () => {
     const [tempAvatar, setTempAvatar] = useState("");
     const [open, setOpen] = useState(false);
 
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     const token = localStorage.getItem('token');
     const decodedToken = JSON.parse(atob(token.split('.')[1]));
