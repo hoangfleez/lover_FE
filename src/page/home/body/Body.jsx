@@ -13,7 +13,7 @@ export default function Body() {
       sx={{
         display: "flex",
         marginTop: "64px",
-        height: "calc(100vh - 64px)",
+        height: "100vh",
       }}
     >
       <SiderBar setService={setService}/>

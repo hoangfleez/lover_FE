@@ -1,3 +1,4 @@
+import { blue } from "@mui/material/colors";
 import { experimental_extendTheme as extendTheme } from "@mui/material/styles";
 
 const theme = extendTheme({
@@ -8,6 +9,7 @@ const theme = extendTheme({
           basicColor: "#fff",
           backgroundColor: "#fff",
           textColor: "#000",
+          bgColor:"#e9ebee",
         },
         customBtnColor: {
           backgroundColor: "#777",
@@ -25,6 +27,7 @@ const theme = extendTheme({
           basicColor: "#121212",
           backgroundColor: "#272727",
           textColor: "#fff",
+          bgColor:"#1f1f22",
         },
         customBtnColor: {
           backgroundColor: "#272727",
@@ -37,6 +40,10 @@ const theme = extendTheme({
       },
     },
   },
+
+  
 });
 
 export default theme;
+
+

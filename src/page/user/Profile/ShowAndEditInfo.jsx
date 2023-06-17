@@ -10,7 +10,12 @@ import {
     TextField,
     Modal,
     Backdrop,
-    Fade
+    Fade,
+    Grid,
+    Typography,
+    InputLabel,
+    InputBase,
+    Divider
 } from '@mui/material';
 import {useNavigate} from 'react-router-dom';
 import './ShowAndEditInfo.css';
@@ -20,12 +25,19 @@ import {ref, uploadBytes, getDownloadURL} from "@firebase/storage";
 import {storage} from "../../../services/firebase.js";
 import {v4} from "uuid";
 import { useUserProfile } from '../../../customHook/useUserProfile.js';
+import { styled } from 'styled-components';
+
+
+
+
+
 
 const ShowAndEditInfo = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const profile = useUserProfile();
+
 
     const [formState, setFormState] = useState({
         username: '',
@@ -38,6 +50,8 @@ const ShowAndEditInfo = () => {
         identityCard: '',
         avatar: ''
     });
+
+    console.log(formState,9999);
     const [imageUpload, setImageUpload] = useState(null);
     const [tempAvatar, setTempAvatar] = useState("");
     const [open, setOpen] = useState(false);
@@ -58,7 +72,7 @@ const ShowAndEditInfo = () => {
         event.preventDefault();
 
         const editProfile = {
-            id: userId,
+            id: profile.id,
             ...formState
         };
 
@@ -105,31 +119,66 @@ const ShowAndEditInfo = () => {
 
     return (
         <>
-            <Box
-                sx={{
-                    marginTop: '64px',
-                    padding: '10px',
-                    height: '93vh'
-                }}
-            >
-                <Container maxWidth="lg">
-                    <form>
+        <Grid container spacing={2} p={4}>
+            <Grid xs={4} >
+                <Box sx={{border:"1px solid white", borderRadius:"5px", display:"flex", flexDirection:"column", alignItems:"center", padding:"10px 0", margin: "0 8px"}}>
+                    <Typography variant="subtitle1" gutterBottom>
+                        TỔNG TIỀN ĐÃ NẠP
+                    </Typography>
+                    <Typography variant="h5" gutterBottom color="red">
+                        0 Đ
+                    </Typography>
+                </Box>
+            </Grid>
+            <Grid xs={4}>
+            <Box sx={{border:"1px solid white", borderRadius:"5px", display:"flex", flexDirection:"column", alignItems:"center", padding:"10px 0", margin: "0 8px"}}>
+                    <Typography variant="subtitle1" gutterBottom>
+                        TỔNG TIỀN ĐÃ DONATE
+                    </Typography>
+                    <Typography variant="h5" gutterBottom color="red">
+                        0 Đ
+                    </Typography>
+                </Box>
+            </Grid>
+            <Grid xs={4}>
+            <Box sx={{border:"1px solid white", borderRadius:"5px", display:"flex", flexDirection:"column", alignItems:"center", padding:"10px 0", margin: "0 8px"}}>
+                    <Typography variant="subtitle1" gutterBottom>
+                        SỐ GIỜ ĐÃ THÊU
+                    </Typography>
+                    <Typography variant="h5" gutterBottom color="red">
+                        0 Đ
+                    </Typography>
+                </Box>
+            </Grid>
+        </Grid>
+        <Box p={4}>
+        <Typography variant="h4" gutterBottom>
+            Thông tin cá nhân
+        </Typography>
+
+            <form>
                         {profile && (
-                            <Box sx={{display: 'flex', width: '100%', height: '100%'}}>
-                                <Box sx={{width: '30%'}}>
-                                    <div className="image-container">
+                            <Box sx={{display: 'flex', width: '100%', height: '100%', flexDirection:"column"}}>
+                                <Box sx={{display:"flex", alignItems:"center", gap:"40px"}}>
+                                    <Box sx={{width: 100, height:100 ,borderRadius:"75%",overflow: "hidden" }}>
                                         <CardMedia
                                             className="hover-image"
                                             component="img"
-                                            sx={{width: 250}}
                                             image={formState.avatar}
                                             alt="Avatar"
+                                            style={{objectFit:"container", width:"100%", height:"100%"}}
                                         />
-                                        <div className="overlay" onClick={handleOpenModal}>
-                                            <FontAwesomeIcon icon={faCamera} size="3x" color="white"
-                                                             style={{marginTop: 100}}/>
-                                        </div>
-                                    </div>
+                                    </Box>       
+                                        <Box onClick={handleOpenModal} sx={{cursor:"pointer"}}>
+                                        <Typography color="red">
+                                            Thay đổi
+                                        </Typography>
+                                        <Typography >
+                                            JPG, GIF OR PND   
+                                        </Typography>
+                                        </Box>
+                                </Box>
+
                                     <Modal
                                         aria-labelledby="transition-modal-title"
                                         aria-describedby="transition-modal-description"
@@ -189,27 +238,15 @@ const ShowAndEditInfo = () => {
                                             </div>
                                         </Fade>
                                     </Modal>
-                                </Box>
 
-                                <Box sx={{width: '70%'}}>
-                                    <h1>Thông tin tài khoản</h1>
-                                    <Box sx={{width: '45ch'}}>
-                                        <TextField
-                                            sx={{marginTop: 2}}
-                                            fullWidth
-                                            label="Địa chỉ email"
-                                            multiline
-                                            defaultValue={formState.email}
-                                            onChange={(event) => setFormState({
-                                                ...formState,
-                                                email: event.target.value
-                                            })}
-                                        />
 
+                                    <Box sx={{width: '70ch', marginTop:"50px"}}>
+                                    <Box>
+                                    <Typography variant="overline" gutterBottom>
+                                            HỌ
+                                    </Typography>
                                         <TextField
-                                            sx={{marginTop: 3}}
                                             fullWidth
-                                            label="Họ"
                                             multiline
                                             defaultValue={formState.firstname}
                                             onChange={(event) => setFormState({
@@ -217,10 +254,13 @@ const ShowAndEditInfo = () => {
                                                 firstname: event.target.value
                                             })}
                                         />
+                                    </Box>
+                                    <Box>
+                                    <Typography variant="overline" gutterBottom>
+                                            TÊN
+                                    </Typography>
                                         <TextField
-                                            sx={{marginTop: 3}}
                                             fullWidth
-                                            label="Tên"
                                             multiline
                                             defaultValue={formState.lastname}
                                             onChange={(event) => setFormState({
@@ -228,11 +268,13 @@ const ShowAndEditInfo = () => {
                                                 lastname: event.target.value
                                             })}
                                         />
-
+                                    </Box>
+                                    <Box>
+                                    <Typography variant="overline" gutterBottom>
+                                            ĐỊA CHỈ
+                                    </Typography>
                                         <TextField
-                                            sx={{marginTop: 3}}
                                             fullWidth
-                                            label="Địa chỉ"
                                             multiline
                                             defaultValue={formState.address}
                                             onChange={(event) => setFormState({
@@ -241,22 +283,17 @@ const ShowAndEditInfo = () => {
                                             })}
                                         />
                                     </Box>
-                                    <Box sx={{width: '45ch', marginTop: 3}}>
-                                        <Stack direction="row" spacing={2} sx={{justifyContent: 'space-evenly'}}>
-                                            <Button onClick={handleSubmitEditProfile} variant="contained">
+                                    <Divider sx={{marginTop:3}} />
+                                    </Box>
+                                    <Box sx={{width: '70ch', marginTop: 3}}>
+                                            <Button onClick={handleSubmitEditProfile} variant="contained" fullWidth sx={{backgroundColor:"red" , color:"white"}}>
                                                 Cập nhật
                                             </Button>
-                                            <Button variant="contained" onClick={() => navigate('/')}>
-                                                Trang chủ
-                                            </Button>
-                                        </Stack>
                                     </Box>
-                                </Box>
                             </Box>
                         )}
-                    </form>
-                </Container>
-            </Box>
+            </form>
+        </Box>
         </>
     );
 };

@@ -12,8 +12,7 @@ import {
 } from "@mui/material";
 import InforButton from "./Button";
 import SearchInput from "./Search.jsx";
-import {useUserProfile} from "../../customHook/useUserProfile"
-
+import { useUserProfile } from "../../../customHook/useUserProfile";
 
 export default function PersonalPage() {
   const profile = useUserProfile();
@@ -21,7 +20,8 @@ export default function PersonalPage() {
   return (
     <Box
       sx={{
-        height: "100vh",
+        display: "block",
+        height: "100%",
         marginTop: "65px",
         flexGrow: 1,
       }}
@@ -52,7 +52,7 @@ export default function PersonalPage() {
                   >
                     Nam sinh:
                     <br />
-                    Song tai
+                    Song tai:{profile?.address}
                   </Typography>
                 </CardContent>
               </Card>
@@ -74,7 +74,6 @@ export default function PersonalPage() {
                 <InputBase
                   sx={{ ml: 1, flex: 1 }}
                   placeholder="Hãy viết gì vào đây"
-                  // inputProps={{ "aria-label": "search google maps" }}
                 />
               </Box>
             </Grid>

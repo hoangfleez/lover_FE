@@ -11,20 +11,15 @@ const UserIcons = () => {
 
   return (
     <Box>
+
       <IconButton size="large">
-        <Badge color="error" badgeContent={5}>
-          <Mail />
-        </Badge>
-      </IconButton>
-      <IconButton size="large">
-        <Badge color="error" badgeContent={20}>
+        <Badge color="error" badgeContent={0}>
           <Notifications />
         </Badge>
       </IconButton>
       <Tooltip title="Open User Settings">
         <IconButton onClick={(e) => setAnchorUserMenu(e.currentTarget)}>
-          <Avatar src={user?.avatar} alt={user?.avatar}>
-          </Avatar>
+          <Avatar src={user?.avatar} alt={user?.avatar}></Avatar>
         </IconButton>
       </Tooltip>
       <UserMenu {...{ anchorUserMenu, setAnchorUserMenu }} />
