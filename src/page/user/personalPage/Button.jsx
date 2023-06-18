@@ -16,20 +16,37 @@ export default function InforButton() {
             variant="contained"
             fullWidth
             startIcon={<FavoriteIcon />}
-            sx={{ bgcolor: "white" }}
+            sx={{
+              bgcolor: "white",
+              padding: "10px",
+              "&:hover": {
+                backgroundColor: "white",
+              },
+            }}
           >
             Theo dõi
           </Button>
         </Grid>
         <Grid item xs={6}>
           <Link to="/customer_info">
-            <Button variant="contained" fullWidth sx={{ bgcolor: "white" }}>
+            <Button
+              variant="contained"
+              fullWidth
+              sx={{
+                bgcolor: "white",
+                padding: "10px",
+                "&:hover": {
+                  backgroundColor: "white",
+                },
+              }}
+            >
               Cài đặt
             </Button>
           </Link>
         </Grid>
         <Grid item xs={6}>
           <Button
+            sx={{ padding: "10px" }}
             variant="contained"
             fullWidth
             startIcon={<ChatBubbleOutlineIcon />}
@@ -39,12 +56,27 @@ export default function InforButton() {
           </Button>
         </Grid>
         <Grid item xs={6}>
-          <Button variant="contained" fullWidth disabled>
+          <Button
+            variant="contained"
+            fullWidth
+            disabled
+            sx={{ padding: "10px" }}
+          >
             Donate
           </Button>
         </Grid>
         <Grid item xs={6}>
-          <Button variant="contained" fullWidth sx={{ bgcolor: "white" }}>
+          <Button
+            variant="contained"
+            fullWidth
+            sx={{
+              bgcolor: "white",
+              padding: "10px",
+              "&:hover": {
+                backgroundColor: "white",
+              },
+            }}
+          >
             Đang theo dõi
           </Button>
         </Grid>
@@ -53,7 +85,13 @@ export default function InforButton() {
             variant="contained"
             textTransform="none"
             fullWidth
-            sx={{ bgcolor: "white" }}
+            sx={{
+              bgcolor: "white",
+              padding: "10px",
+              "&:hover": {
+                backgroundColor: "white",
+              },
+            }}
           >
             Album
           </Button>
@@ -63,7 +101,16 @@ export default function InforButton() {
         fullWidth
         variant="contained"
         startIcon={<HomeIcon />}
-        sx={{ marginTop: "5px", padding: "10px", bgcolor: "red" }}
+        sx={{
+          marginTop: "5px",
+          backgroundColor: "red",
+          color: "white",
+          padding: "10px",
+          backgroundColor: "red",
+          "&:hover": {
+            backgroundColor: "red",
+          },
+        }}
       >
         Khu thành viên
       </Button>
