@@ -4,10 +4,14 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Box } from "@mui/material";
+import { Box, ListItem, ListItemText } from "@mui/material";
+import SellIcon from "@mui/icons-material/Sell";
+import SettingsIcon from "@mui/icons-material/Settings";
+import GroupsIcon from "@mui/icons-material/Groups";
+import AdjustIcon from "@mui/icons-material/Adjust";
+import BlockIcon from "@mui/icons-material/Block";
 
-export default function PersonalPageSidebar() {
-  const [selectedLine, setSelectedLine] = useState(null);
+export default function PersonalPageSidebar({selectedLine, setSelectedLine}) {
 
   const handleLineClick = (index) => {
     setSelectedLine(index === selectedLine ? null : index);
@@ -29,15 +33,19 @@ export default function PersonalPageSidebar() {
             aria-controls="panel2a-content"
             id="panel2a-header"
           >
-            <Typography>Hashtags</Typography>
+            <ListItem sx={{ padding: 0 }}>
+              <SellIcon fontSize="small" sx={{ marginRight: "10px" }} />
+              <ListItemText primary="Lịch sử giao dịch" />
+            </ListItem>
           </AccordionSummary>
           <AccordionDetails>
-            <Box
-              ml={7}
-              style={{ color: selectedLine === 1 ? "red" : "inherit" }}
-              onClick={() => handleLineClick(1)}
-            >
-              <Typography variant="subtitle2" gutterBottom>
+            <Box ml={7}>
+              <Typography
+                variant="subtitle2"
+                gutterBottom
+                style={{ color: selectedLine === 15 ? "red" : "inherit" }}
+                onClick={() => handleLineClick(15)}
+              >
                 Dành cho sáng tạo nội dung
               </Typography>
             </Box>
@@ -49,7 +57,10 @@ export default function PersonalPageSidebar() {
             aria-controls="panel2b-content"
             id="panel2b-header"
           >
-            <Typography>Cài đặt</Typography>
+            <ListItem sx={{ padding: 0 }}>
+              <SettingsIcon fontSize="small" sx={{ marginRight: "10px" }} />
+              <ListItemText primary="Cài đặt" />
+            </ListItem>
           </AccordionSummary>
           <AccordionDetails>
             <Typography>
@@ -57,57 +68,26 @@ export default function PersonalPageSidebar() {
                 <Typography
                   variant="subtitle2"
                   gutterBottom
-                  style={{ color: selectedLine === 2 ? "red" : "inherit" }}
-                  onClick={() => handleLineClick(2)}
+                  style={{ color: selectedLine === 16 ? "red" : "inherit" }}
+                  onClick={() => handleLineClick(16)}
                 >
                   Url
                 </Typography>
                 <Typography
                   variant="subtitle2"
                   gutterBottom
-                  style={{ color: selectedLine === 3 ? "red" : "inherit" }}
-                  onClick={() => handleLineClick(3)}
+                  style={{ color: selectedLine === 17 ? "red" : "inherit" }}
+                  onClick={() => handleLineClick(17)}
                 >
                   Mạng xã hội
                 </Typography>
                 <Typography
                   variant="subtitle2"
                   gutterBottom
-                  style={{ color: selectedLine === 4 ? "red" : "inherit" }}
-                  onClick={() => handleLineClick(4)}
+                  style={{ color: selectedLine === 18 ? "red" : "inherit" }}
+                  onClick={() => handleLineClick(18)}
                 >
                   Hiển thị
-                </Typography>
-              </Box>
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1b-content"
-            id="panel1b-header"
-          >
-            <Typography>Mục tiêu</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>
-              <Box ml={7}>
-                <Typography
-                  variant="subtitle2"
-                  gutterBottom
-                  style={{ color: selectedLine === 5 ? "red" : "inherit" }}
-                  onClick={() => handleLineClick(5)}
-                >
-                  Cài đặt
-                </Typography>
-                <Typography
-                  variant="subtitle2"
-                  gutterBottom
-                  style={{ color: selectedLine === 6 ? "red" : "inherit" }}
-                  onClick={() => handleLineClick(6)}
-                >
-                  Lịch sử
                 </Typography>
               </Box>
             </Typography>
@@ -119,7 +99,10 @@ export default function PersonalPageSidebar() {
             aria-controls="panel1a-content"
             id="panel1a-header"
           >
-            <Typography>Thành viên</Typography>
+            <ListItem sx={{ padding: 0 }}>
+              <GroupsIcon fontSize="small" sx={{ marginRight: "10px" }} />
+              <ListItemText primary="Thành viên" />
+            </ListItem>
           </AccordionSummary>
           <AccordionDetails>
             <Typography>
@@ -127,7 +110,7 @@ export default function PersonalPageSidebar() {
                 <Typography
                   variant="subtitle2"
                   gutterBottom
-                  style={{ color: selectedLine === 7 ? "red" : "inherit" }}
+                  style={{ color: selectedLine === 19 ? "red" : "inherit" }}
                   onClick={() => handleLineClick(7)}
                 >
                   Bậc
@@ -135,16 +118,16 @@ export default function PersonalPageSidebar() {
                 <Typography
                   variant="subtitle2"
                   gutterBottom
-                  style={{ color: selectedLine === 8 ? "red" : "inherit" }}
-                  onClick={() => handleLineClick(8)}
+                  style={{ color: selectedLine === 19 ? "red" : "inherit" }}
+                  onClick={() => handleLineClick(19)}
                 >
                   Danh sách thành viên
                 </Typography>
                 <Typography
                   variant="subtitle2"
                   gutterBottom
-                  style={{ color: selectedLine === 9 ? "red" : "inherit" }}
-                  onClick={() => handleLineClick(9)}
+                  style={{ color: selectedLine === 20 ? "red" : "inherit" }}
+                  onClick={() => handleLineClick(20)}
                 >
                   Lịch sử đăng ký
                 </Typography>
@@ -153,21 +136,50 @@ export default function PersonalPageSidebar() {
           </AccordionDetails>
         </Accordion>
         <Accordion>
-          <Typography
-            p={2}
-            style={{ color: selectedLine === 10 ? "red" : "inherit" }}
-            onClick={() => handleLineClick(10)}
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1b-content"
+            id="panel1b-header"
           >
-            Thanh toán
-          </Typography>
+            <ListItem sx={{ padding: 0 }}>
+              <AdjustIcon fontSize="small" sx={{ marginRight: "10px" }} />
+              <ListItemText primary="Mục tiêu" />
+            </ListItem>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>
+              <Box ml={7}>
+                <Typography
+                  variant="subtitle2"
+                  gutterBottom
+                  style={{ color: selectedLine === 21 ? "red" : "inherit" }}
+                  onClick={() => handleLineClick(21)}
+                >
+                  Cài đặt
+                </Typography>
+                <Typography
+                  variant="subtitle2"
+                  gutterBottom
+                  style={{ color: selectedLine === 22 ? "red" : "inherit" }}
+                  onClick={() => handleLineClick(22)}
+                >
+                  Lịch sử
+                </Typography>
+              </Box>
+            </Typography>
+          </AccordionDetails>
         </Accordion>
+
         <Accordion>
           <Typography
             p={2}
-            style={{ color: selectedLine === 11 ? "red" : "inherit" }}
-            onClick={() => handleLineClick(11)}
+            style={{ color: selectedLine === 23 ? "red" : "inherit" }}
+            onClick={() => handleLineClick(23)}
           >
-            Danh sách chặn comment
+            <ListItem sx={{ padding: 0 }}>
+              <BlockIcon fontSize="small" sx={{ marginRight: "10px" }} />
+              <ListItemText primary="Danh sách chặn comment " />
+            </ListItem>
           </Typography>
         </Accordion>
       </AccordionDetails>

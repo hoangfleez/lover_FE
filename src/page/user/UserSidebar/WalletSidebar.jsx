@@ -4,10 +4,11 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Box } from "@mui/material";
+import { Box, ListItem, ListItemText } from "@mui/material";
+import SettingsIcon from "@mui/icons-material/Settings";
+import LinkIcon from "@mui/icons-material/Link";
 
-export default function WalletSidebar() {
-  const [selectedLine, setSelectedLine] = React.useState(null);
+export default function WalletSidebar({selectedLine, setSelectedLine}) {
 
   const handleLineClick = (index) => {
     setSelectedLine(index === selectedLine ? null : index);
@@ -29,7 +30,10 @@ export default function WalletSidebar() {
             aria-controls="panel2b-content"
             id="panel2b-header"
           >
-            <Typography>Cài đặt</Typography>
+            <ListItem sx={{ padding: 0 }}>
+              <SettingsIcon fontSize="small" sx={{ marginRight: "10px" }} />
+              <ListItemText primary="Cài đặt" />
+            </ListItem>
           </AccordionSummary>
           <AccordionDetails>
             <Typography>
@@ -37,16 +41,16 @@ export default function WalletSidebar() {
                 <Typography
                   variant="subtitle2"
                   gutterBottom
-                  style={{ color: selectedLine === 1 ? "red" : "inherit" }}
-                  onClick={() => handleLineClick(1)}
+                  style={{ color: selectedLine === 24 ? "red" : "inherit" }}
+                  onClick={() => handleLineClick(24)}
                 >
                   Thông tin
                 </Typography>
                 <Typography
                   variant="subtitle2"
                   gutterBottom
-                  style={{ color: selectedLine === 2 ? "red" : "inherit" }}
-                  onClick={() => handleLineClick(2)}
+                  style={{ color: selectedLine === 25 ? "red" : "inherit" }}
+                  onClick={() => handleLineClick(25)}
                 >
                   Lịch sử
                 </Typography>
@@ -55,12 +59,15 @@ export default function WalletSidebar() {
           </AccordionDetails>
         </Accordion>
         <Accordion>
-          <Typography
-            p={2}
-            style={{ color: selectedLine === 3 ? "red" : "inherit" }}
-            onClick={() => handleLineClick(3)}
-          >
-            Link Pay
+          <Typography p={2}>
+            <ListItem
+              sx={{ padding: 0 }}
+              style={{ color: selectedLine === 26 ? "red" : "inherit" }}
+              onClick={() => handleLineClick(26)}
+            >
+              <LinkIcon fontSize="small" sx={{ marginRight: "10px" }} />
+              <ListItemText primary="Link Pay" />
+            </ListItem>
           </Typography>
         </Accordion>
       </AccordionDetails>

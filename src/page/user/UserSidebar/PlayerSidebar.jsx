@@ -4,7 +4,14 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Box } from "@mui/material";
+import { Box, ListItem, ListItemText } from "@mui/material";
+import SettingsIcon from "@mui/icons-material/Settings";
+import PersonIcon from "@mui/icons-material/Person";
+import GroupIcon from "@mui/icons-material/Group";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import BlockIcon from "@mui/icons-material/Block";
+import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
+import LinkIcon from "@mui/icons-material/Link";
 
 export default function PlayerSidebar() {
   const [selectedLine, setSelectedLine] = React.useState(null);
@@ -27,24 +34,30 @@ export default function PlayerSidebar() {
           <Typography
             p={2}
             style={{
-              color: selectedLine === 1 ? "red" : "inherit",
+              color: selectedLine === 27 ? "red" : "inherit",
               transition: "color 0.3s",
             }}
-            onClick={() => handleLineClick(1)}
+            onClick={() => handleLineClick(27)}
           >
-            Tổng quan
+            <ListItem sx={{ padding: 0 }}>
+              <PersonIcon fontSize="small" sx={{ marginRight: "10px" }} />
+              <ListItemText primary="Tổng quan " />
+            </ListItem>
           </Typography>
         </Accordion>
         <Accordion>
           <Typography
             p={2}
             style={{
-              color: selectedLine === 2 ? "red" : "inherit",
+              color: selectedLine === 28 ? "red" : "inherit",
               transition: "color 0.3s",
             }}
-            onClick={() => handleLineClick(2)}
+            onClick={() => handleLineClick(28)}
           >
-            Khách hàng thân thiết
+            <ListItem sx={{ padding: 0 }}>
+              <GroupIcon fontSize="small" sx={{ marginRight: "10px" }} />
+              <ListItemText primary="Khách hàng thân thiết" />
+            </ListItem>
           </Typography>
         </Accordion>
         <Accordion>
@@ -53,7 +66,10 @@ export default function PlayerSidebar() {
             aria-controls="panel2a-content"
             id="panel2a-header"
           >
-            <Typography>Cài đặt</Typography>
+            <ListItem sx={{ padding: 0 }}>
+              <SettingsIcon fontSize="small" sx={{ marginRight: "10px" }} />
+              <ListItemText primary="Cài đặt" />
+            </ListItem>
           </AccordionSummary>
           <AccordionDetails>
             <Box ml={7}>
@@ -61,10 +77,10 @@ export default function PlayerSidebar() {
                 variant="subtitle2"
                 gutterBottom
                 style={{
-                  color: selectedLine === 3 ? "red" : "inherit",
+                  color: selectedLine === 29 ? "red" : "inherit",
                   transition: "color 0.3s",
                 }}
-                onClick={() => handleLineClick(3)}
+                onClick={() => handleLineClick(29)}
               >
                 Url
               </Typography>
@@ -72,10 +88,10 @@ export default function PlayerSidebar() {
                 variant="subtitle2"
                 gutterBottom
                 style={{
-                  color: selectedLine === 4 ? "red" : "inherit",
+                  color: selectedLine === 30 ? "red" : "inherit",
                   transition: "color 0.3s",
                 }}
-                onClick={() => handleLineClick(4)}
+                onClick={() => handleLineClick(30)}
               >
                 Thông tin Player
               </Typography>
@@ -83,10 +99,10 @@ export default function PlayerSidebar() {
                 variant="subtitle2"
                 gutterBottom
                 style={{
-                  color: selectedLine === 5 ? "red" : "inherit",
+                  color: selectedLine === 31 ? "red" : "inherit",
                   transition: "color 0.3s",
                 }}
-                onClick={() => handleLineClick(5)}
+                onClick={() => handleLineClick(31)}
               >
                 Albums Player
               </Typography>
@@ -94,10 +110,10 @@ export default function PlayerSidebar() {
                 variant="subtitle2"
                 gutterBottom
                 style={{
-                  color: selectedLine === 6 ? "red" : "inherit",
+                  color: selectedLine === 32 ? "red" : "inherit",
                   transition: "color 0.3s",
                 }}
-                onClick={() => handleLineClick(6)}
+                onClick={() => handleLineClick(32)}
               >
                 Cài đặt dou
               </Typography>
@@ -105,10 +121,10 @@ export default function PlayerSidebar() {
                 variant="subtitle2"
                 gutterBottom
                 style={{
-                  color: selectedLine === 7 ? "red" : "inherit",
+                  color: selectedLine === 33 ? "red" : "inherit",
                   transition: "color 0.3s",
                 }}
-                onClick={() => handleLineClick(7)}
+                onClick={() => handleLineClick(33)}
               >
                 Khác
               </Typography>
@@ -121,7 +137,13 @@ export default function PlayerSidebar() {
             aria-controls="panel2b-content"
             id="panel2b-header"
           >
-            <Typography>Lịch sử nhận dou,donate</Typography>
+            <ListItem sx={{ padding: 0 }}>
+              <CalendarMonthIcon
+                fontSize="small"
+                sx={{ marginRight: "10px" }}
+              />
+              <ListItemText primary="Lịch sử nhận dou,donate" />
+            </ListItem>
           </AccordionSummary>
           <AccordionDetails>
             <Typography>
@@ -130,10 +152,10 @@ export default function PlayerSidebar() {
                   variant="subtitle2"
                   gutterBottom
                   style={{
-                    color: selectedLine === 8 ? "red" : "inherit",
+                    color: selectedLine === 34 ? "red" : "inherit",
                     transition: "color 0.3s",
                   }}
-                  onClick={() => handleLineClick(8)}
+                  onClick={() => handleLineClick(34)}
                 >
                   Lịch sử nhận duo
                 </Typography>
@@ -141,10 +163,10 @@ export default function PlayerSidebar() {
                   variant="subtitle2"
                   gutterBottom
                   style={{
-                    color: selectedLine === 9 ? "red" : "inherit",
+                    color: selectedLine === 35 ? "red" : "inherit",
                     transition: "color 0.3s",
                   }}
-                  onClick={() => handleLineClick(9)}
+                  onClick={() => handleLineClick(35)}
                 >
                   Lịch sử nhận donate
                 </Typography>
@@ -156,36 +178,45 @@ export default function PlayerSidebar() {
           <Typography
             p={2}
             style={{
-              color: selectedLine === 10 ? "red" : "inherit",
+              color: selectedLine === 36 ? "red" : "inherit",
               transition: "color 0.3s",
             }}
-            onClick={() => handleLineClick(10)}
+            onClick={() => handleLineClick(36)}
           >
-            Danh sách chặn User
+            <ListItem sx={{ padding: 0 }}>
+              <BlockIcon fontSize="small" sx={{ marginRight: "10px" }} />
+              <ListItemText primary="Danh sách chặn User" />
+            </ListItem>
           </Typography>
         </Accordion>
         <Accordion>
           <Typography
             p={2}
             style={{
-              color: selectedLine === 11 ? "red" : "inherit",
+              color: selectedLine === 37 ? "red" : "inherit",
               transition: "color 0.3s",
             }}
-            onClick={() => handleLineClick(11)}
+            onClick={() => handleLineClick(37)}
           >
-            Huớng dẫn Player
+            <ListItem sx={{ padding: 0 }}>
+              <LibraryBooksIcon fontSize="small" sx={{ marginRight: "10px" }} />
+              <ListItemText primary="Huớng dẫn Player" />
+            </ListItem>
           </Typography>
         </Accordion>
         <Accordion>
           <Typography
             p={2}
             style={{
-              color: selectedLine === 12 ? "red" : "inherit",
+              color: selectedLine === 38 ? "red" : "inherit",
               transition: "color 0.3s",
             }}
-            onClick={() => handleLineClick(12)}
+            onClick={() => handleLineClick(38)}
           >
-            Link Player
+            <ListItem sx={{ padding: 0 }}>
+              <LinkIcon fontSize="small" sx={{ marginRight: "10px" }} />
+              <ListItemText primary="Link Player " />
+            </ListItem>
           </Typography>
         </Accordion>
       </AccordionDetails>

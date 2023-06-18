@@ -1,42 +1,67 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Box } from "@mui/material";
+import { Box, ListItem, ListItemText } from "@mui/material";
+import PersonIcon from "@mui/icons-material/Person";
+import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
+import WalletIcon from "@mui/icons-material/Wallet";
+import PaymentIcon from "@mui/icons-material/Payment";
+import SettingsIcon from "@mui/icons-material/Settings";
+import HistoryIcon from "@mui/icons-material/History";
+import { Link, useNavigate } from "react-router-dom";
 
-export default function AccountSidebar() {
-  const [selectedLine, setSelectedLine] = useState(null);
+export default function AccountSidebar({
+  selectedLine,
+  setSelectedLine,
+  expanded,
+  setExpanded,
+}) {
+  const navigate = useNavigate();
 
   const handleLineClick = (index) => {
     setSelectedLine(index);
   };
+  const handleAccordionToggle = () => {
+    setExpanded(!expanded);
+  };
 
+  useEffect(() => {
+    setSelectedLine(1); // Thiết lập thông tin cá nhân là mục được chọn khi component được render
+    setExpanded(true);
+  }, []);
   return (
-    <Accordion>
+    <Accordion expanded={expanded}>
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"
         id="panel1a-header"
+        onClick={handleAccordionToggle}
       >
-        <Typography>Tài khoản</Typography>
+        <Typography>TÀI KHOẢN</Typography>
       </AccordionSummary>
       <AccordionDetails>
         <Accordion>
-          <Typography
-            p={2}
+          <Link
+            to="/customer_info"
             style={{
+              textDecoration: "none",
               color: selectedLine === 1 ? "red" : "inherit",
               transition: "color 0.3s",
             }}
             onClick={() => handleLineClick(1)}
           >
-            Thông tin cá nhân
-          </Typography>
+            <ListItem p={2}>
+              <PersonIcon fontSize="small" sx={{ marginRight: "10px" }} />
+
+              <ListItemText primary="Thông tin cá nhân" />
+            </ListItem>
+          </Link>
         </Accordion>
         <Accordion>
-          <Typography
+          <ListItem
             p={2}
             style={{
               color: selectedLine === 2 ? "red" : "inherit",
@@ -44,8 +69,12 @@ export default function AccountSidebar() {
             }}
             onClick={() => handleLineClick(2)}
           >
-            Thông kê
-          </Typography>
+            <FormatListNumberedIcon
+              fontSize="small"
+              sx={{ marginRight: "10px" }}
+            />
+            <ListItemText primary="Thống kê" />
+          </ListItem>
         </Accordion>
         <Accordion>
           <AccordionSummary
@@ -53,7 +82,10 @@ export default function AccountSidebar() {
             aria-controls="panel2a-content"
             id="panel2a-header"
           >
-            <Typography>Cài đặt</Typography>
+            <ListItem sx={{ padding: 0 }}>
+              <SettingsIcon fontSize="small" sx={{ marginRight: "10px" }} />
+              <ListItemText primary="Cài đặt" />
+            </ListItem>
           </AccordionSummary>
           <AccordionDetails>
             <Box ml={7}>
@@ -64,7 +96,10 @@ export default function AccountSidebar() {
                   color: selectedLine === 3 ? "red" : "inherit",
                   transition: "color 0.3s",
                 }}
-                onClick={() => handleLineClick(3)}
+                onClick={() => {
+                  setSelectedLine(3);
+                  navigate("email");
+                }}
               >
                 Email
               </Typography>
@@ -121,7 +156,10 @@ export default function AccountSidebar() {
             aria-controls="panel2b-content"
             id="panel2b-header"
           >
-            <Typography>Lịch sử giảo dịch</Typography>
+            <ListItem sx={{ padding: 0 }}>
+              <HistoryIcon fontSize="small" sx={{ marginRight: "10px" }} />
+              <ListItemText primary="Lịch sử giao dịch" />
+            </ListItem>
           </AccordionSummary>
           <AccordionDetails>
             <Typography>
@@ -186,19 +224,20 @@ export default function AccountSidebar() {
           </AccordionDetails>
         </Accordion>
         <Accordion>
-          <Typography
+          <ListItem
             p={2}
             style={{
               color: selectedLine === 13 ? "red" : "inherit",
               transition: "color 0.3s",
             }}
-            onClick={() => handleLineClick(13)}
+            onClick={() => handleLineClick(3)}
           >
-            Thanh toán
-          </Typography>
+            <PaymentIcon fontSize="small" sx={{ marginRight: "10px" }} />
+            <ListItemText primary="Thanh toán" />
+          </ListItem>
         </Accordion>
         <Accordion>
-          <Typography
+          <ListItem
             p={2}
             style={{
               color: selectedLine === 14 ? "red" : "inherit",
@@ -206,8 +245,9 @@ export default function AccountSidebar() {
             }}
             onClick={() => handleLineClick(14)}
           >
-            Ví
-          </Typography>
+            <WalletIcon fontSize="small" sx={{ marginRight: "10px" }} />
+            <ListItemText primary="Ví" />
+          </ListItem>
         </Accordion>
       </AccordionDetails>
     </Accordion>

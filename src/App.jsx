@@ -7,6 +7,7 @@ import ShowAndEditInfo from "./page/user/Profile/ShowAndEditInfo";
 import DetailProvider from "./page/Provider/detailProvider";
 import PersonalPage from "./page/user/personalPage/PersonalPage";
 import UserContent from "./page/user/UserContent";
+import EmailUser from "./page/user/UserSidebar/Email/EmailUser";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="page" element={<PersonalPage />} />
           <Route path="customer_info" element={<UserContent />}>
             <Route path="" element={<ShowAndEditInfo />} />
+            <Route path="email" element={<EmailUser />} />
           </Route>
           <Route path="add-provider" element={<AddProvider />} />
           <Route path="detail-provider/:id" element={<DetailProvider />} />

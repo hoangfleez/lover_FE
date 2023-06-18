@@ -4,9 +4,10 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import SettingsIcon from "@mui/icons-material/Settings";
+import { ListItem, ListItemText } from "@mui/material";
 
-export default function DonateSidebar() {
-  const [selectedLine, setSelectedLine] = React.useState(null);
+export default function DonateSidebar({selectedLine, setSelectedLine}) {
 
   const handleLineClick = (index) => {
     setSelectedLine(index === selectedLine ? null : index);
@@ -23,16 +24,17 @@ export default function DonateSidebar() {
       </AccordionSummary>
       <AccordionDetails>
         <Accordion>
-          <Typography
-            p={2}
+          <ListItem
+            sx={{ padding: 0 }}
             style={{
-              color: selectedLine === 1 ? "red" : "inherit",
+              color: selectedLine === 39 ? "red" : "inherit",
               transition: "color 0.3s",
             }}
-            onClick={() => handleLineClick(1)}
+            onClick={() => handleLineClick(39)}
           >
-            Cài đặt
-          </Typography>
+            <SettingsIcon fontSize="small" sx={{ marginRight: "10px" }} />
+            <ListItemText primary="Cài đặt" />
+          </ListItem>
         </Accordion>
       </AccordionDetails>
     </Accordion>
