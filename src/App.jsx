@@ -10,6 +10,7 @@ import UserContent from "./page/user/UserContent";
 import EmailUser from "./page/user/UserSidebar/Email/EmailUser";
 import ProvidePage from "./page/Provider/ProvidePage";
 
+
 function App() {
   return (
     <>
@@ -20,7 +21,9 @@ function App() {
           <Route path="customer_info" element={<UserContent />}>
             <Route path="" element={<ShowAndEditInfo />} />
             <Route path="email" element={<EmailUser />} />
-            <Route path="user_setting/advanced" element={<ProvidePage />} />
+          </Route>
+          <Route path="user_setting" element={<UserContent />}>
+            <Route path="url" element={<ProvidePage/>} />
           </Route>
           <Route path="add-provider" element={<AddProvider />} />
           <Route path="detail-provider/:id" element={<DetailProvider />} />

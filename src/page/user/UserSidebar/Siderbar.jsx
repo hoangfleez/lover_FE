@@ -7,7 +7,7 @@ import DonateSidebar from './DonateSidebar'
 import PlayerSidebar from './PlayerSidebar'
 
 export default function UserSiderbar() {
-  const [selectedLine, setSelectedLine] = React.useState(null);
+  const [selectedLine, setSelectedLine] = React.useState(localStorage.getItem("selectedLineKey") ?  localStorage.getItem("selectedLineKey") :1);
   const [expanded, setExpanded] = React.useState(true);
   return (
     <Box sx={{display:"flex", flexDirection:"column"}}>

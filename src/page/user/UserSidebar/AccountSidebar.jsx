@@ -27,11 +27,29 @@ export default function AccountSidebar({
   const handleAccordionToggle = () => {
     setExpanded(!expanded);
   };
+  const [open, setOpen] = useState(false);
+
+  const changeOpen = () => {
+    setOpen((prevOpen) => !prevOpen);
+    localStorage.setItem("openState", JSON.stringify(!open));
+  };
 
   useEffect(() => {
-    setSelectedLine(1); // Thiết lập thông tin cá nhân là mục được chọn khi component được render
-    setExpanded(true);
+    const selectedLineKey = localStorage.getItem("selectedLineKey");
+    const parsedSelectedLine = parseInt(selectedLineKey);
+
+    if (!isNaN(parsedSelectedLine)) {
+      setSelectedLine(parsedSelectedLine);
+    }
+    const openState = JSON.parse(localStorage.getItem("openState"));
+    if (openState) {
+      setOpen(true);
+    }
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("selectedLineKey", selectedLine);
+  }, [selectedLine]);
   return (
     <Accordion expanded={expanded}>
       <AccordionSummary
@@ -76,11 +94,12 @@ export default function AccountSidebar({
             <ListItemText primary="Thống kê" />
           </ListItem>
         </Accordion>
-        <Accordion>
+        <Accordion expanded={open}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel2a-content"
             id="panel2a-header"
+            onClick={changeOpen}
           >
             <ListItem sx={{ padding: 0 }}>
               <SettingsIcon fontSize="small" sx={{ marginRight: "10px" }} />
@@ -98,7 +117,7 @@ export default function AccountSidebar({
                 }}
                 onClick={() => {
                   setSelectedLine(3);
-                  navigate("email");
+                  navigate("/customer_info/email");
                 }}
               >
                 Email
@@ -230,7 +249,7 @@ export default function AccountSidebar({
               color: selectedLine === 13 ? "red" : "inherit",
               transition: "color 0.3s",
             }}
-            onClick={() => handleLineClick(3)}
+            onClick={() => handleLineClick(13)}
           >
             <PaymentIcon fontSize="small" sx={{ marginRight: "10px" }} />
             <ListItemText primary="Thanh toán" />

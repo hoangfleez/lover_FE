@@ -17,7 +17,7 @@ export default function PlayerSidebar() {
   const [selectedLine, setSelectedLine] = React.useState(null);
 
   const handleLineClick = (index) => {
-    setSelectedLine(index === selectedLine ? null : index);
+    setSelectedLine(index);
   };
 
   return (
@@ -34,10 +34,10 @@ export default function PlayerSidebar() {
           <Typography
             p={2}
             style={{
-              color: selectedLine === 27 ? "red" : "inherit",
+              color: selectedLine === 29 ? "red" : "inherit",
               transition: "color 0.3s",
             }}
-            onClick={() => handleLineClick(27)}
+            onClick={() => handleLineClick(29)}
           >
             <ListItem sx={{ padding: 0 }}>
               <PersonIcon fontSize="small" sx={{ marginRight: "10px" }} />
@@ -49,10 +49,10 @@ export default function PlayerSidebar() {
           <Typography
             p={2}
             style={{
-              color: selectedLine === 28 ? "red" : "inherit",
+              color: selectedLine === 30 ? "red" : "inherit",
               transition: "color 0.3s",
             }}
-            onClick={() => handleLineClick(28)}
+            onClick={() => handleLineClick(30)}
           >
             <ListItem sx={{ padding: 0 }}>
               <GroupIcon fontSize="small" sx={{ marginRight: "10px" }} />
@@ -77,34 +77,12 @@ export default function PlayerSidebar() {
                 variant="subtitle2"
                 gutterBottom
                 style={{
-                  color: selectedLine === 29 ? "red" : "inherit",
-                  transition: "color 0.3s",
-                }}
-                onClick={() => handleLineClick(29)}
-              >
-                Url
-              </Typography>
-              <Typography
-                variant="subtitle2"
-                gutterBottom
-                style={{
-                  color: selectedLine === 30 ? "red" : "inherit",
-                  transition: "color 0.3s",
-                }}
-                onClick={() => handleLineClick(30)}
-              >
-                Thông tin Player
-              </Typography>
-              <Typography
-                variant="subtitle2"
-                gutterBottom
-                style={{
                   color: selectedLine === 31 ? "red" : "inherit",
                   transition: "color 0.3s",
                 }}
                 onClick={() => handleLineClick(31)}
               >
-                Albums Player
+                Url
               </Typography>
               <Typography
                 variant="subtitle2"
@@ -115,7 +93,7 @@ export default function PlayerSidebar() {
                 }}
                 onClick={() => handleLineClick(32)}
               >
-                Cài đặt dou
+                Thông tin Player
               </Typography>
               <Typography
                 variant="subtitle2"
@@ -125,6 +103,28 @@ export default function PlayerSidebar() {
                   transition: "color 0.3s",
                 }}
                 onClick={() => handleLineClick(33)}
+              >
+                Albums Player
+              </Typography>
+              <Typography
+                variant="subtitle2"
+                gutterBottom
+                style={{
+                  color: selectedLine === 34 ? "red" : "inherit",
+                  transition: "color 0.3s",
+                }}
+                onClick={() => handleLineClick(34)}
+              >
+                Cài đặt dou
+              </Typography>
+              <Typography
+                variant="subtitle2"
+                gutterBottom
+                style={{
+                  color: selectedLine === 35 ? "red" : "inherit",
+                  transition: "color 0.3s",
+                }}
+                onClick={() => handleLineClick(35)}
               >
                 Khác
               </Typography>
@@ -152,10 +152,10 @@ export default function PlayerSidebar() {
                   variant="subtitle2"
                   gutterBottom
                   style={{
-                    color: selectedLine === 34 ? "red" : "inherit",
+                    color: selectedLine === 36 ? "red" : "inherit",
                     transition: "color 0.3s",
                   }}
-                  onClick={() => handleLineClick(34)}
+                  onClick={() => handleLineClick(36)}
                 >
                   Lịch sử nhận duo
                 </Typography>
@@ -163,10 +163,10 @@ export default function PlayerSidebar() {
                   variant="subtitle2"
                   gutterBottom
                   style={{
-                    color: selectedLine === 35 ? "red" : "inherit",
+                    color: selectedLine === 37 ? "red" : "inherit",
                     transition: "color 0.3s",
                   }}
-                  onClick={() => handleLineClick(35)}
+                  onClick={() => handleLineClick(37)}
                 >
                   Lịch sử nhận donate
                 </Typography>
@@ -178,10 +178,10 @@ export default function PlayerSidebar() {
           <Typography
             p={2}
             style={{
-              color: selectedLine === 36 ? "red" : "inherit",
+              color: selectedLine === 38 ? "red" : "inherit",
               transition: "color 0.3s",
             }}
-            onClick={() => handleLineClick(36)}
+            onClick={() => handleLineClick(38)}
           >
             <ListItem sx={{ padding: 0 }}>
               <BlockIcon fontSize="small" sx={{ marginRight: "10px" }} />
@@ -193,10 +193,10 @@ export default function PlayerSidebar() {
           <Typography
             p={2}
             style={{
-              color: selectedLine === 37 ? "red" : "inherit",
+              color: selectedLine === 39 ? "red" : "inherit",
               transition: "color 0.3s",
             }}
-            onClick={() => handleLineClick(37)}
+            onClick={() => handleLineClick(39)}
           >
             <ListItem sx={{ padding: 0 }}>
               <LibraryBooksIcon fontSize="small" sx={{ marginRight: "10px" }} />
@@ -208,10 +208,10 @@ export default function PlayerSidebar() {
           <Typography
             p={2}
             style={{
-              color: selectedLine === 38 ? "red" : "inherit",
+              color: selectedLine === 40 ? "red" : "inherit",
               transition: "color 0.3s",
             }}
-            onClick={() => handleLineClick(38)}
+            onClick={() => handleLineClick(40)}
           >
             <ListItem sx={{ padding: 0 }}>
               <LinkIcon fontSize="small" sx={{ marginRight: "10px" }} />

@@ -10,7 +10,7 @@ import { ListItem, ListItemText } from "@mui/material";
 export default function DonateSidebar({selectedLine, setSelectedLine}) {
 
   const handleLineClick = (index) => {
-    setSelectedLine(index === selectedLine ? null : index);
+    setSelectedLine(index);
   };
 
   return (
@@ -27,10 +27,10 @@ export default function DonateSidebar({selectedLine, setSelectedLine}) {
           <ListItem
             sx={{ padding: 0 }}
             style={{
-              color: selectedLine === 39 ? "red" : "inherit",
+              color: selectedLine === 41 ? "red" : "inherit",
               transition: "color 0.3s",
             }}
-            onClick={() => handleLineClick(39)}
+            onClick={() => handleLineClick(41)}
           >
             <SettingsIcon fontSize="small" sx={{ marginRight: "10px" }} />
             <ListItemText primary="Cài đặt" />

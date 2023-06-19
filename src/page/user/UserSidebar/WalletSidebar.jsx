@@ -8,10 +8,9 @@ import { Box, ListItem, ListItemText } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LinkIcon from "@mui/icons-material/Link";
 
-export default function WalletSidebar({selectedLine, setSelectedLine}) {
-
+export default function WalletSidebar({ selectedLine, setSelectedLine }) {
   const handleLineClick = (index) => {
-    setSelectedLine(index === selectedLine ? null : index);
+    setSelectedLine(index);
   };
 
   return (
@@ -41,16 +40,16 @@ export default function WalletSidebar({selectedLine, setSelectedLine}) {
                 <Typography
                   variant="subtitle2"
                   gutterBottom
-                  style={{ color: selectedLine === 24 ? "red" : "inherit" }}
-                  onClick={() => handleLineClick(24)}
+                  style={{ color: selectedLine === 26 ? "red" : "inherit" }}
+                  onClick={() => handleLineClick(26)}
                 >
                   Thông tin
                 </Typography>
                 <Typography
                   variant="subtitle2"
                   gutterBottom
-                  style={{ color: selectedLine === 25 ? "red" : "inherit" }}
-                  onClick={() => handleLineClick(25)}
+                  style={{ color: selectedLine === 27 ? "red" : "inherit" }}
+                  onClick={() => handleLineClick(27)}
                 >
                   Lịch sử
                 </Typography>
@@ -62,8 +61,8 @@ export default function WalletSidebar({selectedLine, setSelectedLine}) {
           <Typography p={2}>
             <ListItem
               sx={{ padding: 0 }}
-              style={{ color: selectedLine === 26 ? "red" : "inherit" }}
-              onClick={() => handleLineClick(26)}
+              style={{ color: selectedLine === 28 ? "red" : "inherit" }}
+              onClick={() => handleLineClick(28)}
             >
               <LinkIcon fontSize="small" sx={{ marginRight: "10px" }} />
               <ListItemText primary="Link Pay" />

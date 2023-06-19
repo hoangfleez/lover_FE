@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -10,12 +10,15 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import GroupsIcon from "@mui/icons-material/Groups";
 import AdjustIcon from "@mui/icons-material/Adjust";
 import BlockIcon from "@mui/icons-material/Block";
+import { useNavigate } from "react-router-dom";
 
-export default function PersonalPageSidebar({selectedLine, setSelectedLine}) {
-
+export default function PersonalPageSidebar({ selectedLine, setSelectedLine }) {
+  const navigate = useNavigate();
   const handleLineClick = (index) => {
-    setSelectedLine(index === selectedLine ? null : index);
+    setSelectedLine(index);
   };
+
+
 
   return (
     <Accordion>
@@ -69,7 +72,10 @@ export default function PersonalPageSidebar({selectedLine, setSelectedLine}) {
                   variant="subtitle2"
                   gutterBottom
                   style={{ color: selectedLine === 16 ? "red" : "inherit" }}
-                  onClick={() => handleLineClick(16)}
+                  onClick={() => {
+                    handleLineClick(16);
+                    navigate("/user_setting/url");
+                  }}
                 >
                   Url
                 </Typography>
@@ -110,24 +116,24 @@ export default function PersonalPageSidebar({selectedLine, setSelectedLine}) {
                 <Typography
                   variant="subtitle2"
                   gutterBottom
-                  style={{ color: selectedLine === 19 ? "red" : "inherit" }}
-                  onClick={() => handleLineClick(7)}
+                  style={{ color: selectedLine === 20 ? "red" : "inherit" }}
+                  onClick={() => handleLineClick(20)}
                 >
                   Bậc
                 </Typography>
                 <Typography
                   variant="subtitle2"
                   gutterBottom
-                  style={{ color: selectedLine === 19 ? "red" : "inherit" }}
-                  onClick={() => handleLineClick(19)}
+                  style={{ color: selectedLine === 21 ? "red" : "inherit" }}
+                  onClick={() => handleLineClick(21)}
                 >
                   Danh sách thành viên
                 </Typography>
                 <Typography
                   variant="subtitle2"
                   gutterBottom
-                  style={{ color: selectedLine === 20 ? "red" : "inherit" }}
-                  onClick={() => handleLineClick(20)}
+                  style={{ color: selectedLine === 22 ? "red" : "inherit" }}
+                  onClick={() => handleLineClick(22)}
                 >
                   Lịch sử đăng ký
                 </Typography>
@@ -152,16 +158,16 @@ export default function PersonalPageSidebar({selectedLine, setSelectedLine}) {
                 <Typography
                   variant="subtitle2"
                   gutterBottom
-                  style={{ color: selectedLine === 21 ? "red" : "inherit" }}
-                  onClick={() => handleLineClick(21)}
+                  style={{ color: selectedLine === 23 ? "red" : "inherit" }}
+                  onClick={() => handleLineClick(23)}
                 >
                   Cài đặt
                 </Typography>
                 <Typography
                   variant="subtitle2"
                   gutterBottom
-                  style={{ color: selectedLine === 22 ? "red" : "inherit" }}
-                  onClick={() => handleLineClick(22)}
+                  style={{ color: selectedLine === 24 ? "red" : "inherit" }}
+                  onClick={() => handleLineClick(24)}
                 >
                   Lịch sử
                 </Typography>
@@ -173,8 +179,8 @@ export default function PersonalPageSidebar({selectedLine, setSelectedLine}) {
         <Accordion>
           <Typography
             p={2}
-            style={{ color: selectedLine === 23 ? "red" : "inherit" }}
-            onClick={() => handleLineClick(23)}
+            style={{ color: selectedLine === 25 ? "red" : "inherit" }}
+            onClick={() => handleLineClick(25)}
           >
             <ListItem sx={{ padding: 0 }}>
               <BlockIcon fontSize="small" sx={{ marginRight: "10px" }} />
