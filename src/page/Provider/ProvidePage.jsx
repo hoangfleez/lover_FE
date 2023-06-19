@@ -26,7 +26,6 @@ export default function ProvidePage() {
     avatar: "",
   });
 
-  console.log(formState, 9999);
   const [imageUpload, setImageUpload] = useState(null);
   const [tempAvatar, setTempAvatar] = useState("");
   const [open, setOpen] = useState(false);
