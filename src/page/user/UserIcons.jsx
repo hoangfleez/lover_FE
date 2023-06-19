@@ -1,36 +1,25 @@
 import { Mail, Notifications } from "@mui/icons-material";
 import { Avatar, Badge, Box, IconButton, Tooltip } from "@mui/material";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
 import UserMenu from "./UserMenu";
+import { useUserProfile } from "../../customHook/useUserProfile";
 
 const UserIcons = () => {
-
-  
-  const user = useSelector(({ user }) => {
-    return user.currentUser;
-  });
-
+  const user = useUserProfile();
 
   const [anchorUserMenu, setAnchorUserMenu] = useState(null);
 
   return (
     <Box>
-      <IconButton size="large" >
-        <Badge color="error" >
-          <Mail />
-        </Badge>
-      </IconButton>
-      <IconButton size="large" >
-        <Badge color="error" >
+
+      <IconButton size="large">
+        <Badge color="error" badgeContent={0}>
           <Notifications />
         </Badge>
       </IconButton>
       <Tooltip title="Open User Settings">
         <IconButton onClick={(e) => setAnchorUserMenu(e.currentTarget)}>
-          <Avatar src={user?.avatar} alt={user?.avatar}>
-            {user?.firstname?.charAt(0).toUpperCase()}
-          </Avatar>
+          <Avatar src={user?.avatar} alt={user?.avatar}></Avatar>
         </IconButton>
       </Tooltip>
       <UserMenu {...{ anchorUserMenu, setAnchorUserMenu }} />

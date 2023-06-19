@@ -6,20 +6,16 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
-import Badge from "@mui/material/Badge";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import MoreIcon from "@mui/icons-material/MoreVert";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ModeToggle from "../../../theme/DarkMode";
 import { useSelector, useDispatch } from "react-redux";
 import UserIcons from "../../user/UserIcons";
 import PersonIcon from "@mui/icons-material/Person";
 import BasicModal from "../../user/Modal";
-import { useNavigate, useNavigation } from "react-router-dom";
+import {searchProviders} from "../../../services/providerService.js";
+import { useNavigate } from "react-router-dom";
+import { clearLocalStorage } from "../../../utils";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -58,85 +54,35 @@ export default function NavBar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const goHome =()=>{
-    navigate("/")
-  }
-
   const [open, setOpen] = React.useState(false);
+  const [name, setName] = React.useState('')
   const handleOpen = () => setOpen(true);
 
+  const goHome = () =>{
+    clearLocalStorage()
+    navigate("/")
+  }
+  
   const user = useSelector(({ user }) => {
     return user.currentUser;
   });
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
-  const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
+
+  let handleInput = (e) =>{
+    console.log(e.target.value, 55443)
+    setName(e.target.value)
   };
 
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
-
-  const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
+  const handleSearch = async () => {
+    let abc = await dispatch(searchProviders(name))
+    setName("")
+  }
 
 
 
-  const mobileMenuId = "primary-search-account-menu-mobile";
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem>
-        <IconButton
-          size="large"
-          // aria-label="show 17 new notifications"
-          color="inherit"
-        >
-          <Badge badgeContent={0} color="error">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-    </Menu>
-  );
+ 
 
   return (
     <Box>
@@ -145,8 +91,7 @@ export default function NavBar() {
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 , backgroundColor:"customColorSchemes.backgroundColor"}}
       >
         <Toolbar>
-
-          <FavoriteIcon sx={{ mr: 2, color: "red", cursor:"pointer" }}  onClick={goHome}/>
+          <FavoriteIcon sx={{ mr: 2, color: "red", cursor:"pointer" }} onClick={goHome}  />
           <Typography
             variant="h6"
             noWrap
@@ -155,14 +100,15 @@ export default function NavBar() {
           >
             Love&Love
           </Typography>
-
           <Box sx={{ flexGrow: 1.3 }} />
           <Search sx={{ color:"customColorSchemes.textColor"}}>
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
+              value={name}
+              onChange={handleInput}
             />
-            <SearchIcon />
+            <SearchIcon onClick={handleSearch}/>
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box
@@ -182,21 +128,10 @@ export default function NavBar() {
             <BasicModal open={open} setOpen={setOpen} />
           </Box>
           <ModeToggle />
-          <Box sx={{ display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              size="large"
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
-          </Box>
+
         </Toolbar>
       </AppBar>
-      {renderMobileMenu}
+
     </Box>
   );
 }

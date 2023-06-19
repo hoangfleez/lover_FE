@@ -1,5 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {addProvider, filterProvider, getProvider, getProviderDetail} from "../../services/providerService";
+import {
+  addProvider,
+  filterProvider,
+  getProvider,
+  getProviderDetail,
+  searchProviders
+} from "../../services/providerService";
 // import { filterProvider, getProvider } from "../../sevives/providerService";
 // import { addProvider, filterProvider, getProvider } from "../../services/providerService"
 
@@ -26,8 +32,6 @@ const providerSlice = createSlice({
           return element.other.includes(item);
         });
       });
-      // console.log(arr,6666);
-      // return arr;
     });
 
     builder.addCase(addProvider.fulfilled, (state, action) => {
@@ -36,6 +40,11 @@ const providerSlice = createSlice({
 
     builder.addCase(getProviderDetail.fulfilled, (state, action) => {
       state.showOneProvider = action.payload;
+    });
+
+    builder.addCase(searchProviders.fulfilled, (state, action) => {
+      state.listProvider = action.payload;
+      state.currenProvider = action.payload;
     });
   },
   

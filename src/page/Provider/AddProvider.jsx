@@ -31,7 +31,6 @@ const AddProvider = () => {
 
   const handleSubmitAddProvider = async (event) => {
     event.preventDefault();
-
     const newProvider = {
       ...formData,
       user: userId,

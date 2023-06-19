@@ -4,7 +4,7 @@ import Navbar from "./navbar/NavBar";
 import { Box } from "@mui/material";
 const Index = () => {
   return (
-    <Box sx={{ height: "100vh", width: "100%" }}>
+    <Box sx={{ height: "100%", width: "100%" }}>
 
       <Navbar />
       <Outlet />

@@ -5,12 +5,15 @@ import BodyLists from "./lists/BodyLists";
 
 export default function Body() {
   const [service,setService] = useState([]);
+
+
+  console.log(service,888)
   return (
     <Box
       sx={{
         display: "flex",
         marginTop: "64px",
-        height: "calc(100vh - 64px)",
+        height: "100vh",
       }}
     >
       <SiderBar setService={setService}/>

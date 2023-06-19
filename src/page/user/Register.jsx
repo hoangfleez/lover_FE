@@ -10,7 +10,6 @@ import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
 import * as yup from "yup";
 import { useDispatch } from "react-redux";
 import { otp, register } from "../../services/useService";
-import InputMail from "./InputMail";
 import { TextField } from "@mui/material";
 import { useFormik } from "formik";
 

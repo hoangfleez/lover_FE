@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { editUser } from "../../../services/useService.js";
 import {
   Box,
   Button,
@@ -8,31 +7,22 @@ import {
   TextField,
   Modal,
   Fade,
-  Grid,
   Typography,
   Divider,
+  Grid,
 } from "@mui/material";
-import "./ShowAndEditInfo.css";
 import { ref, uploadBytes, getDownloadURL } from "@firebase/storage";
-import { storage } from "../../../services/firebase.js";
 import { v4 } from "uuid";
-import { useUserProfile } from "../../../customHook/useUserProfile.js";
+import { storage } from "../../services/firebase";
+import { useUserProfile } from "../../customHook/useUserProfile";
+import { editUser } from "../../services/useService";
 
-
-const ShowAndEditInfo = () => {
+export default function ProvidePage() {
   const dispatch = useDispatch();
 
   const profile = useUserProfile();
 
   const [formState, setFormState] = useState({
-    username: "",
-    password: "",
-    firstname: "",
-    lastname: "",
-    address: "",
-    phoneNumber: "",
-    email: "",
-    identityCard: "",
     avatar: "",
   });
 
@@ -51,17 +41,17 @@ const ShowAndEditInfo = () => {
     setTempAvatar(""); // Xóa giá trị của tempAvatar
   };
 
-  const handleSubmitEditProfile = async (event) => {
-    alert("Cập nhật thành công");
-    event.preventDefault();
+  // const handleSubmitEditProfile = async (event) => {
+  //   alert("Cập nhật thành công");
+  //   event.preventDefault();
 
-    const editProfile = {
-      id: profile.id,
-      ...formState,
-    };
+  //   const editProfile = {
+  //     id: profile.id,
+  //     ...formState,
+  //   };
 
-    let res = await dispatch(editUser(editProfile));
-  };
+  //   let res = await dispatch(editUser(editProfile));
+  // };
 
   const handleChangeImage = (event) => {
     event.preventDefault();
@@ -98,68 +88,6 @@ const ShowAndEditInfo = () => {
 
   return (
     <>
-      <Grid container spacing={2} p={4}>
-        <Grid xs={4}>
-          <Box
-            sx={{
-              border: "1px solid white",
-              borderRadius: "5px",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              padding: "10px 0",
-              margin: "0 8px",
-            }}
-          >
-            <Typography variant="subtitle1" gutterBottom>
-              TỔNG TIỀN ĐÃ NẠP
-            </Typography>
-            <Typography variant="h5" gutterBottom color="red">
-              0 Đ
-            </Typography>
-          </Box>
-        </Grid>
-        <Grid xs={4}>
-          <Box
-            sx={{
-              border: "1px solid white",
-              borderRadius: "5px",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              padding: "10px 0",
-              margin: "0 8px",
-            }}
-          >
-            <Typography variant="subtitle1" gutterBottom>
-              TỔNG TIỀN ĐÃ DONATE
-            </Typography>
-            <Typography variant="h5" gutterBottom color="red">
-              0 Đ
-            </Typography>
-          </Box>
-        </Grid>
-        <Grid xs={4}>
-          <Box
-            sx={{
-              border: "1px solid white",
-              borderRadius: "5px",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              padding: "10px 0",
-              margin: "0 8px",
-            }}
-          >
-            <Typography variant="subtitle1" gutterBottom>
-              SỐ GIỜ ĐÃ THÊU
-            </Typography>
-            <Typography variant="h5" gutterBottom color="red">
-              0 Đ
-            </Typography>
-          </Box>
-        </Grid>
-      </Grid>
       <Box p={4}>
         <Typography variant="h4" gutterBottom>
           Thông tin cá nhân
@@ -278,57 +206,99 @@ const ShowAndEditInfo = () => {
               <Box sx={{ width: "70ch", marginTop: "50px" }}>
                 <Box>
                   <Typography variant="overline" gutterBottom>
-                    HỌ
+                    TÊN / BIỆT DANH
                   </Typography>
                   <TextField
                     fullWidth
                     multiline
-                    defaultValue={formState.firstname}
-                    onChange={(event) =>
-                      setFormState({
-                        ...formState,
-                        firstname: event.target.value,
-                      })
-                    }
+                    placeholder="Hãy nhập biệt danh"
                   />
                 </Box>
+
+                <Divider sx={{ marginTop: 3, marginBottom: 3 }} />
                 <Box>
                   <Typography variant="overline" gutterBottom>
-                    TÊN
+                    Xác thực hồ sơ
                   </Typography>
-                  <TextField
-                    fullWidth
-                    multiline
-                    defaultValue={formState.lastname}
-                    onChange={(event) =>
-                      setFormState({
-                        ...formState,
-                        lastname: event.target.value,
-                      })
-                    }
-                  />
+                  <TextField fullWidth multiline placeholder="Số CMTND/CCCD" />
                 </Box>
-                <Box>
-                  <Typography variant="overline" gutterBottom>
-                    ĐỊA CHỈ
-                  </Typography>
-                  <TextField
-                    fullWidth
-                    multiline
-                    defaultValue={formState.address}
-                    onChange={(event) =>
-                      setFormState({
-                        ...formState,
-                        address: event.target.value,
-                      })
-                    }
-                  />
+                <Divider sx={{ marginTop: 3, marginBottom: 3 }} />
+
+                <Box sx={{ flexGrow: 1 }}>
+                  <Grid container spacing={1}>
+                    <Grid item xs={6}>
+                      <Button
+                        variant="outlined"
+                        fullWidth
+                        sx={{
+                          color: "customColorSchemes.textColor",
+                          textTransform: "none",
+                        }}
+                      >
+                        Cập nhật mặt trước CMND/CCCD
+                      </Button>
+                      <Typography
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                        mt={2}
+                      >
+                        Tham khảo
+                      </Typography>
+                      <Box
+                        sx={{
+                          height: "100%",
+                          width: "100%",
+                        }}
+                      >
+                        <CardMedia
+                          component="img"
+                          alt="green iguana"
+                          objectFit="contained"
+                          image="https://images2.thanhnien.vn/zoom/622_389/Uploaded/khanhtd/2022_06_08/8b63a9ff2202e25cbb13-1752.jpg"
+                        />
+                      </Box>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Button
+                        variant="outlined"
+                        fullWidth
+                        sx={{
+                          color: "customColorSchemes.textColor",
+                          textTransform: "none",
+                        }}
+                      >
+                        Cập nhật mặt sau CMND/CCCD
+                      </Button>
+                      <Typography
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                        mt={2}
+                      >
+                        Tham khảo
+                      </Typography>
+                      <Box
+                        sx={{
+                          height: "100%",
+                          width: "100%",
+                        }}
+                      >
+                        <CardMedia
+                          component="img"
+                          alt="green iguana"
+                          objectFit="contained"
+                          image="https://images2.thanhnien.vn/zoom/622_389/Uploaded/khanhtd/2022_06_08/8b63a9ff2202e25cbb13-1752.jpg"
+                        />
+                      </Box>
+                    </Grid>
+                  </Grid>
                 </Box>
-                <Divider sx={{ marginTop: 3 }} />
               </Box>
+
               <Box sx={{ width: "70ch", marginTop: 3 }}>
                 <Button
-                  onClick={handleSubmitEditProfile}
+                  // onClick={handleSubmitEditProfile}
                   variant="contained"
                   fullWidth
                   sx={{
@@ -350,6 +320,4 @@ const ShowAndEditInfo = () => {
       </Box>
     </>
   );
-};
-
-export default ShowAndEditInfo;
+}

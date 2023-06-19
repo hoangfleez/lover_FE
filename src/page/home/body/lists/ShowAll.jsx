@@ -17,11 +17,6 @@ export default function ShowAll({ service, setService }) {
     return state.provider.currenProvider;
   });
 
-
-
-  const showInforProvider = ()=>{
-    navigate(`/detail-provider/${item.id}`)
-  }
   // const filteredArr = showProvider.filter((item) => item.service === "Đi chơi chung");
   // console.log(filteredArr);
 
@@ -37,7 +32,7 @@ export default function ShowAll({ service, setService }) {
     <Box sx={{ display: "flex", flexWrap: "wrap", width: "100%", gap: 1 }}>
       {showProvider &&
         showProvider.map((item, key) => (
-          <Card sx={{ width: 250 }} onClick={()=>{ navigate(`/detail-provider/${item.id}`)}} key={key}>
+          <Card sx={{ width: 250 }} key={key} onClick={()=>{navigate(`/detail-provider/${item.id}`)}}>
             <CardActionArea>
               <CardMedia
                 component="img"
@@ -47,7 +42,7 @@ export default function ShowAll({ service, setService }) {
               />
               <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
-                  {item.name} {item.status.status}
+                  {item.name}
                 </Typography>
               </CardContent>
             </CardActionArea>
@@ -74,6 +69,7 @@ export default function ShowAll({ service, setService }) {
                 </Stack>
               </Typography>
             </CardContent>
+
           </Card>
         ))}
     </Box>
