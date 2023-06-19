@@ -18,6 +18,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../services/useService";
 import { useUserProfile } from "../../customHook/useUserProfile";
+import { clearLocalStorage } from "../../utils";
 
 const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
   const dispatch = useDispatch();
@@ -36,10 +37,14 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
     handleCloseUserMenu();
   };
 
-  const changeProfile = () => {
-    navigate("customer_info");
+  const changeProfile = (event) => {
+    event.preventDefault();
+    clearLocalStorage()
+    navigate("/customer_info");
+    window.location.reload();
   };
   const handlePage = () => {
+    clearLocalStorage()
     navigate("page");
   };
 

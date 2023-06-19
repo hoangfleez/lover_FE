@@ -15,6 +15,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import BasicModal from "../../user/Modal";
 import {searchProviders} from "../../../services/providerService.js";
 import { useNavigate } from "react-router-dom";
+import { clearLocalStorage } from "../../../utils";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -58,6 +59,7 @@ export default function NavBar() {
   const handleOpen = () => setOpen(true);
 
   const goHome = () =>{
+    clearLocalStorage()
     navigate("/")
   }
   

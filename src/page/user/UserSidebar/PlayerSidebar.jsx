@@ -12,22 +12,53 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import BlockIcon from "@mui/icons-material/Block";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import LinkIcon from "@mui/icons-material/Link";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useEffect } from "react";
 
 export default function PlayerSidebar() {
   const [selectedLine, setSelectedLine] = React.useState(null);
+  const navigate = useNavigate();
+
 
   const handleLineClick = (index) => {
     setSelectedLine(index);
   };
+  const handleAccordionToggle = () => {
+    setExpanded(!expanded);
+  };
+  const [open, setOpen] = useState(false);
 
+  const changeOpen = () => {
+    setOpen((prevOpen) => !prevOpen);
+    localStorage.setItem("openState", JSON.stringify(!open));
+  };
+
+  useEffect(() => {
+    const selectedLineKey = localStorage.getItem("selectedLineKey");
+    const parsedSelectedLine = parseInt(selectedLineKey);
+
+    if (!isNaN(parsedSelectedLine)) {
+      setSelectedLine(parsedSelectedLine);
+    }
+    const openState = JSON.parse(localStorage.getItem("openState"));
+    if (openState) {
+      setOpen(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("selectedLineKey", selectedLine);
+  }, [selectedLine]);
   return (
-    <Accordion>
+    <Accordion expanded={open}>
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"
         id="panel1a-header"
+        onClick={changeOpen}
       >
-        <Typography>PLAYER</Typography>
+        <Typography>NGƯỜI CUNG CẤP DỊCH VỤ</Typography>
       </AccordionSummary>
       <AccordionDetails>
         <Accordion>
@@ -60,11 +91,12 @@ export default function PlayerSidebar() {
             </ListItem>
           </Typography>
         </Accordion>
-        <Accordion>
+        <Accordion expanded={open}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel2a-content"
             id="panel2a-header"
+            onClick={changeOpen}
           >
             <ListItem sx={{ padding: 0 }}>
               <SettingsIcon fontSize="small" sx={{ marginRight: "10px" }} />
@@ -73,7 +105,7 @@ export default function PlayerSidebar() {
           </AccordionSummary>
           <AccordionDetails>
             <Box ml={7}>
-              <Typography
+              {/* <Typography
                 variant="subtitle2"
                 gutterBottom
                 style={{
@@ -83,7 +115,7 @@ export default function PlayerSidebar() {
                 onClick={() => handleLineClick(31)}
               >
                 Url
-              </Typography>
+              </Typography> */}
               <Typography
                 variant="subtitle2"
                 gutterBottom
@@ -91,7 +123,10 @@ export default function PlayerSidebar() {
                   color: selectedLine === 32 ? "red" : "inherit",
                   transition: "color 0.3s",
                 }}
-                onClick={() => handleLineClick(32)}
+                onClick={() => {
+                  handleLineClick(32);
+                  navigate("/user_setting/url");
+                }}
               >
                 Thông tin Player
               </Typography>

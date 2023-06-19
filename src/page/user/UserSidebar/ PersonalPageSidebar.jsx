@@ -74,7 +74,6 @@ export default function PersonalPageSidebar({ selectedLine, setSelectedLine }) {
                   style={{ color: selectedLine === 16 ? "red" : "inherit" }}
                   onClick={() => {
                     handleLineClick(16);
-                    navigate("/user_setting/url");
                   }}
                 >
                   Url

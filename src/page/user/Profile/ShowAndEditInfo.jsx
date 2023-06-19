@@ -1,35 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { editUser, showUser } from "../../../services/useService.js";
+import { useDispatch } from "react-redux";
+import { editUser } from "../../../services/useService.js";
 import {
   Box,
   Button,
   CardMedia,
-  Container,
-  Stack,
   TextField,
   Modal,
-  Backdrop,
   Fade,
   Grid,
   Typography,
-  InputLabel,
-  InputBase,
   Divider,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 import "./ShowAndEditInfo.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import { ref, uploadBytes, getDownloadURL } from "@firebase/storage";
 import { storage } from "../../../services/firebase.js";
 import { v4 } from "uuid";
 import { useUserProfile } from "../../../customHook/useUserProfile.js";
-import { styled } from "styled-components";
+
 
 const ShowAndEditInfo = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const profile = useUserProfile();
 
