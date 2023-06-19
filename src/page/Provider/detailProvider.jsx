@@ -41,17 +41,17 @@ const DetailProvider = () => {
                         <Link to={detailProviderDetail.linkFB}>
                             <FacebookIcon sx={{ color: "blue", fontSize: "60px" }} />
                         </Link>
-                        <p> Giới tính: {detailProviderDetail.sex}</p>
-                        <p> Sinh nhật: {detailProviderDetail.dob}</p>
-                        <p> Quốc tịch: {detailProviderDetail.country}</p>
-                        <p> Sở thích: {detailProviderDetail.hobby}</p>
-                        <p> Chiều cao: {detailProviderDetail.height}</p>
-                        <p> Cân nặng: {detailProviderDetail.weight}</p>
+                        <div> Giới tính: {detailProviderDetail.sex}</div>
+                        <div> Sinh nhật: {detailProviderDetail.dob}</div>
+                        <div> Quốc tịch: {detailProviderDetail.country}</div>
+                        <div> Sở thích: {detailProviderDetail.hobby}</div>
+                        <div> Chiều cao: {detailProviderDetail.height}</div>
+                        <div> Cân nặng: {detailProviderDetail.weight}</div>
                     </Box>
                     <Box sx={{ width: "60%", padding: "0 40px" }}>
                         <Typography variant="h3">{detailProviderDetail.name}</Typography>
                         <Divider />
-                        <p> Mô tả bản thân: {detailProviderDetail.desc}</p>
+                        <div> Mô tả bản thân: {detailProviderDetail.desc}</div>
 
                     </Box>
                     <Box sx={{ width: "20%" }}>

@@ -85,8 +85,6 @@ export default function BodyLists({ service, setService }) {
     setValue(newValue);
   };
 
-  console.log(setShowService, 78787);
-
   return (
     <Box sx={{ width: "100%" }}>
       <Box>
