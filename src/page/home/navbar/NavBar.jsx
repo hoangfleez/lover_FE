@@ -133,7 +133,7 @@ export default function NavBar() {
             <NotificationsIcon />
           </Badge>
         </IconButton>
-        <p>Notifications</p>
+        <div>Notifications</div>
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
@@ -145,7 +145,7 @@ export default function NavBar() {
         >
           <AccountCircle />
         </IconButton>
-        <p>Profile</p>
+        <div>Profile</div>
       </MenuItem>
     </Menu>
   );

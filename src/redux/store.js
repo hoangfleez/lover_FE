@@ -1,11 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./user/userSlice";
-import providerReducer from './provider/providerSlice'
+import providerReducer from './provider/providerSlice';
+import typeReducer from './type/typeSlice';
+import serviceReducer from './service/serviceSlice';
 
 const store = configureStore({
   reducer: {
     user: userReducer,
-    provider: providerReducer
+    provider: providerReducer,
+    type: typeReducer,
+    service: serviceReducer,
   },
 });
 
