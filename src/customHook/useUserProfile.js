@@ -11,8 +11,8 @@ export function useUserProfile() {
   const userId = decodedToken.idUser;
 
   const profile = useSelector((state) => {
-    if (state.user.profile?.data?.length > 0) {
-      return state.user.profile.data[0];
+    if (state.user.profile?.data) {
+      return state.user.profile.data;
     }
     return null;
   });
