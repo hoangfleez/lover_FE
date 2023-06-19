@@ -9,6 +9,9 @@ import PersonalPage from "./page/user/personalPage/PersonalPage";
 import UserContent from "./page/user/UserContent";
 import EmailUser from "./page/user/UserSidebar/Email/EmailUser";
 import ProvidePage from "./page/Provider/ProvidePage";
+import ShowAccountUser from "./page/admin/ShowAccountUser.jsx";
+import ShowAccountProvider from "./page/admin/ShowAccountProvider.jsx";
+import HomeAdmin from "./page/admin/HomeAdmin.jsx";
 
 
 function App() {
@@ -16,6 +19,9 @@ function App() {
     <>
       <Routes>
         <Route path="" element={<Home />}>
+          <Route path="admin" element={<HomeAdmin />} />
+          <Route path="user" element={<ShowAccountUser />} />
+          <Route path="provider" element={<ShowAccountProvider />} />
           <Route path="" element={<Body />} />
           <Route path="page" element={<PersonalPage />} />
           <Route path="customer_info" element={<UserContent />}>

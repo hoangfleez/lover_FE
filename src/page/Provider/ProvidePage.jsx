@@ -301,7 +301,6 @@ export default function ProvidePage() {
                   variant="contained"
                   fullWidth
                   sx={{
-                    backgroundColor: "red",
                     color: "white",
                     padding: "10px",
                     backgroundColor: "red",
