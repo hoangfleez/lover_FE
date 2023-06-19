@@ -11,6 +11,7 @@ export const login = createAsyncThunk("users/login", async (user) => {
         data = res.data.data;
       })
       .catch((err) => {
+        console.log(err);
         data = err.response.data.data;
         return err.response.data.data;
       });
@@ -25,7 +26,6 @@ export const login = createAsyncThunk("users/login", async (user) => {
 });
 
 export const otp = createAsyncThunk("otp", async (otp) => {
-
   return axios
     .post("http://127.0.0.1:8181/otp", { owner: otp })
     .then((data) => {
@@ -37,15 +37,14 @@ export const otp = createAsyncThunk("otp", async (otp) => {
 });
 
 export const register = createAsyncThunk("users/register", async (user) => {
-    return axios
-      .post("http://127.0.0.1:8181/users/register", user)
-      .then((data) => {
-        return data.data.message;
-      })
-      .catch((err) => {
-        return err.response.data.message;
-      });
-  
+  return axios
+    .post("http://127.0.0.1:8181/users/register", user)
+    .then((data) => {
+      return data.data.message;
+    })
+    .catch((err) => {
+      return err.response.data.message;
+    });
 });
 
 export const showUser = createAsyncThunk("users/showUser", async (id) => {
@@ -70,6 +69,6 @@ export const editUser = createAsyncThunk(
 );
 
 export const logout = createAsyncThunk("users/logout", async () => {
-  localStorage.clear();
+  localStorage.removeItem("token");
   return undefined;
 });

@@ -13,7 +13,7 @@ export default function UserSiderbar() {
     <Box sx={{display:"flex", flexDirection:"column"}}>
       <AccountSidebar selectedLine={selectedLine} setSelectedLine={setSelectedLine} expanded={expanded} setExpanded={setExpanded} />
       <PersonalPageSidebar selectedLine={selectedLine} setSelectedLine={setSelectedLine}/>
-      <PlayerSidebar selectedLine={selectedLine} setSelectedLine={setSelectedLine}/>
+      <PlayerSidebar  selectedLine={selectedLine} setSelectedLine={setSelectedLine} expanded={expanded} setExpanded={setExpanded}/>
       <WalletSidebar selectedLine={selectedLine} setSelectedLine={setSelectedLine}/>
       <DonateSidebar selectedLine={selectedLine} setSelectedLine={setSelectedLine}/>
     </Box>

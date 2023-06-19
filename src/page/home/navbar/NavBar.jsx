@@ -77,7 +77,6 @@ export default function NavBar() {
 
   const handleSearch = async () => {
     let abc = await dispatch(searchProviders(name))
-    console.log(abc,66666)
     setName("")
   }
 

@@ -39,7 +39,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function SearchInput() {
   return (
     <>
-      <Search sx={{ color: "customColorSchemes.textColor" }}>
+      <Search sx={{ color: "customColorSchemes.textColor" ,backgroundColor:"customColorSchemes.backgroundColor" }}>
         <StyledInputBase
           placeholder="Tìm kiếm bài đăng"
           inputProps={{ "aria-label": "search" }}

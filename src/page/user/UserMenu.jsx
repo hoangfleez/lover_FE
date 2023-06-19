@@ -31,9 +31,9 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
   };
 
   const handleLogout = () => {
-    localStorage.clear();
     dispatch(logout());
     navigate("/");
+    window.location.reload();
     handleCloseUserMenu();
   };
 

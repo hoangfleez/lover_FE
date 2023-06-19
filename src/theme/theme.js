@@ -10,6 +10,8 @@ const theme = extendTheme({
           backgroundColor: "#fff",
           textColor: "#000",
           bgColor:"#e9ebee",
+          bgColorPage:"#e9ebee",
+          sidebarColor: "#eeeeee"
         },
         customBtnColor: {
           backgroundColor: "#777",
@@ -28,6 +30,8 @@ const theme = extendTheme({
           backgroundColor: "#272727",
           textColor: "#fff",
           bgColor:"#1f1f22",
+          bgColorPage:"#1f1f22",
+          sidebarColor: "#29292b"
         },
         customBtnColor: {
           backgroundColor: "#272727",

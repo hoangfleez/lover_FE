@@ -21,9 +21,10 @@ export default function PersonalPage() {
     <Box
       sx={{
         display: "block",
-        height: "100%",
+        height: "100vh",
         marginTop: "65px",
         flexGrow: 1,
+        backgroundColor:"customColorSchemes.bgColorPage"
       }}
     >
       <Container maxWidth="xl" fixed sx={{ height: "100%" }}>

@@ -13,9 +13,9 @@ const style = {
   transform: "translate(-50%, -50%)",
   bgcolor: "background.paper",
   p: 2,
-  WebkitBoxShadow: "14px 11px 19px 5px rgba(0,0,0,0.63)",
-  MozBoxShadow: " 14px 11px 19px 5px rgba(0,0,0,0.63)",
-  boxShadow: " 14px 11px 19px 5px rgba(0,0,0,0.63)",
+  WebkitBoxShadow: "0px 0px 5px 100px rgba(0,0,0,0.9",
+  MozBoxShadow: " 0px 0px 5px 100px rgba(0,0,0,0.9)",
+  boxShadow: " 0px 0px 5px 100px rgba(0,0,0,0.9",
 };
 
 export default function BasicModal({ open, setOpen }) {

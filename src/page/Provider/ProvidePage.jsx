@@ -41,17 +41,17 @@ export default function ProvidePage() {
     setTempAvatar(""); // Xóa giá trị của tempAvatar
   };
 
-  const handleSubmitEditProfile = async (event) => {
-    alert("Cập nhật thành công");
-    event.preventDefault();
+  // const handleSubmitEditProfile = async (event) => {
+  //   alert("Cập nhật thành công");
+  //   event.preventDefault();
 
-    const editProfile = {
-      id: profile.id,
-      ...formState,
-    };
+  //   const editProfile = {
+  //     id: profile.id,
+  //     ...formState,
+  //   };
 
-    let res = await dispatch(editUser(editProfile));
-  };
+  //   let res = await dispatch(editUser(editProfile));
+  // };
 
   const handleChangeImage = (event) => {
     event.preventDefault();
@@ -298,7 +298,7 @@ export default function ProvidePage() {
 
               <Box sx={{ width: "70ch", marginTop: 3 }}>
                 <Button
-                  onClick={handleSubmitEditProfile}
+                  // onClick={handleSubmitEditProfile}
                   variant="contained"
                   fullWidth
                   sx={{

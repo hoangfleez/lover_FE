@@ -17,6 +17,7 @@ export default function InforButton() {
             fullWidth
             startIcon={<FavoriteIcon />}
             sx={{
+              color:"black",
               bgcolor: "white",
               padding: "10px",
               "&:hover": {
@@ -33,6 +34,7 @@ export default function InforButton() {
               variant="contained"
               fullWidth
               sx={{
+                color:"black",
                 bgcolor: "white",
                 padding: "10px",
                 "&:hover": {
@@ -70,6 +72,7 @@ export default function InforButton() {
             variant="contained"
             fullWidth
             sx={{
+              color:"black",
               bgcolor: "white",
               padding: "10px",
               "&:hover": {
@@ -86,6 +89,7 @@ export default function InforButton() {
             textTransform="none"
             fullWidth
             sx={{
+              color:"black",
               bgcolor: "white",
               padding: "10px",
               "&:hover": {

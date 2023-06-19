@@ -16,10 +16,14 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 
-export default function PlayerSidebar() {
+export default function PlayerSidebar(
+  // selectedLine,
+  // setSelectedLine,
+  expanded,
+  setExpanded
+) {
   const [selectedLine, setSelectedLine] = React.useState(null);
   const navigate = useNavigate();
-
 
   const handleLineClick = (index) => {
     setSelectedLine(index);
@@ -51,12 +55,12 @@ export default function PlayerSidebar() {
     localStorage.setItem("selectedLineKey", selectedLine);
   }, [selectedLine]);
   return (
-    <Accordion expanded={open}>
+    <Accordion expanded={expanded}>
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"
         id="panel1a-header"
-        onClick={changeOpen}
+        onClick={handleAccordionToggle}
       >
         <Typography>NGƯỜI CUNG CẤP DỊCH VỤ</Typography>
       </AccordionSummary>
