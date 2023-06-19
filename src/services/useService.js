@@ -51,7 +51,6 @@ export const register = createAsyncThunk("users/register", async (user) => {
 export const showUser = createAsyncThunk("users/showUser", async (id) => {
   try {
     const res = await customAPI().get(`/users/${id}`);
-    console.log(res.data,766)
     return res.data;
   } catch (err) {
     return err.response.data.payload;

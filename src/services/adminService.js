@@ -5,7 +5,7 @@ import customAPI from "./customAPI.js";
 
 export const findAllUser = createAsyncThunk(
     "admin/findAllUser",
-    async (arg, thunkAPI) => {
+    async () => {
         try {
             const res = await customAPI().get("/admin/find-all", {
                 params: {
@@ -23,7 +23,7 @@ export const findAllUser = createAsyncThunk(
 
 export const findAllProvider = createAsyncThunk(
     "admin/findAllProvider",
-    async (arg, thunkAPI) => {
+    async () => {
         try {
             const res = await customAPI().get("/admin/find-all", {
                 params: {
@@ -36,3 +36,30 @@ export const findAllProvider = createAsyncThunk(
         }
     }
 );
+
+
+
+export const lockAccount = createAsyncThunk(
+    "admin/lockAccount",
+    async (id) => {
+        try {
+            const res = await customAPI().put(`/admin/lock-user/${id}`);
+        } catch (err) {
+            return err.response?.data?.payload;
+        }
+    }
+);
+
+
+
+export const openAccount = createAsyncThunk(
+    "admin/openAccount",
+    async (id) => {
+        try {
+            const res = await customAPI().put(`/admin/open-user/${id}`);
+        } catch (err) {
+            return err.response?.data?.payload;
+        }
+    }
+);
+
