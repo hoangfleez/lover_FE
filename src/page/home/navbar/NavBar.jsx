@@ -6,7 +6,13 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
+import Badge from "@mui/material/Badge";
+import MenuItem from "@mui/material/MenuItem";
+import Menu from "@mui/material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import MoreIcon from "@mui/icons-material/MoreVert";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ModeToggle from "../../../theme/DarkMode";
 import { useSelector, useDispatch } from "react-redux";
@@ -125,7 +131,6 @@ export default function NavBar() {
             <BasicModal open={open} setOpen={setOpen} />
           </Box>
           <ModeToggle />
-
         </Toolbar>
       </AppBar>
 

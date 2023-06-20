@@ -343,10 +343,9 @@ const ShowAndEditInfo = () => {
                   variant="contained"
                   fullWidth
                   sx={{
-                    backgroundColor: "red",
                     color: "white",
                     padding: "10px",
-                    backgroundColor: "red",
+                    bgcolor: "red",
                     "&:hover": {
                       backgroundColor: "red",
                     },

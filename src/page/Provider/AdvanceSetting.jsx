@@ -31,7 +31,6 @@ export default function AdvanceSetting() {
     afterImageCard: "",
   });
 
-  console.log(formState, 9999);
   const [imageUpload, setImageUpload] = useState(null);
   const [tempAvatar, setTempAvatar] = useState("");
   const [open, setOpen] = useState(false);
@@ -292,7 +291,6 @@ export default function AdvanceSetting() {
                   variant="contained"
                   fullWidth
                   sx={{
-                    backgroundColor: "red",
                     color: "white",
                     padding: "10px",
                     backgroundColor: "red",
