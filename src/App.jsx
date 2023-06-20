@@ -9,10 +9,9 @@ import PersonalPage from "./page/user/personalPage/PersonalPage";
 import UserContent from "./page/user/UserContent";
 import EmailUser from "./page/user/UserSidebar/Email/EmailUser";
 import ShowAccountUser from "./page/admin/ShowAccountUser.jsx";
-// import ShowAccountProvider from "./page/admin/ShowAccountProvider.jsx";
-import HomeAdmin from "./page/admin/HomeAdmin.jsx";
 import AdvanceSetting from "./page/Provider/AdvanceSetting";
 import ServiceSetting from "./page/Provider/ServiceSetting";
+import HomeAdmin from "./page/admin/AdminPage";
 
 
 function App() {
@@ -22,7 +21,6 @@ function App() {
         <Route path="" element={<Home />}>
           <Route path="admin" element={<HomeAdmin />} />
           <Route path="user" element={<ShowAccountUser />} />
-          {/* <Route path="provider" element={<ShowAccountProvider />} /> */}
           <Route path="" element={<Body />} />
           <Route path="page" element={<PersonalPage />} />
           <Route path="customer_info" element={<UserContent />}>

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { changeRole, findAllUser, lockAccount, openAccount} from "../../services/adminService.js";
+import { changeRole, findAllUser, lockAccount, openAccount, updateRole} from "../../services/adminService.js";
 
 const initialState = {
     listUser: [],
@@ -19,6 +19,9 @@ const adminSlice = createSlice({
         // });
 
         builder.addCase(lockAccount.fulfilled, (state, action) => {
+            state.listUser = action.payload;
+        });
+        builder.addCase(updateRole.fulfilled, (state, action) => {
             state.listUser = action.payload;
         });
 
