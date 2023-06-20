@@ -8,7 +8,6 @@ import DetailProvider from "./page/Provider/detailProvider";
 import PersonalPage from "./page/user/personalPage/PersonalPage";
 import UserContent from "./page/user/UserContent";
 import EmailUser from "./page/user/UserSidebar/Email/EmailUser";
-import ProvidePage from "./page/Provider/ProvidePage";
 import ShowAccountUser from "./page/admin/ShowAccountUser.jsx";
 import ShowAccountProvider from "./page/admin/ShowAccountProvider.jsx";
 import HomeAdmin from "./page/admin/HomeAdmin.jsx";
