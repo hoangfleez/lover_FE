@@ -7,7 +7,7 @@ export default function Body() {
   const [service,setService] = useState([]);
 
 
-  console.log(service,888)
+
   return (
     <Box
       sx={{

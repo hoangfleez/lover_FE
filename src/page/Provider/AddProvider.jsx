@@ -51,7 +51,7 @@ const AddProvider = () => {
     <>
       <div>
         <h1>Thêm mới thông tin Provider</h1>
-        <p>Thêm mới các thông tin của bạn ở đây</p>
+        <div>Thêm mới các thông tin của bạn ở đây</div>
         <form>
           <div>
             <label>Tên: </label>

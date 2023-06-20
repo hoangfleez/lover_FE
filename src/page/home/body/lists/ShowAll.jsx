@@ -17,9 +17,6 @@ export default function ShowAll({ service, setService }) {
     return state.provider.currenProvider;
   });
 
-  // const filteredArr = showProvider.filter((item) => item.service === "Đi chơi chung");
-  // console.log(filteredArr);
-
   React.useEffect(() => {
     dispatch(filterProvider({ service: service, listProvider: showProvider }));
   }, []);

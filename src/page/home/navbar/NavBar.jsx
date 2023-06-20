@@ -67,9 +67,6 @@ export default function NavBar() {
     return user.currentUser;
   });
 
-
-
-
   let handleInput = (e) =>{
     console.log(e.target.value, 55443)
     setName(e.target.value)
@@ -77,12 +74,12 @@ export default function NavBar() {
 
   const handleSearch = async () => {
     let abc = await dispatch(searchProviders(name))
+    console.log(abc,66666)
     setName("")
   }
 
 
 
- 
 
   return (
     <Box>
