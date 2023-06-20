@@ -9,6 +9,7 @@ const ShowAccountUser = () => {
     const dispatch = useDispatch();
 
     const users = useSelector((state) => {
+        console.log(state,1111);
         return state.admin.listUser;
     });
 

@@ -26,6 +26,7 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
 
   const user = useUserProfile();
 
+
   const handleCloseUserMenu = () => {
     setAnchorUserMenu(null);
   };

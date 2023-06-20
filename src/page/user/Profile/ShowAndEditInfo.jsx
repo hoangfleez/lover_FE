@@ -23,7 +23,6 @@ const ShowAndEditInfo = () => {
   const dispatch = useDispatch();
 
   const profile = useUserProfile();
-  console.log(profile,8888)
 
   const [formState, setFormState] = useState({
     username: "",
@@ -51,8 +50,8 @@ const ShowAndEditInfo = () => {
     setTempAvatar(""); // Xóa giá trị của tempAvatar
   };
 
-  const handleSubmitEditProfile = async (event) => {
-    alert("Cập nhật thành công");
+  const handleSubmitEditProfile = async (event,data) => {
+    alert("Cập nhật thành công", data);
     event.preventDefault();
 
     const editProfile = {

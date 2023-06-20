@@ -21,7 +21,6 @@ export default function AdvanceSetting() {
   const dispatch = useDispatch();
 
   const profile = useUserProfile();
-  console.log(profile,8888)
 
 
   const [formState, setFormState] = useState({

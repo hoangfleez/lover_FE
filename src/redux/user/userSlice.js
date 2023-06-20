@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { editUser, login, logout, showUser } from "../../services/useService";
-import { Token } from "@mui/icons-material";
 
 const initialState = {
   currentUser: JSON.parse(localStorage.getItem("token")),
@@ -12,8 +11,7 @@ const userSlice = createSlice({
   initialState,
   extraReducers: (builder) => {
     builder.addCase(login.fulfilled, (state, action) => {
-
-      if ( action.payload.data && action.payload.data.length > 30) {
+      if (action.payload.data && action.payload.data.length > 30) {
         state.currentUser = action.payload;
         localStorage.setItem("token", JSON.stringify(action.payload.data));
       } else {
@@ -25,7 +23,6 @@ const userSlice = createSlice({
     builder.addCase(logout.fulfilled, (state, action) => {
       state.currentUser = action.payload;
     });
-
 
     builder.addCase(showUser.fulfilled, (state, action) => {
       state.profile = action.payload;

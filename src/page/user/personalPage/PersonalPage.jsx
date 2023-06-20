@@ -16,7 +16,6 @@ import { useUserProfile } from "../../../customHook/useUserProfile";
 
 export default function PersonalPage() {
   const profile = useUserProfile();
-    console.log(profile,7777)
 
   return (
     <Box

@@ -56,8 +56,6 @@ export const showUser = createAsyncThunk("users/showUser", async (id) => {
   }
 });
 
-
-
 export const editUser = createAsyncThunk(
   "users/editUser",
   async (arg, thunkAPI) => {
@@ -74,3 +72,5 @@ export const logout = createAsyncThunk("users/logout", async () => {
   localStorage.removeItem("token");
   return undefined;
 });
+
+
