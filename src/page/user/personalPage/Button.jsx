@@ -6,8 +6,14 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import HomeIcon from "@mui/icons-material/Home";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function InforButton() {
+  const navigate = useNavigate()
+  const handleSetting = () =>{
+    navigate("/customer_info");
+    window.location.reload();
+  }
   return (
     <Box sx={{ flexGrow: 1, padding: "15px" }}>
       <Grid container spacing={1}>
@@ -29,10 +35,11 @@ export default function InforButton() {
           </Button>
         </Grid>
         <Grid item xs={6}>
-          <Link to="/customer_info">
+          
             <Button
               variant="contained"
               fullWidth
+              onClick={handleSetting}
               sx={{
                 color:"black",
                 bgcolor: "white",
@@ -44,7 +51,7 @@ export default function InforButton() {
             >
               Cài đặt
             </Button>
-          </Link>
+          
         </Grid>
         <Grid item xs={6}>
           <Button

@@ -16,10 +16,7 @@ export default function Extended({ setService }) {
     const handleServiceToggle = (serviceId) => {
         dispatch(getServiceProvider(serviceId))
     };
-    const abc = useSelector((state) => {
-        console.log(state,666)
-        // state.type.type
-    });
+
 
     const types = useSelector((state) =>state.type.type);
     const services = useSelector((state) => state.service.service);

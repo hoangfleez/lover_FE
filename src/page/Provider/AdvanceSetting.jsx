@@ -17,13 +17,18 @@ import { storage } from "../../services/firebase";
 import { useUserProfile } from "../../customHook/useUserProfile";
 import { editUser } from "../../services/useService";
 
-export default function ProvidePage() {
+export default function AdvanceSetting() {
   const dispatch = useDispatch();
 
   const profile = useUserProfile();
+  console.log(profile,8888)
+
 
   const [formState, setFormState] = useState({
+    numberCard: "",
     avatar: "",
+    beforImageCard: "",
+    afterImageCard: "",
   });
 
   console.log(formState, 9999);
@@ -117,11 +122,6 @@ export default function ProvidePage() {
                     component="img"
                     image={formState.avatar}
                     alt="Avatar"
-                    style={{
-                      objectFit: "container",
-                      width: "100%",
-                      height: "100%",
-                    }}
                   />
                 </Box>
                 <Box onClick={handleOpenModal} sx={{ cursor: "pointer" }}>
@@ -204,16 +204,6 @@ export default function ProvidePage() {
               </Modal>
 
               <Box sx={{ width: "70ch", marginTop: "50px" }}>
-                <Box>
-                  <Typography variant="overline" gutterBottom>
-                    TÊN / BIỆT DANH
-                  </Typography>
-                  <TextField
-                    fullWidth
-                    multiline
-                    placeholder="Hãy nhập biệt danh"
-                  />
-                </Box>
 
                 <Divider sx={{ marginTop: 3, marginBottom: 3 }} />
                 <Box>

@@ -23,6 +23,7 @@ const ShowAndEditInfo = () => {
   const dispatch = useDispatch();
 
   const profile = useUserProfile();
+  console.log(profile,8888)
 
   const [formState, setFormState] = useState({
     username: "",
@@ -36,7 +37,6 @@ const ShowAndEditInfo = () => {
     avatar: "",
   });
 
-  console.log(formState, 9999);
   const [imageUpload, setImageUpload] = useState(null);
   const [tempAvatar, setTempAvatar] = useState("");
   const [open, setOpen] = useState(false);
@@ -189,11 +189,6 @@ const ShowAndEditInfo = () => {
                     component="img"
                     image={formState.avatar}
                     alt="Avatar"
-                    style={{
-                      objectFit: "container",
-                      width: "100%",
-                      height: "100%",
-                    }}
                   />
                 </Box>
                 <Box onClick={handleOpenModal} sx={{ cursor: "pointer" }}>
@@ -320,6 +315,22 @@ const ShowAndEditInfo = () => {
                       setFormState({
                         ...formState,
                         address: event.target.value,
+                      })
+                    }
+                  />
+                </Box>
+                <Box>
+                  <Typography variant="overline" gutterBottom>
+                    SỐ ĐIỆN THOẠI
+                  </Typography>
+                  <TextField
+                    fullWidth
+                    multiline
+                    defaultValue={formState.phoneNumber}
+                    onChange={(event) =>
+                      setFormState({
+                        ...formState,
+                        phoneNumber: event.target.value,
                       })
                     }
                   />

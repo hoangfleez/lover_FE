@@ -9,10 +9,8 @@ export const getProvider = createAsyncThunk(
       const res = await axios
         .get("http://127.0.0.1:8181/providers")
         .then((data) => {console.log(data)});
-      console.log(data, 9999);
       return res.data.docs;
     } catch (err) {
-      console.log(1);
       return err.response.data.payload;
     }
   }

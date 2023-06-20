@@ -8,7 +8,8 @@ import DetailProvider from "./page/Provider/detailProvider";
 import PersonalPage from "./page/user/personalPage/PersonalPage";
 import UserContent from "./page/user/UserContent";
 import EmailUser from "./page/user/UserSidebar/Email/EmailUser";
-import ProvidePage from "./page/Provider/ProvidePage";
+import AdvanceSetting from "./page/Provider/AdvanceSetting";
+import ServiceSetting from "./page/Provider/ServiceSetting";
 
 
 function App() {
@@ -23,7 +24,8 @@ function App() {
             <Route path="email" element={<EmailUser />} />
           </Route>
           <Route path="user_setting" element={<UserContent />}>
-            <Route path="url" element={<ProvidePage/>} />
+            <Route path="advance" element={<AdvanceSetting/>} />
+            <Route path="service" element={<ServiceSetting/>} />
           </Route>
           <Route path="add-provider" element={<AddProvider />} />
           <Route path="detail-provider/:id" element={<DetailProvider />} />

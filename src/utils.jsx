@@ -5,6 +5,6 @@ export const defaultValidate =/^[a-zA-Z]{2,}$/;
 export const  email = /^[\w\.-]+@[\w\.-]+\.\w+$/;
 
 export const  clearLocalStorage = () => {
-  localStorage.removeItem("openState");
-  localStorage.removeItem("selectedLineKey");
+  localStorage.removeItem("expanded");
+  localStorage.removeItem("selected");
 };

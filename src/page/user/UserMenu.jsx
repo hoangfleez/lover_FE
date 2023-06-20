@@ -37,14 +37,14 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
     handleCloseUserMenu();
   };
 
-  const changeProfile = (event) => {
-    event.preventDefault();
-    clearLocalStorage()
-    navigate("/customer_info");
-    window.location.reload();
-  };
+    const changeProfile = (event) => {
+      event.preventDefault();
+      navigate("/customer_info");
+      clearLocalStorage()
+      window.location.reload();
+    };
   const handlePage = () => {
-    clearLocalStorage()
+    // clearLocalStorage()
     navigate("page");
   };
 
