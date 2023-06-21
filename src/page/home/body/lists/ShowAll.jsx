@@ -1,74 +1,79 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import {Box, Button, CardActionArea, CardActions, Chip, Stack} from "@mui/material";
+import { Box, CardActionArea, Stack } from "@mui/material";
 import ShowRating from "../../Rating/ShowRating";
 import { useDispatch, useSelector } from "react-redux";
-import {filterProvider,getProvider} from "../../../../services/providerService";
-import {Link, useNavigate} from "react-router-dom";
+import { getProvider } from "../../../../services/providerService";
+import { useNavigate } from "react-router-dom";
+import ReactPaginate from "react-paginate";
 
-export default function ShowAll({ service, setService }) {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+// Move the styles to a separate CSS file or a CSS-in-JS solution like Emotion or Styled Components
 
-  const showProvider = useSelector((state) => {
-    return state.provider.currenProvider;
-  });
+export default function ShowAll() {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const [totalProviders, setTotalProviders] = useState(0);
+    const [totalPage, setTotalPage] = useState(0);
 
-  React.useEffect(() => {
-    dispatch(filterProvider({ service: service, listProvider: showProvider }));
-  }, []);
+    const showProvider = useSelector((state) => {
+        return state.provider.currenProvider;
+    });
 
-  React.useEffect(() => {
-    dispatch(getProvider());
-  }, []);
+    useEffect(() => {
+        dispatch(getProvider());
+    }, []);
 
-  return (
-    <Box sx={{ display: "flex", flexWrap: "wrap", width: "100%", gap: 1 }}>
-      {showProvider &&
-        showProvider.map((item, key) => (
-          <Card sx={{ width: 250 }} key={key} onClick={()=>{navigate(`/detail-provider/${item.id}`)}}>
-            <CardActionArea>
-              <CardMedia
-                component="img"
-                height="250"
-                image={item.avatar}
-                alt="green iguana"
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  {item.name}
-                </Typography>
-              </CardContent>
-            </CardActionArea>
 
-            <CardContent sx={{ padding: "0 15px" }}>
-              <Typography variant="body2" color="text.secondary">
-                <ShowRating
-                    // rate={item.rate}
-                />
-                <Stack
-                  direction="column"
-                  justifyContent="center"
-                  alignItems="baseline"
-                  spacing={2}
-                  mt={2}
-                >
-                  {/*<Chip color="primary" />*/}
-                  <Stack direction="row" gap="5px" flexWrap="wrap">
-                    {/*{item.other.map((otherItem, otherIndex) => (*/}
-                    {/*  <Chip label={otherItem} size="small" key={otherIndex} />*/}
-                    {/*))}*/}
-                    {item.desc}
-                  </Stack>
-                </Stack>
-              </Typography>
-            </CardContent>
 
-          </Card>
-        ))}
-    </Box>
-  );
+    return (
+        <>
+            <img
+                style={{ width: "93%" }}
+                src={
+                    "https://files.playerduo.net/production/images/banner/715867c6-698f-411a-b4f9-1e9093130b60__ff5aee00-79ee-11ed-a19f-23a3b10d190e__admin_banner.jpg"
+                }
+            />
+            <Box
+                sx={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    width: "100%",
+                    gap: 1,
+                }}
+            >
+                {showProvider &&
+                    showProvider.map((item, key) => (
+                        <Card sx={{ width: 250 }} key={key} onClick={() => navigate(`/detail-provider/${item.id}`)}>
+                            <CardActionArea>
+                                <CardMedia component="img" height="250" image={item.avatar} alt="green iguana" />
+                                <CardContent>
+                                    <Typography gutterBottom variant="h5" component="div">
+                                        {item.name}
+                                    </Typography>
+                                </CardContent>
+                            </CardActionArea>
+
+                            <CardContent>
+                                <ShowRating />
+                                <Typography variant="body2" color="text.secondary">
+                                    <Stack direction="column" justifyContent="center" alignItems="baseline" spacing={2} mt={2}>
+                                        {/*<Chip color="primary" />*/}
+                                        <Stack direction="row" gap="5px" flexWrap="wrap">
+                                            {/*{item.other.map((otherItem, otherIndex) => (*/}
+                                            {/*  <Chip label={otherItem} size="small" key={otherIndex} />*/}
+                                            {/*))}*/}
+                                            {item.desc}
+                                        </Stack>
+                                    </Stack>
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    ))}
+            </Box>
+
+        </>
+    );
 }
