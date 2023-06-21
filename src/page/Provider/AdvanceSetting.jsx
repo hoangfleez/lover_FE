@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
-  Box,
-  Button,
-  CardMedia,
-  TextField,
-  Modal,
-  Fade,
-  Typography,
-  Divider,
-  Grid,
+    Box,
+    Button,
+    CardMedia,
+    TextField,
+    Modal,
+    Fade,
+    Typography,
+    Divider,
+    Grid,
 } from "@mui/material";
 import { ref, uploadBytes, getDownloadURL } from "@firebase/storage";
 import { v4 } from "uuid";
@@ -18,293 +18,310 @@ import { useUserProfile } from "../../customHook/useUserProfile";
 import { editUser } from "../../services/useService";
 
 export default function AdvanceSetting() {
-  const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
-  const profile = useUserProfile();
+    const profile = useUserProfile();
 
+    const [formState, setFormState] = useState({
+        numberCard: "",
+        avatar: "",
+        beforImageCard: "",
+        afterImageCard: "",
+    });
+    const [showUploadFront, setShowUploadFront] = useState(false);
+    const [imageUpload, setImageUpload] = useState(null);
+    const [tempAvatar, setTempAvatar] = useState("");
+    const [open, setOpen] = useState(false);
+    const [frontImage, setFrontImage] = useState(null);
+    const [backImage, setBackImage] = useState(null);
 
-  const [formState, setFormState] = useState({
-    numberCard: "",
-    avatar: "",
-    beforImageCard: "",
-    afterImageCard: "",
-  });
+    const handleOpenModal = () => {
+        setOpen(true);
+        setTempAvatar(formState.avatar); // Lưu trữ ảnh tạm thời
+    };
 
-  const [imageUpload, setImageUpload] = useState(null);
-  const [tempAvatar, setTempAvatar] = useState("");
-  const [open, setOpen] = useState(false);
+    const handleUploadFront = () => {
+        const input = document.createElement("input");
+        input.type = "file";
+        input.accept = "image/*";
+        input.onchange = (event) => {
+            const image = event.target.files[0];
+            setFrontImage(URL.createObjectURL(image));
+        };
+        input.click();
+    };
 
-  const handleOpenModal = () => {
-    setOpen(true);
-    setTempAvatar(formState.avatar); // Lưu trữ ảnh tạm thời
-  };
+    const handleUploadBack = () => {
+        const input = document.createElement("input");
+        input.type = "file";
+        input.accept = "image/*";
+        input.onchange = (event) => {
+            const image = event.target.files[0];
+            setBackImage(URL.createObjectURL(image));
+        };
+        input.click();
+    };
 
-  const handleCloseModal = () => {
-    setOpen(false);
-    setTempAvatar(""); // Xóa giá trị của tempAvatar
-  };
+    const handleCloseModal = () => {
+        setOpen(false);
+        setTempAvatar(""); // Xóa giá trị của tempAvatar
+    };
 
-  // const handleSubmitEditProfile = async (event) => {
-  //   alert("Cập nhật thành công");
-  //   event.preventDefault();
+    const handleChangeImage = (event) => {
+        event.preventDefault();
+        if (event.target.files.length === 0) return;
 
-  //   const editProfile = {
-  //     id: profile.id,
-  //     ...formState,
-  //   };
+        const image = event.target.files[0];
+        const imageRef = ref(storage, `images/${image.name + v4()}`);
 
-  //   let res = await dispatch(editUser(editProfile));
-  // };
+        uploadBytes(imageRef, image)
+            .then((snapshot) => getDownloadURL(snapshot.ref))
+            .then((url) => {
+                setTempAvatar(url);
+            })
+            .catch((error) => {
+                // Handle any error occurred during image upload
+                console.log(error);
+            });
+    };
 
-  const handleChangeImage = (event) => {
-    event.preventDefault();
-    if (event.target.files.length === 0) return;
+    const handleSaveImage = async () => {
+        let res = await dispatch(editUser({ ...formState, avatar: tempAvatar }));
+        if (res.error) {
+        } else {
+            setFormState({ ...formState, avatar: tempAvatar }); // Update the formState with the new avatar URL
+            handleCloseModal();
+        }
+    };
 
-    const image = event.target.files[0];
-    const imageRef = ref(storage, `images/${image.name + v4()}`);
+    useEffect(() => {
+        if (profile) {
+            setFormState(profile);
+        }
+    }, [profile]);
 
-    uploadBytes(imageRef, image)
-      .then((snapshot) => getDownloadURL(snapshot.ref))
-      .then((url) => {
-        setTempAvatar(url);
-      })
-      .catch((error) => {
-        // Handle any error occurred during image upload
-        console.log(error);
-      });
-  };
+    return (
+        <>
+            <Box p={4}>
+                <Typography variant="h4" gutterBottom>
+                    Thông tin cá nhân
+                </Typography>
 
-  const handleSaveImage = async () => {
-    let res = await dispatch(editUser({ ...formState, avatar: tempAvatar }));
-    if (res.error) {
-    } else {
-      setFormState({ ...formState, avatar: tempAvatar }); // Update the formState with the new avatar URL
-      handleCloseModal();
-    }
-  };
+                <form>
+                    {profile && (
+                        <Box
+                            sx={{
+                                display: "flex",
+                                width: "100%",
+                                height: "100%",
+                                flexDirection: "column",
+                            }}
+                        >
+                            <Box sx={{ display: "flex", alignItems: "center", gap: "40px" }}>
+                                <Box
+                                    sx={{
+                                        width: 100,
+                                        height: 100,
+                                        borderRadius: "75%",
+                                        overflow: "hidden",
+                                    }}
+                                >
+                                    <CardMedia
+                                        className="hover-image"
+                                        component="img"
+                                        image={formState.avatar}
+                                        alt="Avatar"
+                                        sx={{ objectFit: "contain", width: "100%", height: "100%" }}
+                                    />
+                                </Box>
+                                <Box onClick={handleOpenModal} sx={{ cursor: "pointer" }}>
+                                    <Typography color="red">Thay đổi</Typography>
+                                    <Typography>JPG, GIF OR PND</Typography>
+                                </Box>
+                            </Box>
 
-  useEffect(() => {
-    if (profile) {
-      setFormState(profile);
-    }
-  }, [profile]);
+                            <Modal
+                                aria-labelledby="transition-modal-title"
+                                aria-describedby="transition-modal-description"
+                                open={open}
+                                onClose={handleCloseModal}
+                                closeAfterTransition
+                            >
+                                <Fade in={open}>
+                                    <div
+                                        className="modal-paper"
+                                        style={{
+                                            background: "white",
+                                            width: 350,
+                                            height: 450,
+                                            position: "absolute",
+                                            top: "30%",
+                                            left: "50%",
+                                            transform: "translate(-50%, -50%)",
+                                        }}
+                                    >
+                                        {tempAvatar && (
+                                            <img
+                                                src={tempAvatar}
+                                                alt="Preview"
+                                                style={{
+                                                    width: "300px",
+                                                    height: "300px",
+                                                    objectFit: "contain",
+                                                    margin: "10px 0 0 25px",
+                                                }}
+                                            />
+                                        )}
 
-  return (
-    <>
-      <Box p={4}>
-        <Typography variant="h4" gutterBottom>
-          Thông tin cá nhân
-        </Typography>
+                                        <form>
+                                            <div className="mb3">
+                                                <input
+                                                    style={{ marginLeft: 10 }}
+                                                    id="exampleInput"
+                                                    type="file"
+                                                    className="form-control"
+                                                    accept="image/*"
+                                                    onChange={handleChangeImage}
+                                                />
+                                            </div>
+                                        </form>
 
-        <form>
-          {profile && (
-            <Box
-              sx={{
-                display: "flex",
-                width: "100%",
-                height: "100%",
-                flexDirection: "column",
-              }}
-            >
-              <Box sx={{ display: "flex", alignItems: "center", gap: "40px" }}>
-                <Box
-                  sx={{
-                    width: 100,
-                    height: 100,
-                    borderRadius: "75%",
-                    overflow: "hidden",
-                  }}
-                >
-                  <CardMedia
-                    className="hover-image"
-                    component="img"
-                    image={formState.avatar}
-                    alt="Avatar"
-                  />
-                </Box>
-                <Box onClick={handleOpenModal} sx={{ cursor: "pointer" }}>
-                  <Typography color="red">Thay đổi</Typography>
-                  <Typography>JPG, GIF OR PND</Typography>
-                </Box>
-              </Box>
+                                        <div
+                                            style={{
+                                                position: "absolute",
+                                                bottom: "10px",
+                                                right: "5px",
+                                                width: "100%",
+                                            }}
+                                        >
+                                            <Button
+                                                variant="contained"
+                                                onClick={handleSaveImage}
+                                                style={{ float: "right", marginLeft: "10px" }}
+                                            >
+                                                Lưu
+                                            </Button>
+                                            <Button
+                                                variant="contained"
+                                                onClick={handleCloseModal}
+                                                style={{ float: "right" }}
+                                            >
+                                                Thoát
+                                            </Button>
+                                        </div>
+                                    </div>
+                                </Fade>
+                            </Modal>
 
-              <Modal
-                aria-labelledby="transition-modal-title"
-                aria-describedby="transition-modal-description"
-                open={open}
-                onClose={handleCloseModal}
-                closeAfterTransition
-              >
-                <Fade in={open}>
-                  <div
-                    className="modal-paper"
-                    style={{
-                      background: "white",
-                      width: 350,
-                      height: 450,
-                      position: "absolute",
-                      top: "30%",
-                      left: "50%",
-                      transform: "translate(-50%, -50%)",
-                    }}
-                  >
-                    {tempAvatar && (
-                      <img
-                        src={tempAvatar}
-                        alt="Preview"
-                        style={{
-                          width: "300px",
-                          height: "300px",
-                          objectFit: "contain",
-                          margin: "10px 0 0 25px",
-                        }}
-                      /> // set width and height of image to 400px and 300px respectively
+                            <Box sx={{ width: "70ch", marginTop: "50px" }}>
+                                <Divider sx={{ marginTop: 3, marginBottom: 3 }} />
+                                <Box>
+                                    <Typography variant="overline" gutterBottom>
+                                        Xác thực hồ sơ
+                                    </Typography>
+                                    <TextField fullWidth multiline placeholder="Số CMTND/CCCD" />
+                                </Box>
+                                <Divider sx={{ marginTop: 3, marginBottom: 3 }} />
+
+                                <Box sx={{ flexGrow: 1 }}>
+                                    <Grid container spacing={1}>
+                                        <Grid item xs={6}>
+                                            <Button
+                                                variant="outlined"
+                                                fullWidth
+                                                sx={{
+                                                    color: "customColorSchemes.textColor",
+                                                    textTransform: "none",
+                                                }}
+                                                onClick={handleUploadFront}
+                                            >
+                                                Cập nhật mặt trước CMND/CCCD
+                                            </Button>
+                                            {frontImage ? (
+                                                <img
+                                                    src={frontImage}
+                                                    alt="Front Image"
+                                                    style={{ width: "310px", height: "200px", marginTop: "10px" }}
+                                                />
+                                            ) : (
+                                                <CardMedia
+                                                    component="img"
+                                                    alt="Front Image"
+                                                    objectFit="contain"
+                                                    image="https://images2.thanhnien.vn/zoom/622_389/Uploaded/khanhtd/2022_06_08/8b63a9ff2202e25cbb13-1752.jpg"
+                                                    sx={{ width: "100%", height: "auto", marginTop: "10px" }}
+                                                />
+                                            )}
+                                            <Typography
+                                                variant="caption"
+                                                display="block"
+                                                gutterBottom
+                                                mt={2}
+                                            >
+                                                Tham khảo
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={6}>
+                                            <Button
+                                                variant="outlined"
+                                                fullWidth
+                                                sx={{
+                                                    color: "customColorSchemes.textColor",
+                                                    textTransform: "none",
+                                                }}
+                                                onClick={handleUploadBack}
+                                            >
+                                                Cập nhật mặt sau CMND/CCCD
+                                            </Button>
+                                            {backImage ? (
+                                                <img
+                                                    src={backImage}
+                                                    alt="Back Image"
+                                                    style={{ width: "310px", height: "200px", marginTop: "10px" }}
+                                                />
+                                            ) : (
+                                                <CardMedia
+                                                    component="img"
+                                                    alt="Back Image"
+                                                    objectFit="contain"
+                                                    image="https://images2.thanhnien.vn/zoom/622_389/Uploaded/khanhtd/2022_06_08/8b63a9ff2202e25cbb13-1752.jpg"
+                                                    sx={{ width: "100%", height: "auto", marginTop: "10px" }}
+                                                />
+                                            )}
+                                            <Typography
+                                                variant="caption"
+                                                display="block"
+                                                gutterBottom
+                                                mt={2}
+                                            >
+                                                Tham khảo
+                                            </Typography>
+                                        </Grid>
+                                    </Grid>
+                                </Box>
+                            </Box>
+
+                            <Box sx={{ width: "70ch", marginTop: 3 }}>
+                                <Button
+                                    // onClick={handleSubmitEditProfile}
+                                    variant="contained"
+                                    fullWidth
+                                    sx={{
+                                        color: "white",
+                                        padding: "10px",
+                                        backgroundColor: "red",
+                                        "&:hover": {
+                                            backgroundColor: "red",
+                                        },
+                                    }}
+                                >
+                                    Cập nhật
+                                </Button>
+                            </Box>
+                        </Box>
                     )}
-
-                    <form>
-                      <div className="mb3">
-                        <input
-                          style={{ marginLeft: 10 }}
-                          id="exampleInput"
-                          type="file"
-                          className="form-control"
-                          accept="image/*"
-                          onChange={handleChangeImage}
-                        />
-                      </div>
-                    </form>
-
-                    <div
-                      style={{
-                        position: "absolute",
-                        bottom: "10px",
-                        right: "5px",
-                        width: "100%",
-                      }}
-                    >
-                      <Button
-                        variant="contained"
-                        onClick={handleSaveImage}
-                        style={{ float: "right", marginLeft: "10px" }}
-                      >
-                        Lưu
-                      </Button>
-                      <Button
-                        variant="contained"
-                        onClick={handleCloseModal}
-                        style={{ float: "right" }}
-                      >
-                        Thoát
-                      </Button>
-                    </div>
-                  </div>
-                </Fade>
-              </Modal>
-
-              <Box sx={{ width: "70ch", marginTop: "50px" }}>
-
-                <Divider sx={{ marginTop: 3, marginBottom: 3 }} />
-                <Box>
-                  <Typography variant="overline" gutterBottom>
-                    Xác thực hồ sơ
-                  </Typography>
-                  <TextField fullWidth multiline placeholder="Số CMTND/CCCD" />
-                </Box>
-                <Divider sx={{ marginTop: 3, marginBottom: 3 }} />
-
-                <Box sx={{ flexGrow: 1 }}>
-                  <Grid container spacing={1}>
-                    <Grid item xs={6}>
-                      <Button
-                        variant="outlined"
-                        fullWidth
-                        sx={{
-                          color: "customColorSchemes.textColor",
-                          textTransform: "none",
-                        }}
-                      >
-                        Cập nhật mặt trước CMND/CCCD
-                      </Button>
-                      <Typography
-                        variant="caption"
-                        display="block"
-                        gutterBottom
-                        mt={2}
-                      >
-                        Tham khảo
-                      </Typography>
-                      <Box
-                        sx={{
-                          height: "100%",
-                          width: "100%",
-                        }}
-                      >
-                        <CardMedia
-                          component="img"
-                          alt="green iguana"
-                          objectFit="contained"
-                          image="https://images2.thanhnien.vn/zoom/622_389/Uploaded/khanhtd/2022_06_08/8b63a9ff2202e25cbb13-1752.jpg"
-                        />
-                      </Box>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Button
-                        variant="outlined"
-                        fullWidth
-                        sx={{
-                          color: "customColorSchemes.textColor",
-                          textTransform: "none",
-                        }}
-                      >
-                        Cập nhật mặt sau CMND/CCCD
-                      </Button>
-                      <Typography
-                        variant="caption"
-                        display="block"
-                        gutterBottom
-                        mt={2}
-                      >
-                        Tham khảo
-                      </Typography>
-                      <Box
-                        sx={{
-                          height: "100%",
-                          width: "100%",
-                        }}
-                      >
-                        <CardMedia
-                          component="img"
-                          alt="green iguana"
-                          objectFit="contained"
-                          image="https://images2.thanhnien.vn/zoom/622_389/Uploaded/khanhtd/2022_06_08/8b63a9ff2202e25cbb13-1752.jpg"
-                        />
-                      </Box>
-                    </Grid>
-                  </Grid>
-                </Box>
-              </Box>
-
-              <Box sx={{ width: "70ch", marginTop: 3 }}>
-                <Button
-                  // onClick={handleSubmitEditProfile}
-                  variant="contained"
-                  fullWidth
-                  sx={{
-                    color: "white",
-                    padding: "10px",
-                    backgroundColor: "red",
-                    "&:hover": {
-                      backgroundColor: "red",
-                    },
-                  }}
-                >
-                  Cập nhật
-                </Button>
-              </Box>
+                </form>
             </Box>
-          )}
-        </form>
-      </Box>
-    </>
-  );
+        </>
+    );
 }
