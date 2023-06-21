@@ -6,44 +6,41 @@ export const findAllUser = createAsyncThunk(
   async () => {
       try {
           const res = await customAPI().get("/admin/find-all");
+          
           return res.data.data.docs;
       } catch (err) {
+        
           return err.response?.data?.payload;
       }
   }
 );
 
+// export const changeRole = createAsyncThunk(
+//   "admin/changeRole",
+//   async ({ users, id, newRoleId }) => {
+//     console.log(users, id, newRoleId);
+//     try {
+//       const updatedUser = await customAPI().put(`admin/${id}`, { role: newRoleId });
+//       return {
+//         users,
+//         updatedUser,
+//       };
+//     } catch (err) {
+//       return err.response?.data?.payload;
+//     }
+//   }
+// );
+
 export const changeRole = createAsyncThunk(
   "admin/changeRole",
-  async (users) => {
-    return users;
-  }
-);
-
-// export const findAllProvider = createAsyncThunk(
-//     "admin/findAllProvider",
-//     async () => {
-//         try {
-//             const res = await customAPI().get("/admin/find-all", {
-//                 params: {
-//                     role: "provider"
-//                 }
-//             });
-//             return res.data.data.docs;
-//         } catch (err) {
-//             return err.response?.data?.payload;
-//         }
-//     }
-// );
-export const updateRole = createAsyncThunk(
-  "admin/updateRole",
-  async ({ id, newRoleId }) => {
+  async ({users, user}) => {
     try {
-      const res = await customAPI().put(`admin/${id}`, { role: newRoleId });
-      return res.data;
+      await customAPI().put(`admin/${user.id}`, { role: user.role.id });
+      return users;
     } catch (err) {
       return err.response?.data?.payload;
     }
+  
   }
 );
 

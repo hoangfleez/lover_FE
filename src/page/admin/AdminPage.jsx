@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   changeRole,
   findAllUser,
-  updateRole,
 } from "../../services/adminService";
 
 import {
@@ -11,7 +10,6 @@ import {
   FormControlLabel,
   Grid,
   Switch,
-  Button,
   Table,
   TableBody,
   TableCell,
@@ -20,19 +18,35 @@ import {
   TableRow,
   Paper,
   TablePagination,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 
 const HomeAdmin = () => {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.admin.listUser);
+  console.log(users,11111)
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [notification, setNotification] = React.useState({
+    open: false,
+    message: "",
+  });
 
   useEffect(() => {
     dispatch(findAllUser());
-  }, []);
+  }, [dispatch]);
 
-  const handleSwitchChange = (userId) => {
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const handleRoleChange = (userId) => {
     const updatedUsers = users.map((user) => {
       if (user.id === userId) {
         const newRoleId = user.role.id === 1 ? 2 : 1;
@@ -46,27 +60,29 @@ const HomeAdmin = () => {
       }
       return user;
     });
-
-    dispatch(changeRole(updatedUsers));
+  
+    const selectedUser = updatedUsers.find((user) => user.id === userId);
+    dispatch(changeRole({users: updatedUsers, user: selectedUser})); // Truyền chỉ user có ID tương ứng vào hàm changeRole
+    showNotification("");
   };
 
-  const handleButtonClick = (userId, newRoleId) => {
-    dispatch(updateRole({ id: userId, newRoleId }));
-  };
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  // Check if users is an array before using slice
   const displayedUsers = Array.isArray(users)
     ? users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
     : [];
+
+  const showNotification = (message) => {
+    setNotification({
+      open: true,
+      message,
+    });
+  };
+
+  const handleCloseNotification = () => {
+    setNotification({
+      open: false,
+      message: "",
+    });
+  };
 
   return (
     <Box
@@ -79,78 +95,79 @@ const HomeAdmin = () => {
         padding: "50px 10px",
       }}
     >
-      <Box sx={{ padding: "0 15px" }}>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>#</TableCell>
-                <TableCell>Tên tài khoản</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Số điện thoại</TableCell>
-                <TableCell>CCCD/CMT</TableCell>
-                <TableCell>Vai trò</TableCell>
-                <TableCell>Khác</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {displayedUsers.map((item) => (
-                <TableRow key={item.id}>
-                  <TableCell>{item.id}</TableCell>
-                  <TableCell>{item.username}</TableCell>
-                  <TableCell>{item.email}</TableCell>
-                  <TableCell>{item.phoneNumber || "N/A"}</TableCell>
-                  <TableCell>{item.numberCard || "N/A"}</TableCell>
-                  <TableCell>
-                    {item.role.id === 3 ? (
-                      item.role.name
-                    ) : (
-                      <Grid
-                        component="label"
-                        container
-                        alignItems="center"
-                        spacing={1}
-                      >
-                        <Grid item>{item.role.name}</Grid>
-                        <Grid item sx={{ marginLeft: "auto" }}>
-                          <FormControlLabel
-                            control={
-                              <Switch
-                                checked={item.role.id === 2}
-                                onChange={() => handleSwitchChange(item.id)}
-                              />
-                            }
-                            label=""
-                          />
-                        </Grid>
-                      </Grid>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    <Button
-                      variant="outlined"
-                      onClick={() =>
-                        handleButtonClick(item.id, item.role.id)
-                      }
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>#</TableCell>
+              <TableCell>Tên tài khoản</TableCell>
+              <TableCell>Email</TableCell>
+              <TableCell>Số điện thoại</TableCell>
+              <TableCell>CCCD/CMT</TableCell>
+              <TableCell>Vai trò</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {displayedUsers.map((item) => (
+              <TableRow key={item.id}>
+                <TableCell>{item.id}</TableCell>
+                <TableCell>{item.username}</TableCell>
+                <TableCell>{item.email}</TableCell>
+                <TableCell>{item.phoneNumber || "N/A"}</TableCell>
+                <TableCell>{item.numberCard || "N/A"}</TableCell>
+                <TableCell>
+                  {item.role.id === 3 ? (
+                    item.role.name
+                  ) : (
+                    <Grid
+                      component="label"
+                      container
+                      alignItems="center"
+                      spacing={1}
                     >
-                      Action
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-            colSpan={7}
-            count={Array.isArray(users) ? users.length : 0}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </TableContainer>
-      </Box>
+                      <Grid item>{item.role.name}</Grid>
+                      <Grid item sx={{ marginLeft: "auto" }}>
+                        <FormControlLabel
+                          control={
+                            <Switch
+                              checked={item.role.id === 2}
+                              onChange={() =>
+                                handleRoleChange(item.id, item.role.id)
+                              }
+                            />
+                          }
+                          label=""
+                        />
+                      </Grid>
+                    </Grid>
+                  )}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        <TablePagination
+          sx={{ width: "100vw" }}
+          rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+          colSpan={6}
+          count={Array.isArray(users) ? users.length : 0}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </TableContainer>
+      <Snackbar
+        open={notification.open}
+        // message={notification.message}
+        onClose={handleCloseNotification}
+        autoHideDuration={3000}
+      >
+
+        <Alert  sx={{ width: "100%" }}>
+          Thay đổi thành công!
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
