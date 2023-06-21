@@ -14,9 +14,6 @@ const adminSlice = createSlice({
             state.listUser = action.payload;
         });
 
-        // builder.addCase(findAllProvider.fulfilled, (state, action) => {
-        //     state.listUser = action.payload;
-        // });
 
         builder.addCase(lockAccount.fulfilled, (state, action) => {
             state.listUser = action.payload;

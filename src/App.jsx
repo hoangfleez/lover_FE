@@ -13,13 +13,11 @@ import AdvanceSetting from "./page/Provider/AdvanceSetting";
 import ServiceSetting from "./page/Provider/ServiceSetting";
 import HomeAdmin from "./page/admin/AdminPage";
 
-
 function App() {
   return (
     <>
       <Routes>
         <Route path="" element={<Home />}>
-          <Route path="admin" element={<HomeAdmin />} />
           <Route path="user" element={<ShowAccountUser />} />
           <Route path="" element={<Body />} />
           <Route path="page" element={<PersonalPage />} />
@@ -28,11 +26,12 @@ function App() {
             <Route path="email" element={<EmailUser />} />
           </Route>
           <Route path="user_setting" element={<UserContent />}>
-            <Route path="advance" element={<AdvanceSetting/>} />
-            <Route path="service" element={<ServiceSetting/>} />
+            <Route path="advance" element={<AdvanceSetting />} />
+            <Route path="service" element={<ServiceSetting />} />
           </Route>
           <Route path="add-provider" element={<AddProvider />} />
           <Route path="detail-provider/:id" element={<DetailProvider />} />
+          <Route path="admin" element={<HomeAdmin />} />
         </Route>
       </Routes>
     </>

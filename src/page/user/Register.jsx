@@ -192,6 +192,7 @@ export default function Register(props) {
                     variant="contained"
                     fullWidth
                     onClick={handleButtonChange}
+                    sx={{padding:"12px"}}
                   >
                     Gửi
                   </Button>

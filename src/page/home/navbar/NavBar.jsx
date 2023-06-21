@@ -74,11 +74,13 @@ export default function NavBar() {
   });
 
   let handleInput = (e) =>{
+    console.log(e.target.value, 55443)
     setName(e.target.value)
   };
 
   const handleSearch = async () => {
     let abc = await dispatch(searchProviders(name))
+    console.log(abc,66666)
     setName("")
   }
 
@@ -95,7 +97,7 @@ export default function NavBar() {
           <FavoriteIcon sx={{ mr: 2, color: "red", cursor:"pointer" }} onClick={goHome}  />
           <Typography
             variant="h6"
-            noWrap
+noWrap
             component="div"
             sx={{ display: { xs: "none", sm: "block", color: "red" } }}
           >

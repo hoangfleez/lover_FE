@@ -8,24 +8,24 @@ import {
   MenuItem,
   Typography,
 } from "@mui/material";
-import SavingsIcon from '@mui/icons-material/Savings';
-import PaymentIcon from '@mui/icons-material/Payment';
-import LockPersonIcon from '@mui/icons-material/LockPerson';
-import WatchLaterIcon from '@mui/icons-material/WatchLater';
-import GroupsIcon from '@mui/icons-material/Groups';
+import SavingsIcon from "@mui/icons-material/Savings";
+import PaymentIcon from "@mui/icons-material/Payment";
+import LockPersonIcon from "@mui/icons-material/LockPerson";
+import WatchLaterIcon from "@mui/icons-material/WatchLater";
+import GroupsIcon from "@mui/icons-material/Groups";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../services/useService";
 import { useUserProfile } from "../../customHook/useUserProfile";
 import { clearLocalStorage } from "../../utils";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 
 const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const user = useUserProfile();
-
 
   const handleCloseUserMenu = () => {
     setAnchorUserMenu(null);
@@ -38,16 +38,19 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
     handleCloseUserMenu();
   };
 
-    const changeProfile = (event) => {
-      event.preventDefault();
-      navigate("/customer_info");
-      clearLocalStorage()
-      window.location.reload();
-    };
+  const changeProfile = (event) => {
+    event.preventDefault();
+    navigate("/customer_info");
+    clearLocalStorage();
+    window.location.reload();
+  };
   const handlePage = () => {
     // clearLocalStorage()
     navigate("page");
   };
+  const goAdminPage = () => {
+    navigate("/admin");
+  }
 
   return (
     <Menu
@@ -113,41 +116,51 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
         </Box>
       </MenuItem>
       <Divider />
+      {user?.role.name == "admin" ? (
+        <MenuItem onClick={goAdminPage}>
+          <ListItemIcon>
+            <ManageAccountsIcon />
+          </ListItemIcon>
+          Đến trang quản lý
+        </MenuItem>
+      ) : null}
 
-      <MenuItem  >
+      <Divider />
+
+      <MenuItem>
         <ListItemIcon>
           <SavingsIcon fontSize="small" />
         </ListItemIcon>
         Rút tiền
       </MenuItem>
 
-      <MenuItem  >
+      <MenuItem>
         <ListItemIcon>
           <PaymentIcon fontSize="small" />
         </ListItemIcon>
         Mua thẻ
       </MenuItem>
 
-      <MenuItem >
+      <MenuItem>
         <ListItemIcon>
           <LockPersonIcon fontSize="small" />
         </ListItemIcon>
         Tạo khóa bảo vệ
       </MenuItem>
 
-      <MenuItem  >
+      <MenuItem>
         <ListItemIcon>
           <WatchLaterIcon fontSize="small" />
         </ListItemIcon>
         Lịch sử giao dịch
       </MenuItem>
-      <MenuItem  >
+      <MenuItem>
         <ListItemIcon>
           <GroupsIcon fontSize="small" />
         </ListItemIcon>
         Danh sách theo dõi
       </MenuItem>
-      <MenuItem onClick={ changeProfile} >
+      <MenuItem onClick={changeProfile}>
         <ListItemIcon>
           <Settings fontSize="small" />
         </ListItemIcon>

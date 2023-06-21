@@ -24,8 +24,7 @@ import {
 
 const HomeAdmin = () => {
   const dispatch = useDispatch();
-  const users = useSelector((state) => state.admin.listUser);
-  console.log(users,11111)
+  const users = useSelector((state) =>state.admin.listUser);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [notification, setNotification] = React.useState({
@@ -49,12 +48,12 @@ const HomeAdmin = () => {
   const handleRoleChange = (userId) => {
     const updatedUsers = users.map((user) => {
       if (user.id === userId) {
-        const newRoleId = user.role.id === 1 ? 2 : 1;
+        const newRoleId = user.role.id === 1 ? 3 : 1;
         return {
           ...user,
           role: {
             id: newRoleId,
-            name: newRoleId === 2 ? "provider" : "user",
+            name: newRoleId === 3 ? "provider" : "user",
           },
         };
       }
@@ -116,7 +115,7 @@ const HomeAdmin = () => {
                 <TableCell>{item.phoneNumber || "N/A"}</TableCell>
                 <TableCell>{item.numberCard || "N/A"}</TableCell>
                 <TableCell>
-                  {item.role.id === 3 ? (
+                  {item.role.id === 2 ? (
                     item.role.name
                   ) : (
                     <Grid
@@ -130,7 +129,7 @@ const HomeAdmin = () => {
                         <FormControlLabel
                           control={
                             <Switch
-                              checked={item.role.id === 2}
+                              checked={item.role.id === 3}
                               onChange={() =>
                                 handleRoleChange(item.id, item.role.id)
                               }

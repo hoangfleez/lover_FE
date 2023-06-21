@@ -6,10 +6,9 @@ export const findAllUser = createAsyncThunk(
   async () => {
       try {
           const res = await customAPI().get("/admin/find-all");
-          
+          console.log(res.data.data.docs)
           return res.data.data.docs;
       } catch (err) {
-        
           return err.response?.data?.payload;
       }
   }
