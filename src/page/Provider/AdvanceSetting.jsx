@@ -46,7 +46,6 @@ export default function AdvanceSetting() {
     input.accept = "image/*";
     input.onchange = (event) => {
       const image = event.target.files[0];
-      console.log(image);
       setBeforImageCard(URL.createObjectURL(image));
     };
     input.click();
@@ -58,7 +57,6 @@ export default function AdvanceSetting() {
     input.accept = "image/*";
     input.onchange = (event) => {
       const image = event.target.files[0];
-      console.log(image);
       setAfterImageCard(URL.createObjectURL(image));
     };
     input.click();
@@ -104,7 +102,6 @@ export default function AdvanceSetting() {
       id: profile.id,
       ...formState,
     };
-    console.log(editProfile, 8888889);
 
     await dispatch(editUser(editProfile));
   };

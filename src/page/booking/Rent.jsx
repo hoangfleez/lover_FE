@@ -41,7 +41,7 @@ const Rent = (props) => {
     let data = dispatch(
       addBooking({ providerId: dataProvider.id, bookingData: newRent })
     );
-
+    console.log(data);
     if (data) {
       Swal.fire({
         icon: "success",
@@ -58,6 +58,7 @@ const Rent = (props) => {
           }
         },
       });
+      handleClose(false);
     } else {
       // Handle failure case
     }
@@ -171,14 +172,14 @@ const Rent = (props) => {
                     getSuggestionItemProps,
                     loading,
                   }) => (
-                    <div>
+                    <Box>
                       <input
                         className="form-control"
                         {...getInputProps()}
                         onChange={handleAddressChange}
                       />
                       <ul>
-                        {loading ? <div>Loading...</div> : null}
+                        {loading ? <Box>Loading...</Box> : null}
                         {suggestions.map((suggestion) => {
                           const style = {
                             backgroundColor: suggestion.active
@@ -197,7 +198,7 @@ const Rent = (props) => {
                           );
                         })}
                       </ul>
-                    </div>
+                    </Box>
                   )}
                 </PlacesAutocomplete>
               )}

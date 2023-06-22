@@ -21,7 +21,7 @@ export default function ShowAll() {
     const showProvider = useSelector((state) => {
         return state.provider.currenProvider;
     });
-
+    console.log(showProvider,898989)
     useEffect(() => {
         dispatch(getProvider());
     }, []);
@@ -48,7 +48,7 @@ export default function ShowAll() {
                     showProvider.map((item, key) => (
                         <Card sx={{ width: 250 }} key={key} onClick={() => navigate(`/detail-provider/${item.id}`)}>
                             <CardActionArea>
-                                <CardMedia component="img" height="250" image={item.avatar} alt="green iguana" />
+                                <CardMedia component="img" height="250" image={item.user.avatar} alt="green iguana" />
                                 <CardContent>
                                     <Typography gutterBottom variant="h5" component="div">
                                         {item.name}

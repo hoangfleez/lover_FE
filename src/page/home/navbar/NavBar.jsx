@@ -74,13 +74,11 @@ export default function NavBar() {
   });
 
   let handleInput = (e) =>{
-    console.log(e.target.value, 55443)
     setName(e.target.value)
   };
 
   const handleSearch = async () => {
     let abc = await dispatch(searchProviders(name))
-    console.log(abc,66666)
     setName("")
   }
 

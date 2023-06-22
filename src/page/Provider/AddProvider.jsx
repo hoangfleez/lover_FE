@@ -21,7 +21,6 @@ const AddProvider = () => {
     user: "",
     status: "",
   });
-  console.log(formData, 9999);
 
   const dispatch = useDispatch();
 
