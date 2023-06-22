@@ -23,8 +23,9 @@ const providerSlice = createSlice({
   initialState,
   extraReducers: (builder) => {
     builder.addCase(getProvider.fulfilled, (state, action) => {
+      console.log(action.payload)
       state.listProvider = action.payload;
-      state.currenProvider = action.payload;
+      // state.currenProvider = action.payload;
     });
 
     builder.addCase(filterProvider.fulfilled, (state, { payload }) => {

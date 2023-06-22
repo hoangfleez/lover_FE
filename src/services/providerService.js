@@ -7,7 +7,7 @@ export const getProvider = createAsyncThunk(
   async () => {
     try {
       const res = await axios.get("http://127.0.0.1:8181/providers");
-      return res.data.docs;
+      return res.data.data.docs;
     } catch (err) {
       return err.response.data.payload;
     }

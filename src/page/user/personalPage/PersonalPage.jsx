@@ -17,6 +17,7 @@ import { useUserProfile } from "../../../customHook/useUserProfile";
 export default function PersonalPage() {
   const profile = useUserProfile();
 
+
   return (
     <Box
       sx={{

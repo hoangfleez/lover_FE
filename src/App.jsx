@@ -18,7 +18,6 @@ function App() {
     <>
       <Routes>
         <Route path="" element={<Home />}>
-          <Route path="user" element={<ShowAccountUser />} />
           <Route path="" element={<Body />} />
           <Route path="page" element={<PersonalPage />} />
           <Route path="customer_info" element={<UserContent />}>
@@ -32,6 +31,7 @@ function App() {
           <Route path="add-provider" element={<AddProvider />} />
           <Route path="detail-provider/:id" element={<DetailProvider />} />
           <Route path="admin" element={<HomeAdmin />} />
+          <Route path="user" element={<ShowAccountUser />} />
         </Route>
       </Routes>
     </>

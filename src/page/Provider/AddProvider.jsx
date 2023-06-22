@@ -1,6 +1,14 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addProvider } from "../../services/providerService";
+import {
+  Box,
+  Divider,
+  Stack,
+  TextField,
+  TextareaAutosize,
+  Typography,
+} from "@mui/material";
 
 const AddProvider = () => {
   const [formData, setFormData] = useState({
@@ -17,9 +25,8 @@ const AddProvider = () => {
     request: "",
     linkFB: "",
     price: "",
-    ready: "",
-    user: "",
-    status: "",
+    image: "",
+    service: "",
   });
 
   const dispatch = useDispatch();
@@ -48,7 +55,7 @@ const AddProvider = () => {
 
   return (
     <>
-      <div>
+      {/* <div>
         <h1>Cài đặt dịch vụ</h1>
         <form>
           <div>
@@ -190,7 +197,45 @@ const AddProvider = () => {
             Cập nhật
           </button>
         </form>
-      </div>
+      </div> */}
+      <Typography variant="h4" gutterBottom>
+        Cai dat dich vu
+      </Typography>
+      <form>
+        <Stack width={"45%"} gap={3}>
+          <Stack>
+            <Typography variant="subtitle2" gutterBottom>
+              Nick name
+            </Typography>
+            <TextField fullWidth multiline />
+          </Stack>
+          <Divider />
+          <Stack>
+            <Typography variant="subtitle2" gutterBottom>
+              Dich vu
+            </Typography>
+            <TextField fullWidth multiline />
+          </Stack>
+          <Divider />
+          <Stack>
+            <Typography variant="subtitle2" gutterBottom>
+              Chi phi h thue
+            </Typography>
+            <TextField fullWidth multiline />
+          </Stack>
+          <Stack>
+            <Typography variant="subtitle2" gutterBottom>
+              Chi phi h thue
+            </Typography>
+            <TextareaAutosize
+              aria-label="minimum height"
+              minRows={7}
+              placeholder="Hay viet gi do"
+              style={{ resize: "none", padding: "5px", borderRadius: "5px"}}
+            />
+          </Stack>
+        </Stack>
+      </form>
     </>
   );
 };

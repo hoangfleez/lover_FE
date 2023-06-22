@@ -27,6 +27,9 @@ const DetailProvider = () => {
   const detailProviderDetail = useSelector((state) => {
     return state.provider.showOneProvider;
   });
+  const user = useSelector((state) => {
+    return state.user.profile.data
+  });
 
   const handleClose = () => {
     setShowRent(false);
@@ -71,7 +74,7 @@ const DetailProvider = () => {
             <CardMedia
               component="img"
               sx={{ width: 250, height: 250, borderRadius: 5 }}
-              image={detailProviderDetail.avatar}
+              image={user.avatar}
               alt="Avatar"
             />
             {detailProviderDetail.ready == "on" ? (
