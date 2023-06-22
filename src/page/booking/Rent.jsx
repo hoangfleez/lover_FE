@@ -1,27 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { addBooking } from "../../services/bookingService.js";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
-import PlacesAutocomplete, {
-    geocodeByAddress,
-    getLatLng,
-} from "react-places-autocomplete";
+import SelectAddress from "./SelectAddress.jsx";
+import { apiGetDistrict, apiGetProvinces } from "../../services/googleMapService.js";
 
 const Rent = (props) => {
     const dispatch = useDispatch();
     const { show, handleClose, dataProvider } = props;
-    const [address, setAddress] = useState("");
     const [selectedOption, setSelectedOption] = useState("");
     const [rent, setRent] = useState({});
     const [totalCost, setTotalCost] = useState(0);
-    const [scriptLoaded, setScriptLoaded] = useState(false);
+    const [address, setAddress] = useState({ province: "", district: "" });
 
     const handleRentProvider = async () => {
         const newRent = {
-            address: address,
             selectedOption: selectedOption,
+            address: address,
         };
+        console.log(newRent, 666);
         setRent(newRent);
         let data = dispatch(
             addBooking({ providerId: dataProvider.id, bookingData: newRent })
@@ -40,16 +38,6 @@ const Rent = (props) => {
     };
 
     useEffect(() => {
-        if (show) {
-            // Load the Google Maps API script when the modal is shown
-            const script = document.createElement("script");
-            script.src = `https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places`;
-            script.onload = () => setScriptLoaded(true);
-            document.body.appendChild(script);
-        }
-    }, [show]);
-
-    useEffect(() => {
         if (selectedOption && dataProvider.price) {
             const cost =
                 parseFloat(selectedOption) * parseFloat(dataProvider.price);
@@ -57,15 +45,22 @@ const Rent = (props) => {
         }
     }, [selectedOption, dataProvider.price]);
 
-    const handleSelect = async (value) => {
-        const results = await geocodeByAddress(value);
-        const latLng = await getLatLng(results[0]);
-        setAddress(value);
-    };
+    const apiGoogle = useSelector((state) => {
+        return state.booking.apiG.results;
+    });
+    const apiDistrict = useSelector((state) => {
+        return state.booking.apiGoogle.results;
+    });
 
-    const handleAddressChange = (event) => {
-        setAddress(event.target.value);
-    };
+    useEffect(() => {
+        dispatch(apiGetProvinces());
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (address.province) {
+            dispatch(apiGetDistrict(address.province));
+        }
+    }, [dispatch, address.province]);
 
     return (
         <>
@@ -86,39 +81,22 @@ const Rent = (props) => {
 
                     <div className="body-add-new">
                         <label className="form-label">Địa điểm</label>
-                        {scriptLoaded && (
-                            <PlacesAutocomplete
-                                value={address}
-                                onChange={setAddress}
-                                onSelect={handleSelect}
-                            >
-                                {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-                                    <div>
-                                        <input
-                                            className="form-control"
-                                            {...getInputProps()}
-                                            onChange={handleAddressChange}
-                                        />
-                                        <ul>
-                                            {loading ? <div>Loading...</div> : null}
-                                            {suggestions.map((suggestion) => {
-                                                const style = {
-                                                    backgroundColor: suggestion.active ? "#41b6e6" : "#fff",
-                                                };
-                                                return (
-                                                    <li
-                                                        key={suggestion.placeId}
-                                                        {...getSuggestionItemProps(suggestion, { style })}
-                                                    >
-                                                        {suggestion.description}
-                                                    </li>
-                                                );
-                                            })}
-                                        </ul>
-                                    </div>
-                                )}
-                            </PlacesAutocomplete>
-                        )}
+                        <div className="flex-semibold text-xl py-4">
+                            <SelectAddress
+                                type="province"
+                                value={address.province}
+                                setValue={(value) => setAddress({ ...address, province: value })}
+                                options={apiGoogle}
+                                label="Tỉnh/Thành phố"
+                            />
+                            <SelectAddress
+                                type="district"
+                                value={address.district}
+                                setValue={(value) => setAddress({ ...address, district: value })}
+                                options={apiDistrict}
+                                label="Quận/Huyện"
+                            />
+                        </div>
                     </div>
 
                     <div className="body-add-new">
