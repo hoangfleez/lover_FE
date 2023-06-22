@@ -1,18 +1,34 @@
 import { Link, useParams } from "react-router-dom";
-import { useEffect } from "react";
+import {useEffect, useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProviderDetail } from "../../services/providerService";
 import { Box, Button, CardMedia, Container, Divider, Typography } from "@mui/material";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import moment from "moment";
+import Rent from "../booking/Rent.jsx";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const DetailProvider = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
-
+    const [showRent, setShowRent] = useState(false);
+    const [dataProvider, setDataProvider] = useState({});
     const detailProviderDetail = useSelector((state) => {
         return state.provider.showOneProvider;
     });
+
+    const handleClose = () => {
+        setShowRent(false);
+    };
+
+
+
+    const handleRentProvider = (provider) => {
+        setDataProvider(provider);
+        setShowRent(true)
+    }
+
+
 
     useEffect(() => {
         dispatch(getProviderDetail(id));
@@ -67,6 +83,7 @@ const DetailProvider = () => {
                                 {detailProviderDetail.price} đ/1h
                             </Typography>
                             <Box sx={{flexWrap:"wrap", gap:"15px", display:"flex"}}>
+                                <Button onClick={() => handleRentProvider(detailProviderDetail)} fullWidth variant="contained">THUÊ</Button>
                                 <Button fullWidth variant="contained">DONET</Button>
                                 <Button fullWidth variant="contained">Chat</Button>
                             </Box>
@@ -74,6 +91,11 @@ const DetailProvider = () => {
                     </Box>
                 </Box>
             </Container>
+            <Rent
+            show={showRent}
+            handleClose={handleClose}
+            dataProvider={dataProvider}
+            />
         </Box>
     );
 };
