@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { addBooking } from "../../services/bookingService.js";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import PlacesAutocomplete, {
   geocodeByAddress,
@@ -11,6 +11,11 @@ import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Divider, Grid, MenuItem, Select, Stack } from "@mui/material";
+import SelectAddress from "./SelectAddress.jsx";
+import {
+  apiGetDistrict,
+  apiGetProvinces,
+} from "../../services/googleMapService.js";
 
 const style = {
   position: "absolute",
@@ -26,11 +31,10 @@ const style = {
 const Rent = (props) => {
   const dispatch = useDispatch();
   const { show, handleClose, dataProvider } = props;
-  const [address, setAddress] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
   const [rent, setRent] = useState({});
   const [totalCost, setTotalCost] = useState(0);
-  const [scriptLoaded, setScriptLoaded] = useState(false);
+  const [address, setAddress] = useState({ province: "", district: "" });
 
   const handleRentProvider = async () => {
     const newRent = {
@@ -65,16 +69,6 @@ const Rent = (props) => {
   };
 
   useEffect(() => {
-    if (show) {
-      // Load the Google Maps API script when the modal is shown
-      const script = document.createElement("script");
-      script.src = `https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places`;
-      script.onload = () => setScriptLoaded(true);
-      document.body.appendChild(script);
-    }
-  }, [show]);
-
-  useEffect(() => {
     if (selectedOption && dataProvider.price) {
       const cost = parseFloat(selectedOption) * parseFloat(dataProvider.price);
       setTotalCost(cost);
@@ -90,6 +84,22 @@ const Rent = (props) => {
   const handleAddressChange = (event) => {
     setAddress(event.target.value);
   };
+  const apiGoogle = useSelector((state) => {
+    return state.booking.apiG.results;
+  });
+  const apiDistrict = useSelector((state) => {
+    return state.booking.apiGoogle.results;
+  });
+
+  useEffect(() => {
+    dispatch(apiGetProvinces());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (address.province) {
+      dispatch(apiGetDistrict(address.province));
+    }
+  }, [dispatch, address.province]);
 
   return (
     <>
@@ -160,50 +170,35 @@ const Rent = (props) => {
             </Grid>
             <div className="body-add-new">
               <label className="form-label">Địa điểm</label>
-              {scriptLoaded && (
-                <PlacesAutocomplete
-                  value={address}
-                  onChange={setAddress}
-                  onSelect={handleSelect}
-                >
-                  {({
-                    getInputProps,
-                    suggestions,
-                    getSuggestionItemProps,
-                    loading,
-                  }) => (
-                    <Box>
-                      <input
-                        className="form-control"
-                        {...getInputProps()}
-                        onChange={handleAddressChange}
-                      />
-                      <ul>
-                        {loading ? <Box>Loading...</Box> : null}
-                        {suggestions.map((suggestion) => {
-                          const style = {
-                            backgroundColor: suggestion.active
-                              ? "#41b6e6"
-                              : "#fff",
-                          };
-                          return (
-                            <li
-                              key={suggestion.placeId}
-                              {...getSuggestionItemProps(suggestion, {
-                                style,
-                              })}
-                            >
-                              {suggestion.description}
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    </Box>
-                  )}
-                </PlacesAutocomplete>
-              )}
+              <div className="flex-semibold text-xl py-4">
+                <SelectAddress
+                  type="province"
+                  value={address.province}
+                  setValue={(value) =>
+                    setAddress({ ...address, province: value })
+                  }
+                  options={apiGoogle}
+                  label="Tỉnh/Thành phố"
+                />
+                <SelectAddress
+                  type="district"
+                  value={address.district}
+                  setValue={(value) =>
+                    setAddress({ ...address, district: value })
+                  }
+                  options={apiDistrict}
+                  label="Quận/Huyện"
+                />
+              </div>
             </div>
-            <textarea name="" id="" cols="30" rows="10" style={{resize: "none", padding:"5px"}} placeholder="Hãy nhắn gì đó ...." ></textarea>
+            <textarea
+              name=""
+              id=""
+              cols="30"
+              rows="10"
+              style={{ resize: "none", padding: "5px" }}
+              placeholder="Hãy nhắn gì đó ...."
+            ></textarea>
           </Stack>
           <Divider />
           <Box

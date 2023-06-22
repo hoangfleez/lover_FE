@@ -28,8 +28,10 @@ const DetailProvider = () => {
     return state.provider.showOneProvider;
   });
   const user = useSelector((state) => {
+    console.log(state)
     return state.user.profile.data
   });
+  console.log(user,999);
 
   const handleClose = () => {
     setShowRent(false);
