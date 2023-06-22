@@ -1,11 +1,22 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import { useUserProfile } from "../../customHook/useUserProfile";
+import { Typography } from "@mui/material";
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
+import AddProvider from "./AddProvider";
 
 export default function ServiceSetting() {
   const user = useUserProfile();
 
-  return <>
-    {user?.role.name !== "provider"? (<h1>ban can cap nhat CCCD</h1>):(<h1>Ban co the dung tinh nang nay</h1>)}
-  </>;
+  return (
+    <>
+      {user?.role.name === "user" ? (
+        <Typography variant="h3" gutterBottom color="red">
+        <RemoveCircleOutlineIcon fontSize=""/>
+          Bạn không thể sử dụng tín năng này
+        </Typography>
+      ) : (
+        <AddProvider/>
+      )}
+    </>
+  );
 }

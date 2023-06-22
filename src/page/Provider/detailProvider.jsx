@@ -13,6 +13,7 @@ const DetailProvider = () => {
     const detailProviderDetail = useSelector((state) => {
         return state.provider.showOneProvider;
     });
+    console.log(detailProviderDetail,99999)
 
     useEffect(() => {
         dispatch(getProviderDetail(id));
@@ -57,7 +58,7 @@ const DetailProvider = () => {
                     <Box sx={{ width: "20%" }}>
                         <Box
                             sx={{
-                                width: 300,
+                                width: 250,
                                 border: "1px solid grey",
                                 borderRadius: "15px",
                                 padding: "10px"

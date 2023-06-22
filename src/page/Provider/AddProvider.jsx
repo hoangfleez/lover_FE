@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addProvider } from "../../services/providerService";
 
-
 const AddProvider = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -22,6 +21,7 @@ const AddProvider = () => {
     user: "",
     status: "",
   });
+  console.log(formData, 9999);
 
   const dispatch = useDispatch();
 
@@ -36,7 +36,7 @@ const AddProvider = () => {
       user: userId,
     };
 
-    let res = await dispatch(addProvider(newProvider));
+    await dispatch(addProvider(newProvider));
   };
 
   const handleInputChange = (event) => {
@@ -50,8 +50,7 @@ const AddProvider = () => {
   return (
     <>
       <div>
-        <h1>Thêm mới thông tin Provider</h1>
-        <div>Thêm mới các thông tin của bạn ở đây</div>
+        <h1>Cài đặt dịch vụ</h1>
         <form>
           <div>
             <label>Tên: </label>
