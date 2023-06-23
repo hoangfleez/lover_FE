@@ -50,7 +50,6 @@ const providerSlice = createSlice({
 
     builder.addCase(getServiceProvider.fulfilled, (state, action) => {
       state.listProvider = action.payload;
-      state.currenProvider = action.payload;
     });
   },
   

@@ -171,6 +171,15 @@ const Rent = (props) => {
                   label="Quận/Huyện"
                 />
               </div>
+              <input
+                  type="text"
+                  value={`${address.province} - ${address.district}`}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    const [province, district] = value.split(" - ");
+                    setAddress({ province, district });
+                  }}
+              />
             </div>
             <textarea
               name=""
