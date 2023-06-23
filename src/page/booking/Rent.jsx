@@ -2,10 +2,6 @@ import React, { useEffect, useState } from "react";
 import { addBooking } from "../../services/bookingService.js";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
-import PlacesAutocomplete, {
-  geocodeByAddress,
-  getLatLng,
-} from "react-places-autocomplete";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
@@ -41,30 +37,21 @@ const Rent = (props) => {
       address: address,
       selectedOption: selectedOption,
     };
+    console.log(newRent,66543)
     setRent(newRent);
     let data = dispatch(
       addBooking({ providerId: dataProvider.id, bookingData: newRent })
     );
-    console.log(data);
     if (data) {
       Swal.fire({
         icon: "success",
         title: "Đã thuê! Vui lòng chờ người cho thuê phản hồi.",
         showConfirmButton: false,
         timer: 3000,
-        customClass: {
-          popup: "swal2-show",
-        },
-        onOpen: () => {
-          const swalContainer = document.querySelector(".swal2-container");
-          if (swalContainer) {
-            swalContainer.style.zIndex = "100";
-          }
-        },
+
       });
       handleClose(false);
     } else {
-      // Handle failure case
     }
   };
 
@@ -75,15 +62,9 @@ const Rent = (props) => {
     }
   }, [selectedOption, dataProvider.price]);
 
-  const handleSelect = async (value) => {
-    const results = await geocodeByAddress(value);
-    const latLng = await getLatLng(results[0]);
-    setAddress(value);
-  };
 
-  const handleAddressChange = (event) => {
-    setAddress(event.target.value);
-  };
+
+
   const apiGoogle = useSelector((state) => {
     return state.booking.apiG.results;
   });
