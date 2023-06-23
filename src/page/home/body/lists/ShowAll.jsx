@@ -19,7 +19,6 @@ export default function ShowAll() {
     const [totalPage, setTotalPage] = useState(0);
 
     const showProvider = useSelector((state) => {
-        console.log(state,1111)
         return state.provider.listProvider;
     });
 

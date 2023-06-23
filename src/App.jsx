@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 
 import Home from "./page/home/Home";
 import Body from "./page/home/body/Body";
-import AddProvider from "./page/Provider/AddProvider";
+import AddProvider from "./page/Provider/Setting/AddProvider";
 import ShowAndEditInfo from "./page/user/Profile/ShowAndEditInfo";
 import DetailProvider from "./page/Provider/detailProvider";
 import PersonalPage from "./page/user/personalPage/PersonalPage";

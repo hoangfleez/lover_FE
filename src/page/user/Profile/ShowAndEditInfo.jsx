@@ -186,6 +186,7 @@ const ShowAndEditInfo = () => {
                   <CardMedia
                     className="hover-image"
                     component="img"
+                    sx={{width:"100%",height:"100%", objectFit:"cover",}}
                     image={formState.avatar}
                     alt="Avatar"
                   />
