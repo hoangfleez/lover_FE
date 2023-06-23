@@ -4,12 +4,14 @@ import { addProvider } from "../../../services/providerService";
 import { Button, Divider, Stack, TextField, Typography } from "@mui/material";
 import Birthday from "./Birthday";
 import NickName from "./NickName";
-import Other from "./Other";
 import Interest from "./Interest";
-
+import OtherSevicer from "./OtherSevicer";
+import FreeSevicer from "./FreeSevicer";
 import Price from "./Price";
 import BasicService from "./ BasicService";
 import Describe from "./ Describe";
+import Height from "./Height";
+import Weight from "./Weight";
 
 const AddProvider = () => {
   const dispatch = useDispatch();
@@ -61,13 +63,31 @@ const AddProvider = () => {
             <Price formik={formik} name="price" />
           </Stack>
           <Divider />
-          <Other formik={formik} />
+          <Stack>
+            <Typography variant="subtitle2" gutterBottom>
+              Dịch vụ khác
+            </Typography>
+            <Stack direction={"column"} gap={2}>
+              <Stack>
+                <OtherSevicer />
+              </Stack>
+              <Stack>
+                <FreeSevicer />
+              </Stack>
+            </Stack>
+          </Stack>
           <Divider />
           <Birthday formik={formik} name="dob" />
           <Divider />
+          <Stack direction={"row"} spacing={2}>
+            <Height formik={formik} name="height" />
+            <Weight formik={formik} name="weight" />
+          </Stack>
+          <Divider />
           <Interest formik={formik} name="hobby" />
           <Divider />
-          <Describe formik={formik}  name="desc"/>
+          <Describe formik={formik} name="desc" />
+          <Divider />
           <Button color="primary" variant="contained" fullWidth type="submit">
             Submit
           </Button>

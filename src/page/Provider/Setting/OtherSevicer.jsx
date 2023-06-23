@@ -10,7 +10,7 @@ import axios from "axios";
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-export default function OtherService({ name, value, onChange }) {
+export default function OtherService() {
   const [moreServices, setMoreServices] = useState([]);
 
   useEffect(() => {
@@ -25,9 +25,7 @@ export default function OtherService({ name, value, onChange }) {
       });
   }, []);
 
-  const handleServiceChange = (event, newValue) => {
-    onChange({ target: { name, value: newValue } });
-  };
+
 
   const options = moreServices.map((service) => ({
     id: service.id,
@@ -54,8 +52,6 @@ export default function OtherService({ name, value, onChange }) {
         </li>
       )}
       style={{ width: 500 }}
-      value={value}
-      onChange={handleServiceChange}
       renderInput={(params) => (
         <TextField {...params} label="Dịch vụ mở rộng" />
       )}
