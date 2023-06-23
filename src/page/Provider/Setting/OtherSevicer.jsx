@@ -44,13 +44,13 @@ export default function OtherService({ formik }) {
           (option) => option.id !== newlySelectedOption.id
         );
         setSelectedOptions(updatedOptions);
-        formik.setFieldValue("selectedServices", updatedOptions);
+        formik.setFieldValue("otherService", updatedOptions);
         return;
       }
     }
   
     setSelectedOptions(value);
-    formik.setFieldValue("selectedServices", value);
+    formik.setFieldValue("otherService", value);
   };
   return (
     <Autocomplete

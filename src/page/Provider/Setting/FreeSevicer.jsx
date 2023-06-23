@@ -11,8 +11,9 @@ import axios from "axios";
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-export default function FreeSevicer({ formik, name }) {
+export default function FreeSevicer({ formik}) {
   const [freeServices, setFreeServices] = useState([]);
+  const [selectedOptions, setSelectedOptions] = useState([]);
 
   useEffect(() => {
     axios
@@ -30,7 +31,27 @@ export default function FreeSevicer({ formik, name }) {
     title: service.name,
   }));
 
-
+  const isOptionSelected = (option) => {
+    return selectedOptions.some((service) => service.id === option.id);
+  };
+    const handleAutocompleteChange = (event, value) => {
+    if (value.length > selectedOptions.length) {
+      // Lựa chọn mới được thêm vào
+      const newlySelectedOption = value[value.length - 1];
+      if (isOptionSelected(newlySelectedOption)) {
+        // Bỏ lựa chọn nếu đã được chọn trước đó
+        const updatedOptions = selectedOptions.filter(
+          (option) => option.id !== newlySelectedOption.id
+        );
+        setSelectedOptions(updatedOptions);
+        formik.setFieldValue("freeService", updatedOptions);
+        return;
+      }
+    }
+  
+    setSelectedOptions(value);
+    formik.setFieldValue("freeService", value);
+  };
 
   return (
     <Autocomplete
@@ -40,7 +61,11 @@ export default function FreeSevicer({ formik, name }) {
       options={options}
       disableCloseOnSelect
       getOptionLabel={(option) => option.title}
-      renderOption={(props, option, { selected }) => (
+      value={selectedOptions}
+      onChange={handleAutocompleteChange}
+      renderOption={(props, option) => {
+        const selected = isOptionSelected(option);
+        return (
         <li {...props}>
           <Checkbox
             icon={icon}
@@ -50,7 +75,8 @@ export default function FreeSevicer({ formik, name }) {
           />
           {option.title}
         </li>
-      )}
+        )
+      }}
       style={{ width: 500 }}
       renderInput={(params) => (
         <TextField {...params} label="Dịch vụ miễn phí" />

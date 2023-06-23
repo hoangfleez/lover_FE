@@ -37,7 +37,8 @@ const AddProvider = () => {
       price: "",
       image: "",
       service: "",
-      selectedServices: null, // Thêm selectedServices vào initialValues
+      otherService: null, // Thêm selectedServices vào initialValues
+      freeService: null, // Thêm selectedServices vào initialValues
     },
     onSubmit: async (values) => {
       alert(JSON.stringify(values, null, 2));
@@ -51,9 +52,6 @@ const AddProvider = () => {
     },
   });
 
-  const handleSelectedServices = (selectedServices) => {
-    formik.setFieldValue("selectedServices", selectedServices);
-  };
 
   return (
     <>
@@ -78,7 +76,7 @@ const AddProvider = () => {
                 <OtherService formik={formik} />
               </Stack>
               <Stack>
-                <FreeService />
+                <FreeService  formik={formik}/>
               </Stack>
             </Stack>
           </Stack>
