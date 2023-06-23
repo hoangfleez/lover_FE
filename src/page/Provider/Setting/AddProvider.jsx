@@ -5,11 +5,11 @@ import { Button, Divider, Stack, TextField, Typography } from "@mui/material";
 import Birthday from "./Birthday";
 import NickName from "./NickName";
 import Interest from "./Interest";
-import OtherSevicer from "./OtherSevicer";
-import FreeSevicer from "./FreeSevicer";
+import OtherService from "./OtherSevicer";
+import FreeService from "./FreeSevicer";
 import Price from "./Price";
-import BasicService from "./ BasicService";
-import Describe from "./ Describe";
+import BasicService from "./BasicService";
+import Describe from "./Describe";
 import Height from "./Height";
 import Weight from "./Weight";
 
@@ -37,9 +37,11 @@ const AddProvider = () => {
       price: "",
       image: "",
       service: "",
+      selectedServices: null, // Thêm selectedServices vào initialValues
     },
     onSubmit: async (values) => {
       alert(JSON.stringify(values, null, 2));
+      console.log(JSON.stringify(values, null, 2));
       const newProvider = {
         ...values,
         user: userId,
@@ -49,37 +51,41 @@ const AddProvider = () => {
     },
   });
 
+  const handleSelectedServices = (selectedServices) => {
+    formik.setFieldValue("selectedServices", selectedServices);
+  };
+
   return (
     <>
       <Typography variant="h4" gutterBottom>
-        Cai dat dich vu
+        Cài đặt dịch vụ
       </Typography>
       <form onSubmit={formik.handleSubmit}>
         <Stack width={"45%"} gap={3}>
           <NickName formik={formik} name="name" />
           <Divider />
-          <Stack direction={"row"} spacing={4}>
+          <Stack direction={"row"} spacing={4} justifyContent={"space-between"}>
             <BasicService formik={formik} name="service" />
             <Price formik={formik} name="price" />
           </Stack>
           <Divider />
           <Stack>
             <Typography variant="subtitle2" gutterBottom>
-              Dịch vụ khác
+              Dịch vụ khác
             </Typography>
             <Stack direction={"column"} gap={2}>
               <Stack>
-                <OtherSevicer />
+                <OtherService formik={formik} />
               </Stack>
               <Stack>
-                <FreeSevicer />
+                <FreeService />
               </Stack>
             </Stack>
           </Stack>
           <Divider />
           <Birthday formik={formik} name="dob" />
           <Divider />
-          <Stack direction={"row"} spacing={2}>
+          <Stack direction={"row"} spacing={2} justifyContent={"space-between"}>
             <Height formik={formik} name="height" />
             <Weight formik={formik} name="weight" />
           </Stack>

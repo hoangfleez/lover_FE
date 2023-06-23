@@ -16,6 +16,7 @@ export default function Weight({ formik }) {
           Cân nặng
         </Typography>
         <TextField
+          placeholder="kg"
           multiline
           sx={{ width: 300 }}
           name="weight"
@@ -26,4 +27,3 @@ export default function Weight({ formik }) {
     </>
   );
 }
-

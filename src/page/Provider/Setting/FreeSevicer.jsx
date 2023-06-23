@@ -11,14 +11,13 @@ import axios from "axios";
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-export default function FreeSevicer() {
+export default function FreeSevicer({ formik, name }) {
   const [freeServices, setFreeServices] = useState([]);
 
   useEffect(() => {
     axios
       .get("http://127.0.0.1:8181/services/free")
       .then((response) => {
-        console.log(response.data.data)
         setFreeServices(response.data.data);
       })
       .catch((error) => {
@@ -28,8 +27,10 @@ export default function FreeSevicer() {
 
   const options = freeServices.map((service) => ({
     id: service.id,
-    title: service.name, // Make sure each service object has a "title" property
+    title: service.name,
   }));
+
+
 
   return (
     <Autocomplete
@@ -57,3 +58,4 @@ export default function FreeSevicer() {
     />
   );
 }
+
