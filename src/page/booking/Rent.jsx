@@ -45,7 +45,7 @@ const Rent = (props) => {
     let data = dispatch(
       addBooking({ providerId: dataProvider.id, bookingData: newRent })
     );
-    console.log(data);
+
     if (data) {
       Swal.fire({
         icon: "success",
@@ -168,9 +168,9 @@ const Rent = (props) => {
                 </Typography>
               </Grid>
             </Grid>
-            <div className="body-add-new">
-              <label className="form-label">Địa điểm</label>
-              <div className="flex-semibold text-xl py-4">
+            <Grid container rowSpacing={1}>
+              <Grid item xs={8}>Địa điểm</Grid>
+              <Grid item xs={4}>
                 <SelectAddress
                   type="province"
                   value={address.province}
@@ -189,8 +189,8 @@ const Rent = (props) => {
                   options={apiDistrict}
                   label="Quận/Huyện"
                 />
-              </div>
-            </div>
+              </Grid>
+            </Grid>
             <textarea
               name=""
               id=""

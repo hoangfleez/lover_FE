@@ -44,6 +44,15 @@ const theme = extendTheme({
       },
     },
   },
+  components: {
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          margin: 0,
+        },
+      },
+    },
+  },
 
   
 });
