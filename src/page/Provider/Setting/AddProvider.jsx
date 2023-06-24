@@ -58,11 +58,11 @@ const AddProvider = () => {
       const { freeService, mainService, otherService, ...rest } = values;
 
       const serviceArray = [...freeService, mainService, ...otherService];
-
+      const id = serviceArray.map(item => item.id)
       const newProvider = {
         ...rest,
         // user: userId,
-        service: serviceArray,
+        service: id,
       };
 
       console.log(newProvider);
