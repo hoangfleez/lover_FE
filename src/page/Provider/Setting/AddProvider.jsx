@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addProvider } from "../../../services/providerService";
 import {
   Box,
@@ -25,6 +25,7 @@ import Gender from "./Gender";
 import LinkFB from "./LinkFB";
 import AvatarProvider from "./AvatarProvider";
 import ImageUploader from "./Image";
+import { useUserProfile } from "../../../customHook/useUserProfile";
 
 const AddProvider = () => {
   const dispatch = useDispatch();
@@ -32,9 +33,9 @@ const AddProvider = () => {
   const token = localStorage.getItem("token");
   const decodedToken = JSON.parse(atob(token.split(".")[1]));
   const userId = decodedToken.idUser;
-
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
+
 
   const formik = useFormik({
     initialValues: {
@@ -48,23 +49,23 @@ const AddProvider = () => {
       weight: "",
       hobby: "",
       desc: "",
-      request: "",
       linkFB: "",
       price: "",
       image: [],
       service: [],
     },
     onSubmit: async (values) => {
-      alert(JSON.stringify(values, null, 2));
-      console.log(JSON.stringify(values, null, 2));
-      const { selectedServices, ...rest } = values;
+      const { freeService, mainService, otherService, ...rest } = values;
+
+      const serviceArray = [...freeService, mainService, ...otherService];
 
       const newProvider = {
         ...rest,
-        selectedServices,
-        user: userId,
+        // user: userId,
+        service: serviceArray,
       };
 
+      console.log(newProvider);
       await dispatch(addProvider(newProvider));
     },
   });
@@ -80,7 +81,7 @@ const AddProvider = () => {
           <NickName formik={formik} name="name" />
           <Divider />
           <Stack direction={"row"} spacing={4} justifyContent={"space-between"}>
-            <BasicService formik={formik}  />
+            <BasicService formik={formik} />
             <Price formik={formik} name="price" />
           </Stack>
           <Divider />
@@ -117,7 +118,7 @@ const AddProvider = () => {
           <Divider />
           <LinkFB formik={formik} />
           <Divider />
-          <ImageUploader formik={formik} />
+          <ImageUploader formik={formik} image={formik.values.image} />
           <Divider />
           <Interest formik={formik} name="hobby" />
           <Divider />

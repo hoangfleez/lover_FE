@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { storage } from "../../../services/firebase.js";
 import { ref, uploadBytes, getDownloadURL } from "@firebase/storage";
 import Button from "@mui/material/Button";
@@ -12,14 +12,17 @@ import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 
-
-const ImageUploader = ({formik}) => {
+const ImageUploader = ({ formik, image }) => {
   const [images, setImages] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
+
+  useEffect(() => {
+    setImages(image || []);
+  }, [image]);
 
   const handleUpload = async (event) => {
     const file = event.target.files[0];
@@ -31,7 +34,9 @@ const ImageUploader = ({formik}) => {
       if (images.length < 4) {
         await uploadBytes(fileRef, file);
         const imageUrl = await getDownloadURL(fileRef);
-        setImages((prevImages) => [...prevImages, imageUrl]);
+        const newImages = [...formik.values.image, imageUrl];
+        setImages(newImages);
+        formik.setFieldValue("image", newImages);
       } else {
         setErrorMessage("Chỉ được tải lên tối đa 4 ảnh");
         setSnackbarOpen(true);
@@ -48,7 +53,10 @@ const ImageUploader = ({formik}) => {
   };
 
   const handleDeleteImage = (index) => {
-    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
+    const newImages = [...formik.values.image];
+    newImages.splice(index, 1);
+    setImages(newImages);
+    formik.setFieldValue("image", newImages);
     setDialogOpen(false);
   };
 
@@ -63,7 +71,9 @@ const ImageUploader = ({formik}) => {
   return (
     <>
       <label htmlFor="upload-input">
-        <Button variant="contained" component="span">Tải lên</Button>
+        <Button variant="contained" component="span">
+          Tải lên
+        </Button>
       </label>
       <Input
         type="file"
@@ -86,7 +96,12 @@ const ImageUploader = ({formik}) => {
           <Card
             key={index}
             onClick={() => handleImageClick(index)}
-            sx={{ width: 150, height: 150, cursor: "pointer", ...(selectedIndex === index && { backgroundColor: "lightblue" }) }}
+            sx={{
+              width: 150,
+              height: 150,
+              cursor: "pointer",
+              ...(selectedIndex === index && { backgroundColor: "lightblue" }),
+            }}
           >
             <CardMedia component="img" src={image} alt={`Image ${index}`} />
           </Card>
