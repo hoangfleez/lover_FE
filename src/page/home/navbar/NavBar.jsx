@@ -20,8 +20,9 @@ import UserIcons from "../../user/UserIcons";
 import PersonIcon from "@mui/icons-material/Person";
 import BasicModal from "../../user/Modal";
 import {searchProviders} from "../../../services/providerService.js";
-import { useNavigate } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import { clearLocalStorage } from "../../../utils";
+
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -63,6 +64,7 @@ export default function NavBar() {
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState('')
   const handleOpen = () => setOpen(true);
+
 
   const goHome = () =>{
     clearLocalStorage()
@@ -111,7 +113,10 @@ noWrap
             />
             <SearchIcon onClick={handleSearch}/>
           </Search>
+
           <Box sx={{ flexGrow: 1 }} />
+          <Link to={"/order"}>don thue</Link> &emsp
+          <Link to={"/pendingProvider"}>don thue CCDV</Link>
           <Box
             sx={{
               display: { xs: "none", md: "flex" },

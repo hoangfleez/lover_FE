@@ -1,9 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {addBooking} from "../../services/bookingService.js";
+import {
+    acceptBooking,
+    acceptListBooking,
+    addBooking,
+    detailBooking, detailBookingProvider,
+    pendingListBookingProvider, rejectBooking,
+    rentalListBooking
+} from "../../services/bookingService.js";
 import {apiGetDistrict, apiGetProvinces} from "../../services/googleMapService.js";
 
 const initialState = {
     booking: [],
+    detail: {},
     apiG: {},
     apiGoogle:{},
 };
@@ -22,6 +30,34 @@ const bookingSlice = createSlice({
 
         builder.addCase(apiGetDistrict.fulfilled, (state, action) => {
             state.apiGoogle = action.payload;
+        });
+
+        builder.addCase(rentalListBooking.fulfilled, (state, action) => {
+            state.booking = action.payload;
+        });
+
+        builder.addCase(detailBooking.fulfilled, (state, action) => {
+            state.detail = action.payload;
+        });
+
+        builder.addCase(detailBookingProvider.fulfilled, (state, action) => {
+            state.detail = action.payload;
+        });
+
+        builder.addCase(acceptListBooking.fulfilled, (state, action) => {
+            state.booking = action.payload;
+        });
+
+        builder.addCase(pendingListBookingProvider.fulfilled, (state, action) => {
+            state.booking = action.payload;
+        });
+
+        builder.addCase(acceptBooking.fulfilled, (state, action) => {
+            state.detail = action.payload;
+        });
+
+        builder.addCase(rejectBooking.fulfilled, (state, action) => {
+            state.detail = action.payload;
         });
     }
 });
