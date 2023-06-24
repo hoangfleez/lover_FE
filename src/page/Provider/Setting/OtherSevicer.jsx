@@ -28,6 +28,7 @@ export default function OtherService({ formik }) {
   const options = moreServices.map((service) => ({
     id: service.id,
     title: service.name,
+    type: service.type.id
   }));
 
   const isOptionSelected = (option) => {

@@ -29,6 +29,7 @@ export default function FreeSevicer({ formik}) {
   const options = freeServices.map((service) => ({
     id: service.id,
     title: service.name,
+    type: service.type.id
   }));
 
   const isOptionSelected = (option) => {

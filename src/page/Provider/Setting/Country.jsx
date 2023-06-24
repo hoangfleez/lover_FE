@@ -3,20 +3,20 @@ import { Country, City } from "country-state-city";
 import {
   Grid,
   FormControl,
-  InputLabel,
   Select,
   MenuItem,
   Typography,
 } from "@mui/material";
 
-const CountryAndCityComponent = () => {
-  const [selectedCountry, setSelectedCountry] = useState("");
+const CountryAndCityComponent = ({ formik, selectedCountry, setSelectedCountry, selectedCity, setSelectedCity }) => {
   const [cityData, setCityData] = useState([]);
 
   const handleCountryChange = (event) => {
     const countryCode = event.target.value;
     setSelectedCountry(countryCode);
     setCityData(City.getCitiesOfCountry(countryCode));
+    setSelectedCity("");
+    formik.handleChange(event); // Call formik.handleChange to update formik values
   };
 
   const countryData = Country.getAllCountries().map((country) => ({
@@ -24,17 +24,23 @@ const CountryAndCityComponent = () => {
     displayValue: country.name,
   }));
 
+  const handleCityChange = (event) => {
+    setSelectedCity(event.target.value);
+    formik.handleChange(event); // Call formik.handleChange to update formik values
+  };
+
   return (
     <Grid container spacing={4}>
       <Grid item xs={6}>
         <Typography variant="subtitle2" gutterBottom>
-          Quốc gia
+          Quốc gia
         </Typography>
         <FormControl fullWidth>
           <Select
             labelId="country-label"
             value={selectedCountry}
             onChange={handleCountryChange}
+            name="country" // Set the name attribute for formik to recognize
           >
             {countryData.map((option, index) => (
               <MenuItem key={index} value={option.value}>
@@ -48,10 +54,15 @@ const CountryAndCityComponent = () => {
       {selectedCountry && (
         <Grid item xs={6}>
           <Typography variant="subtitle2" gutterBottom>
-            Thành phố
+            Thành phố
           </Typography>
           <FormControl fullWidth>
-            <Select labelId="city-label">
+            <Select
+              labelId="city-label"
+              value={selectedCity}
+              onChange={handleCityChange}
+              name="city" // Set the name attribute for formik to recognize
+            >
               {cityData.map((option, index) => (
                 <MenuItem key={index} value={option.name}>
                   {option.name}
