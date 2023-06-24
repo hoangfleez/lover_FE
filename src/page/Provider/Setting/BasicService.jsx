@@ -3,7 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 export default function BasicService({ formik }) {
-  const { value } = formik.values;
+  const { service } = formik.values;
   const [services, setServices] = useState([]);
 
   useEffect(() => {
@@ -23,13 +23,18 @@ export default function BasicService({ formik }) {
     formik.setFieldValue("service", newValue || "");
   };
 
+  const isOptionEqualToValue = (option, value) => {
+    return option === value || option?.name === value?.name;
+  };
+
   return (
     <Autocomplete
       disablePortal
-      id="combo-box-demo"
-      options={options || []} // Provide a default empty array if services is falsy
-      value={value}
+      id="basic-service-autocomplete"
+      options={options}
+      value={service}
       onChange={handleServiceChange}
+      isOptionEqualToValue={isOptionEqualToValue}
       sx={{ width: 300 }}
       renderInput={(params) => <TextField {...params} label="Dịch vụ" />}
     />

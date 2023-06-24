@@ -12,6 +12,9 @@ import BasicService from "./BasicService";
 import Describe from "./Describe";
 import Height from "./Height";
 import Weight from "./Weight";
+import CountryAndStateCityComponent from "./Country";
+
+
 
 const AddProvider = () => {
   const dispatch = useDispatch();
@@ -36,22 +39,27 @@ const AddProvider = () => {
       linkFB: "",
       price: "",
       image: "",
-      service: "",
-      otherService: null, // Thêm selectedServices vào initialValues
-      freeService: null, // Thêm selectedServices vào initialValues
+      selectedServices: {
+        // Combined field
+        service: "",
+        otherService: null,
+        freeService: null,
+      },
     },
     onSubmit: async (values) => {
       alert(JSON.stringify(values, null, 2));
       console.log(JSON.stringify(values, null, 2));
+      const { selectedServices, ...rest } = values;
+
       const newProvider = {
-        ...values,
+        ...rest,
+        selectedServices,
         user: userId,
       };
 
       await dispatch(addProvider(newProvider));
     },
   });
-
 
   return (
     <>
@@ -63,7 +71,7 @@ const AddProvider = () => {
           <NickName formik={formik} name="name" />
           <Divider />
           <Stack direction={"row"} spacing={4} justifyContent={"space-between"}>
-            <BasicService formik={formik} name="service" />
+            <BasicService formik={formik} name="selectedServices.service" />
             <Price formik={formik} name="price" />
           </Stack>
           <Divider />
@@ -76,12 +84,14 @@ const AddProvider = () => {
                 <OtherService formik={formik} />
               </Stack>
               <Stack>
-                <FreeService  formik={formik}/>
+                <FreeService formik={formik} />
               </Stack>
             </Stack>
           </Stack>
           <Divider />
           <Birthday formik={formik} name="dob" />
+          <Divider />
+          <CountryAndStateCityComponent />
           <Divider />
           <Stack direction={"row"} spacing={2} justifyContent={"space-between"}>
             <Height formik={formik} name="height" />
