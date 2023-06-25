@@ -11,14 +11,14 @@ import axios from "axios";
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-export default function FreeSevicer() {
+export default function FreeSevicer({ formik}) {
   const [freeServices, setFreeServices] = useState([]);
+  const [selectedOptions, setSelectedOptions] = useState([]);
 
   useEffect(() => {
     axios
       .get("http://127.0.0.1:8181/services/free")
       .then((response) => {
-        console.log(response.data.data)
         setFreeServices(response.data.data);
       })
       .catch((error) => {
@@ -28,8 +28,31 @@ export default function FreeSevicer() {
 
   const options = freeServices.map((service) => ({
     id: service.id,
-    title: service.name, // Make sure each service object has a "title" property
+    title: service.name,
+    type: service.type.id
   }));
+
+  const isOptionSelected = (option) => {
+    return selectedOptions.some((service) => service.id === option.id);
+  };
+    const handleAutocompleteChange = (event, value) => {
+    if (value.length > selectedOptions.length) {
+      // Lựa chọn mới được thêm vào
+      const newlySelectedOption = value[value.length - 1];
+      if (isOptionSelected(newlySelectedOption)) {
+        // Bỏ lựa chọn nếu đã được chọn trước đó
+        const updatedOptions = selectedOptions.filter(
+          (option) => option.id !== newlySelectedOption.id
+        );
+        setSelectedOptions(updatedOptions);
+        formik.setFieldValue("freeService", updatedOptions);
+        return;
+      }
+    }
+  
+    setSelectedOptions(value);
+    formik.setFieldValue("freeService", value);
+  };
 
   return (
     <Autocomplete
@@ -39,7 +62,11 @@ export default function FreeSevicer() {
       options={options}
       disableCloseOnSelect
       getOptionLabel={(option) => option.title}
-      renderOption={(props, option, { selected }) => (
+      value={selectedOptions}
+      onChange={handleAutocompleteChange}
+      renderOption={(props, option) => {
+        const selected = isOptionSelected(option);
+        return (
         <li {...props}>
           <Checkbox
             icon={icon}
@@ -49,7 +76,8 @@ export default function FreeSevicer() {
           />
           {option.title}
         </li>
-      )}
+        )
+      }}
       style={{ width: 500 }}
       renderInput={(params) => (
         <TextField {...params} label="Dịch vụ miễn phí" />
@@ -57,3 +85,4 @@ export default function FreeSevicer() {
     />
   );
 }
+

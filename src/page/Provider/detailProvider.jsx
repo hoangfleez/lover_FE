@@ -5,6 +5,7 @@ import { getProviderDetail } from "../../services/providerService";
 import {
   Box,
   Button,
+  Card,
   CardMedia,
   Chip,
   Container,
@@ -27,7 +28,7 @@ const DetailProvider = () => {
   const detailProviderDetail = useSelector((state) => {
     return state.provider.showOneProvider;
   });
-
+  console.log(detailProviderDetail);
 
   const handleClose = () => {
     setShowRent(false);
@@ -72,10 +73,10 @@ const DetailProvider = () => {
             <CardMedia
               component="img"
               sx={{ width: 250, height: 250, borderRadius: 5 }}
-              image={detailProviderDetail.avatar}
+              image={detailProviderDetail.avatarProvider}
               alt="Avatar"
             />
-            {detailProviderDetail.ready == "on" ? (
+            {detailProviderDetail.ready == "1" ? (
               <Typography variant="h5" gutterBottom sx={{ color: "green" }}>
                 Đang sẵn sàng
               </Typography>
@@ -91,6 +92,14 @@ const DetailProvider = () => {
             <Typography variant="button" display="block" gutterBottom>
               NGÀY THAM GIA:
               {moment(detailProviderDetail.joinDate).format("DD/MM/YYYY")}
+            </Typography>
+            <Typography variant="body2">
+              {" "}
+              Quốc tịch: {detailProviderDetail.country}
+            </Typography>
+            <Typography variant="body2">
+              {" "}
+              Nơi ở: {detailProviderDetail.city}
             </Typography>
           </Box>
           <Box sx={{ width: "60%", padding: "0 10px" }}>
@@ -114,51 +123,97 @@ const DetailProvider = () => {
             <Box>
               Dịch vụ chính
               <Stack direction="row" p={2}>
-                <Chip label="Chip Filled" />
+                {detailProviderDetail?.serviceProviders?.map(
+                  (service, serviceKey) => {
+                    return service.service.type.id === 1 ? (
+                      <Chip
+                        key={serviceKey}
+                        label={service.service.name}
+                        color="primary"
+                      />
+                    ) : null;
+                  }
+                )}
               </Stack>
             </Box>
             <Box>
               Dịch vụ mở rộng
               <Stack direction="row" spacing={1} p={2}>
-                <Chip label="Chip Filled" />
-                <Chip label="Chip Outlined" variant="outlined" />
+                {detailProviderDetail?.serviceProviders?.map(
+                  (service, serviceKey) => {
+                    if (service.service.type.id === 2) {
+                      return (
+                        <Chip key={serviceKey} label={service.service.name} />
+                      );
+                    } else if (service.service.type.id === 3) {
+                      return (
+                        <Chip
+                          key={serviceKey}
+                          label={service.service.name}
+                          variant="outlined"
+                        />
+                      );
+                    } else {
+                      return null
+                    }
+                  }
+                )}
               </Stack>
             </Box>
             <Divider />
             <Box p={1}>
-              <Typography variant="h5">Thông tin</Typography>
-              <Typography variant="body2">
-                {detailProviderDetail.desc}
-              </Typography>
-              <Box
-                sx={{ width: "100%", height: "150px", border: "1px solid red" }}
-              >
-                nơi chứa ảnh tự sướng
-              </Box>
-              <Typography variant="body2">
-                {" "}
-                Giới tính: {detailProviderDetail.sex}
-              </Typography>
-              <Typography variant="body2">
-                {" "}
-                Sinh nhật: {detailProviderDetail.dob}
-              </Typography>
-              <Typography variant="body2">
-                {" "}
-                Quốc tịch: {detailProviderDetail.country}
-              </Typography>
-              <Typography variant="body2">
-                {" "}
-                Sở thích: {detailProviderDetail.hobby}
-              </Typography>
-              <Typography variant="body2">
-                {" "}
-                Chiều cao: {detailProviderDetail.height}
-              </Typography>
-              <Typography variant="body2">
-                {" "}
-                Cân nặng: {detailProviderDetail.weight}
-              </Typography>
+              <Stack gap={1}>
+                <Typography variant="h5">Thông tin</Typography>
+                <Typography variant="body2">
+                  - Mô tả: {detailProviderDetail.desc}
+                </Typography>
+                <Box
+                  sx={{
+                    width: "100%",
+                    height: "150px",
+                    display: "flex",
+                  }}
+                >
+                  {detailProviderDetail?.images?.map((image, index) => (
+                    <Card
+                      key={index}
+                      sx={{
+                        width: 150,
+                        height: 150,
+                        cursor: "pointer",
+                        marginRight: "10px",
+                      }}
+                    >
+                      <CardMedia
+                        component="img"
+                        src={image}
+                        sx={{ height: 150 }}
+                      />
+                    </Card>
+                  ))}
+                </Box>
+                <Typography variant="body2">
+                  {" "}
+                  - Giới tính: {detailProviderDetail.sex}
+                </Typography>
+                <Typography variant="body2">
+                  {" "}
+                  - Sinh nhật: {detailProviderDetail.dob}
+                </Typography>
+
+                <Typography variant="body2">
+                  {" "}
+                  - Sở thích: {detailProviderDetail.hobby}
+                </Typography>
+                <Typography variant="body2">
+                  {" "}
+                  - Chiều cao: {detailProviderDetail.height}
+                </Typography>
+                <Typography variant="body2">
+                  {" "}
+                  - Cân nặng: {detailProviderDetail.weight}
+                </Typography>
+              </Stack>
             </Box>
             <Divider />
             <Evaluate />

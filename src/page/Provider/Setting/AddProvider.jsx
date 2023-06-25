@@ -1,17 +1,31 @@
 import { useFormik } from "formik";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addProvider } from "../../../services/providerService";
-import { Button, Divider, Stack, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import Birthday from "./Birthday";
 import NickName from "./NickName";
 import Interest from "./Interest";
-import OtherSevicer from "./OtherSevicer";
-import FreeSevicer from "./FreeSevicer";
+import OtherService from "./OtherSevicer";
+import FreeService from "./FreeSevicer";
 import Price from "./Price";
-import BasicService from "./ BasicService";
-import Describe from "./ Describe";
+import BasicService from "./BasicService";
+import Describe from "./Describe";
 import Height from "./Height";
 import Weight from "./Weight";
+import CountryAndCityComponent from "./Country";
+import { useState } from "react";
+import Gender from "./Gender";
+import LinkFB from "./LinkFB";
+import AvatarProvider from "./AvatarProvider";
+import ImageUploader from "./Image";
+import { useUserProfile } from "../../../customHook/useUserProfile";
 
 const AddProvider = () => {
   const dispatch = useDispatch();
@@ -19,6 +33,9 @@ const AddProvider = () => {
   const token = localStorage.getItem("token");
   const decodedToken = JSON.parse(atob(token.split(".")[1]));
   const userId = decodedToken.idUser;
+  const [selectedCountry, setSelectedCountry] = useState("");
+  const [selectedCity, setSelectedCity] = useState("");
+
 
   const formik = useFormik({
     initialValues: {
@@ -32,57 +49,76 @@ const AddProvider = () => {
       weight: "",
       hobby: "",
       desc: "",
-      request: "",
       linkFB: "",
       price: "",
-      image: "",
-      service: "",
+      image: [],
+      service: [],
     },
     onSubmit: async (values) => {
-      alert(JSON.stringify(values, null, 2));
+      const { freeService, mainService, otherService, ...rest } = values;
+
+      const serviceArray = [...freeService, mainService, ...otherService];
+      const id = serviceArray.map(item => item.id)
       const newProvider = {
-        ...values,
-        user: userId,
+        ...rest,
+        // user: userId,
+        service: id,
       };
 
+      console.log(newProvider);
       await dispatch(addProvider(newProvider));
     },
   });
 
   return (
-    <>
+    <Box>
       <Typography variant="h4" gutterBottom>
-        Cai dat dich vu
+        Cài đặt dịch vụ
       </Typography>
       <form onSubmit={formik.handleSubmit}>
         <Stack width={"45%"} gap={3}>
+          <AvatarProvider formik={formik} />
           <NickName formik={formik} name="name" />
           <Divider />
-          <Stack direction={"row"} spacing={4}>
-            <BasicService formik={formik} name="service" />
+          <Stack direction={"row"} spacing={4} justifyContent={"space-between"}>
+            <BasicService formik={formik} />
             <Price formik={formik} name="price" />
           </Stack>
           <Divider />
           <Stack>
             <Typography variant="subtitle2" gutterBottom>
-              Dịch vụ khác
+              Dịch vụ khác
             </Typography>
             <Stack direction={"column"} gap={2}>
               <Stack>
-                <OtherSevicer />
+                <OtherService formik={formik} />
               </Stack>
               <Stack>
-                <FreeSevicer />
+                <FreeService formik={formik} />
               </Stack>
             </Stack>
           </Stack>
           <Divider />
           <Birthday formik={formik} name="dob" />
           <Divider />
-          <Stack direction={"row"} spacing={2}>
+          <CountryAndCityComponent
+            formik={formik}
+            selectedCountry={selectedCountry}
+            setSelectedCountry={setSelectedCountry}
+            selectedCity={selectedCity}
+            setSelectedCity={setSelectedCity}
+          />
+          <Divider />
+          <Stack direction={"row"} spacing={2} justifyContent={"space-between"}>
             <Height formik={formik} name="height" />
             <Weight formik={formik} name="weight" />
           </Stack>
+          <Divider />
+          <Gender formik={formik} />
+          <Divider />
+          <LinkFB formik={formik} />
+          <Divider />
+          <ImageUploader formik={formik} image={formik.values.image} />
           <Divider />
           <Interest formik={formik} name="hobby" />
           <Divider />
@@ -93,7 +129,7 @@ const AddProvider = () => {
           </Button>
         </Stack>
       </form>
-    </>
+    </Box>
   );
 };
 

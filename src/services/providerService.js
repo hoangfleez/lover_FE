@@ -19,6 +19,7 @@ export const addProvider = createAsyncThunk(
   async (provider) => {
     try {
       const res = await customAPI().post("providers", provider);
+      console.log(res.data);
       return res.data;
     } catch (err) {
       return err.response.data.payload;
