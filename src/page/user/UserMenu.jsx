@@ -148,8 +148,8 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
         Tạo khóa bảo vệ
       </MenuItem>
 
-      <MenuItem>
-        <ListItemIcon>
+      <MenuItem onClick={() => navigate("/accept")}>
+        <ListItemIcon >
           <WatchLaterIcon fontSize="small" />
         </ListItemIcon>
         Lịch sử giao dịch

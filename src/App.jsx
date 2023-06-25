@@ -12,6 +12,9 @@ import ShowAccountUser from "./page/admin/ShowAccountUser.jsx";
 import AdvanceSetting from "./page/Provider/AdvanceSetting";
 import ServiceSetting from "./page/Provider/ServiceSetting";
 import HomeAdmin from "./page/admin/AdminPage";
+import Order from "./page/booking/Order.jsx";
+import OrderAccept from "./page/booking/OrderAccept.jsx";
+import OrderPendingProvider from "./page/booking/OrderPendingProvider.jsx";
 
 function App() {
   return (
@@ -32,6 +35,9 @@ function App() {
           <Route path="detail-provider/:id" element={<DetailProvider />} />
           <Route path="admin" element={<HomeAdmin />} />
           <Route path="user" element={<ShowAccountUser />} />
+          <Route path="order" element={<Order />} />
+          <Route path="accept" element={<OrderAccept />} />
+          <Route path="pendingProvider" element={<OrderPendingProvider />} />
         </Route>
       </Routes>
     </>
