@@ -35,8 +35,8 @@ const Order = () => {
                         <th>Trạng thái</th>
                         <th>Tổng tiền</th>
                     </tr>
-                    {rental &&
-                        rental.map((item) => (
+                    {
+                        rental?.map((item) => (
                             <tr key={item.id}>
                                 <td>{item.address}</td>
                                 <td>{item.hour}</td>

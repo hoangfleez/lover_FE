@@ -6,10 +6,12 @@ export default function Price({ formik }) {
 
   return (
     <Stack>
+      <Typography variant="subtitle2" gutterBottom>
+        Giá
+      </Typography>
       <TextField
         fullWidth
         multiline
-        label="Giá"
         name="price"
         value={values.price}
         onChange={handleChange}

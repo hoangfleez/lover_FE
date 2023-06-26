@@ -17,7 +17,7 @@ export default function Extended({ setService }) {
         dispatch(getServiceProvider(serviceId))
     };
     const abc = useSelector((state) => {
-        console.log(state,666)
+
         // state.type.type
     });
 

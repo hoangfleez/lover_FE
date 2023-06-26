@@ -43,7 +43,9 @@ export default function AvatarProvider({ formik }) {
     setFile(selectedFile);
 
     if (selectedFile) {
-      handleUpload(selectedFile);
+      setTimeout(() => {
+        handleUpload(selectedFile);
+      }, 0);
     }
   };
 
@@ -66,7 +68,6 @@ export default function AvatarProvider({ formik }) {
             setUploading(false);
             setUploadDisabled(false);
             formik.setFieldValue("avatarProvider", url);
-            // Thay đổi hình ảnh hiển thị thành ảnh đã tải lên
             setAvatarUrl(url);
           })
           .catch((error) => {
@@ -98,17 +99,20 @@ export default function AvatarProvider({ formik }) {
           <UploadMedia
             component="img"
             alt="Uploaded Image"
-            image={file ? URL.createObjectURL(file) : avatarUrl}
+            image={
+              file
+                ? URL.createObjectURL(file)
+                : formik.values.avatarProvider || avatarUrl
+            }
           />
           {file && (
             <UploadButton
               variant="contained"
               color="primary"
-              onClick={handleUpload}
+              onClick={() => handleUpload(file)}
               disabled={uploading || uploadDisabled}
             >
               {uploading && <CircularProgress size={20} />}
-              Upload
             </UploadButton>
           )}
         </UploadCard>

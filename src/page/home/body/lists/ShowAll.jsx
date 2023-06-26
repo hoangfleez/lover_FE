@@ -18,9 +18,10 @@ export default function ShowAll() {
   const [totalPage, setTotalPage] = useState(0);
 
   const showProvider = useSelector((state) => {
+
     return state.provider.listProvider;
   });
-  console.log(showProvider)
+
 
   useEffect(() => {
     dispatch(getProvider());
@@ -42,7 +43,7 @@ export default function ShowAll() {
       >
         {showProvider &&
           showProvider.map((item, key) => {
-            console.log(item.serviceProviders, 9999);
+
 
             return (
               <Card

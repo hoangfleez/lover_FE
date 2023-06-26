@@ -4,16 +4,17 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
+import { Stack, Typography } from "@mui/material";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-export default function FreeSevicer({ formik}) {
+export default function FreeService({ formik }) {
   const [freeServices, setFreeServices] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState([]);
+  const [isDefaultSet, setIsDefaultSet] = useState(false);
 
   useEffect(() => {
     axios
@@ -29,60 +30,60 @@ export default function FreeSevicer({ formik}) {
   const options = freeServices.map((service) => ({
     id: service.id,
     title: service.name,
-    type: service.type.id
+    type: service.type.id,
   }));
 
   const isOptionSelected = (option) => {
     return selectedOptions.some((service) => service.id === option.id);
   };
-    const handleAutocompleteChange = (event, value) => {
-    if (value.length > selectedOptions.length) {
-      // Lựa chọn mới được thêm vào
-      const newlySelectedOption = value[value.length - 1];
-      if (isOptionSelected(newlySelectedOption)) {
-        // Bỏ lựa chọn nếu đã được chọn trước đó
-        const updatedOptions = selectedOptions.filter(
-          (option) => option.id !== newlySelectedOption.id
-        );
-        setSelectedOptions(updatedOptions);
-        formik.setFieldValue("freeService", updatedOptions);
-        return;
-      }
-    }
-  
+
+  const handleAutocompleteChange = (event, value) => {
     setSelectedOptions(value);
-    formik.setFieldValue("freeService", value);
+    formik.setFieldValue("freeService",  value.map((option) => option.id));
   };
 
+  useEffect(() => {
+    if (!isDefaultSet && options.length > 0) {
+      const defaultServices = options.filter((option) => option.type === 2);
+      if (defaultServices) {
+        setSelectedOptions([defaultServices]);
+        formik.setFieldValue("freeService", [defaultServices.id]);
+        setIsDefaultSet(true);
+      }
+    }
+  }, [options, isDefaultSet, formik]);
+
   return (
-    <Autocomplete
-      sx={{ width: 300 }}
-      multiple
-      id="checkboxes-tags-demo"
-      options={options}
-      disableCloseOnSelect
-      getOptionLabel={(option) => option.title}
-      value={selectedOptions}
-      onChange={handleAutocompleteChange}
-      renderOption={(props, option) => {
-        const selected = isOptionSelected(option);
-        return (
-        <li {...props}>
-          <Checkbox
-            icon={icon}
-            checkedIcon={checkedIcon}
-            style={{ marginRight: 8 }}
-            checked={selected}
-          />
-          {option.title}
-        </li>
-        )
-      }}
-      style={{ width: 500 }}
-      renderInput={(params) => (
-        <TextField {...params} label="Dịch vụ miễn phí" />
-      )}
-    />
+    <Stack>
+      <Typography variant="subtitle2" gutterBottom>
+        Dịch vụ miễn phí
+      </Typography>
+      <Autocomplete
+        sx={{ width: 300 }}
+        multiple
+        id="checkboxes-tags-demo"
+        options={options}
+        disableCloseOnSelect
+        getOptionLabel={(option) => option.title}
+        value={selectedOptions}
+        onChange={handleAutocompleteChange}
+        renderOption={(props, option) => {
+          const selected = isOptionSelected(option);
+          return (
+            <li {...props}>
+              <Checkbox
+                icon={icon}
+                checkedIcon={checkedIcon}
+                style={{ marginRight: 8 }}
+                checked={selected}
+              />
+              {option.title}
+            </li>
+          );
+        }}
+        style={{ width: 500 }}
+        renderInput={(params) => <TextField {...params} />}
+      />
+    </Stack>
   );
 }
-

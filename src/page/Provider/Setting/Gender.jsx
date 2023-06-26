@@ -6,8 +6,7 @@ import FormControl from "@mui/material/FormControl";
 import { Stack, Typography } from "@mui/material";
 
 export default function Gender({ formik }) {
-  const [value, setValue] = React.useState("Nam");
-
+  console.log(formik)
   const handleChange = (event) => {
     formik.setFieldValue("sex", event.target.value);
   };
@@ -15,14 +14,14 @@ export default function Gender({ formik }) {
   return (
     <Stack>
       <Typography variant="subtitle2" gutterBottom>
-        Giới tính
+        Giới tính
       </Typography>
       <FormControl>
         <RadioGroup
           row
           aria-labelledby="demo-controlled-radio-buttons-group"
           name="controlled-radio-buttons-group"
-          value={formik.values.sex} // Sửa đổi giá trị này
+          value={formik.values.sex}
           onChange={handleChange}
         >
           <FormControlLabel value="Nam" control={<Radio />} label="Nam" />

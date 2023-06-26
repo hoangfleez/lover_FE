@@ -1,6 +1,7 @@
-import { Autocomplete, TextField } from "@mui/material";
+import { Autocomplete, TextField, Typography } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Stack } from "react-bootstrap";
 
 export default function BasicService({ formik }) {
   const [services, setServices] = useState([]);
@@ -20,30 +21,44 @@ export default function BasicService({ formik }) {
   const options = services.map((service) => ({
     id: service.id,
     title: service.name,
-    type: service.type.id
+    type: service.type.id,
   }));
+
   const isOptionEqualToValue = (option, value) => {
     return option?.id === value?.id;
   };
 
   const handleServiceChange = (_, newValue) => {
-    setSelectedService(newValue);
-    formik.setFieldValue("mainService", newValue ? newValue : "");
+    if (newValue !== selectedService) {
+      setSelectedService(newValue);
+      formik.setFieldValue("mainService", newValue ? newValue : "");
+    }
   };
 
-
+  useEffect(() => {
+    const defaultService = options.find((option) => option.type === 1);
+    if (defaultService && !selectedService) {
+      setSelectedService(defaultService);
+      formik.setFieldValue("mainService", defaultService);
+    }
+  }, [options, selectedService, formik]);
 
   return (
-    <Autocomplete
-      disablePortal
-      id="basic-service-autocomplete"
-      options={options}
-      value={selectedService}
-      onChange={handleServiceChange}
-      getOptionLabel={(option) => option.title}
-      isOptionEqualToValue={isOptionEqualToValue}
-      sx={{ width: 300 }}
-      renderInput={(params) => <TextField {...params} label="Dịch vụ" />}
-    />
+    <Stack>
+      <Typography variant="subtitle2" gutterBottom>
+        Dịch vụ
+      </Typography>
+      <Autocomplete
+        disablePortal
+        id="basic-service-autocomplete"
+        options={options}
+        value={selectedService}
+        onChange={handleServiceChange}
+        getOptionLabel={(option) => option.title}
+        isOptionEqualToValue={isOptionEqualToValue}
+        sx={{ width: 300 }}
+        renderInput={(params) => <TextField {...params} />}
+      />
+    </Stack>
   );
 }

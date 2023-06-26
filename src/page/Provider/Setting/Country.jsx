@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Country, City } from "country-state-city";
 import {
   Grid,
@@ -8,8 +8,20 @@ import {
   Typography,
 } from "@mui/material";
 
-const CountryAndCityComponent = ({ formik, selectedCountry, setSelectedCountry, selectedCity, setSelectedCity }) => {
+const CountryAndCityComponent = ({ formik }) => {
+  const [selectedCountry, setSelectedCountry] = useState("");
+  const [selectedCity, setSelectedCity] = useState("");
   const [cityData, setCityData] = useState([]);
+
+  useEffect(() => {
+    if (formik.values.country) {
+      setSelectedCountry(formik.values.country);
+      setCityData(City.getCitiesOfCountry(formik.values.country));
+    }
+    if (formik.values.city) {
+      setSelectedCity(formik.values.city);
+    }
+  }, [formik.values.country, formik.values.city]);
 
   const handleCountryChange = (event) => {
     const countryCode = event.target.value;

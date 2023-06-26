@@ -2,10 +2,7 @@ import { Stack, TextField, Typography } from "@mui/material";
 import React from "react";
 
 export default function LinkFB({ formik }) {
-
-  const handleInputChange = (event) => {
-    formik.setFieldValue("linkFB", event.target.value)
-  };
+  const { values,handleChange } = formik;
 
   return (
     <Stack>
@@ -15,7 +12,8 @@ export default function LinkFB({ formik }) {
       <TextField
         fullWidth
         multiline
-        onChange={handleInputChange}
+        value={values?.linkFB}
+        onChange={handleChange}
       />
     </Stack>
   );

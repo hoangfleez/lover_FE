@@ -2,13 +2,7 @@ import { Stack, TextField, Typography } from "@mui/material";
 import React from "react";
 
 export default function Height({ formik }) {
-  const { values } = formik;
-
-  const handleInputChange = (event) => {
-    const newValue = event.target.value;
-    formik.setFieldValue("height", newValue);
-  };
-
+  const { values,handleChange } = formik;
   return (
     <>
       <Stack>
@@ -21,7 +15,7 @@ export default function Height({ formik }) {
           placeholder="cm"
           name="height"
           value={values.height}
-          onChange={handleInputChange}
+          onChange={handleChange}
         />
       </Stack>
     </>

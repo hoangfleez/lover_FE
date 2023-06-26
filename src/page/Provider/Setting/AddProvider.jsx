@@ -1,14 +1,10 @@
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { addProvider } from "../../../services/providerService";
 import {
-  Box,
-  Button,
-  Divider,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+  addProvider,
+  showProviderByUser,
+} from "../../../services/providerService";
+import { Box, Button, Divider, Stack, Typography } from "@mui/material";
 import Birthday from "./Birthday";
 import NickName from "./NickName";
 import Interest from "./Interest";
@@ -20,12 +16,11 @@ import Describe from "./Describe";
 import Height from "./Height";
 import Weight from "./Weight";
 import CountryAndCityComponent from "./Country";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Gender from "./Gender";
 import LinkFB from "./LinkFB";
 import AvatarProvider from "./AvatarProvider";
 import ImageUploader from "./Image";
-import { useUserProfile } from "../../../customHook/useUserProfile";
 
 const AddProvider = () => {
   const dispatch = useDispatch();
@@ -36,36 +31,44 @@ const AddProvider = () => {
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
 
+  const profile = useSelector((state) => {
+    return state.provider.showOneProvider;
+  });
+  console.log(profile);
+
+  useEffect(() => {
+    dispatch(showProviderByUser());
+  }, [dispatch]);
 
   const formik = useFormik({
+    enableReinitialize: true, // Cho phép sử dụng lại giá trị ban đầu khi initialValues thay đổi
     initialValues: {
-      name: "",
-      dob: "",
-      sex: "",
-      city: "",
-      country: "",
-      avatarProvider: "",
-      height: "",
-      weight: "",
-      hobby: "",
-      desc: "",
-      linkFB: "",
-      price: "",
-      image: [],
-      service: [],
+      name: profile ? profile.name : "", // Sử dụng dữ liệu từ profile nếu có
+      dob: profile ? profile.dob : "",
+      sex: profile ? profile.sex : "",
+      city: profile ? profile.city : "",
+      country: profile ? profile.country : "",
+      avatarProvider: profile ? profile.avatarProvider : "",
+      height: profile ? profile.height : "",
+      weight: profile ? profile.weight : "",
+      hobby: profile ? profile.hobby : "",
+      desc: profile ? profile.desc : "",
+      linkFB: profile ? profile.linkFB : "",
+      price: profile ? profile.price : "",
+      image: profile ? profile.images :[],
+      service: profile ? profile.serviceProviders :[],
     },
     onSubmit: async (values) => {
       const { freeService, mainService, otherService, ...rest } = values;
 
       const serviceArray = [...freeService, mainService, ...otherService];
-      const id = serviceArray.map(item => item.id)
+      const id = serviceArray.map((item) => item.id);
       const newProvider = {
         ...rest,
         // user: userId,
         service: id,
       };
 
-      console.log(newProvider);
       await dispatch(addProvider(newProvider));
     },
   });
@@ -86,9 +89,6 @@ const AddProvider = () => {
           </Stack>
           <Divider />
           <Stack>
-            <Typography variant="subtitle2" gutterBottom>
-              Dịch vụ khác
-            </Typography>
             <Stack direction={"column"} gap={2}>
               <Stack>
                 <OtherService formik={formik} />
@@ -99,7 +99,7 @@ const AddProvider = () => {
             </Stack>
           </Stack>
           <Divider />
-          <Birthday formik={formik} name="dob" />
+          <Birthday formik={formik} />
           <Divider />
           <CountryAndCityComponent
             formik={formik}
@@ -125,7 +125,7 @@ const AddProvider = () => {
           <Describe formik={formik} name="desc" />
           <Divider />
           <Button color="primary" variant="contained" fullWidth type="submit">
-            Submit
+            {profile === undefined ? "Đăng bài" : "Cập nhật"}
           </Button>
         </Stack>
       </form>

@@ -2,12 +2,7 @@ import { Stack, TextField, Typography } from "@mui/material";
 import React from "react";
 
 export default function Weight({ formik }) {
-  const { values } = formik;
-
-  const handleInputChange = (event) => {
-    const newValue = event.target.value;
-    formik.setFieldValue("weight", newValue);
-  };
+  const { values, handleChange } = formik;
 
   return (
     <>
@@ -21,7 +16,7 @@ export default function Weight({ formik }) {
           sx={{ width: 300 }}
           name="weight"
           value={values.weight}
-          onChange={handleInputChange}
+          onChange={handleChange}
         />
       </Stack>
     </>

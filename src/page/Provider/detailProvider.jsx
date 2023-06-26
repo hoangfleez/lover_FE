@@ -73,10 +73,10 @@ const DetailProvider = () => {
             <CardMedia
               component="img"
               sx={{ width: 250, height: 250, borderRadius: 5 }}
-              image={detailProviderDetail.avatarProvider}
+              image={detailProviderDetail?.avatarProvider}
               alt="Avatar"
             />
-            {detailProviderDetail.ready == "1" ? (
+            {detailProviderDetail?.ready == "1" ? (
               <Typography variant="h5" gutterBottom sx={{ color: "green" }}>
                 Đang sẵn sàng
               </Typography>

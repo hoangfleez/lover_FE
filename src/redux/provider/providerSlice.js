@@ -4,7 +4,8 @@ import {
   filterProvider,
   getProvider,
   getProviderDetail,
-  searchProviders
+  searchProviders,
+  showProviderByUser
 } from "../../services/providerService";
 import {getServiceProvider} from "../../services/serviceProviderService.js";
 // import { filterProvider, getProvider } from "../../sevives/providerService";
@@ -50,6 +51,10 @@ const providerSlice = createSlice({
 
     builder.addCase(getServiceProvider.fulfilled, (state, action) => {
       state.listProvider = action.payload;
+    });
+
+    builder.addCase(showProviderByUser.fulfilled, (state, action) => {
+      state.showOneProvider = action.payload;
     });
   },
   
