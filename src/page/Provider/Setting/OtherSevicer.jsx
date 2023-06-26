@@ -14,13 +14,18 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 export default function OtherService({ formik }) {
   const [moreServices, setMoreServices] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState([]);
-  const [isDefaultSet, setIsDefaultSet] = useState(false);
+  const [isDefaultSet, setIsDefaultSet] = useState({
+    id: "",
+    title: "",
+    type: "",
+  });
 
   useEffect(() => {
     axios
       .get("http://127.0.0.1:8181/services/more")
       .then((response) => {
-        setMoreServices(response.data.data);
+        const arr = response.data.data.reverse();
+        setMoreServices(arr);
       })
       .catch((error) => {
         console.error("Error fetching services:", error);
@@ -32,27 +37,45 @@ export default function OtherService({ formik }) {
     title: service.name,
     type: service.type.id,
   }));
+
   const isOptionSelected = (option) => {
-    return selectedOptions.some((service) => service.id === option.id);
+    return isDefaultSet.some((service) => {
+      return service.id === option.id;
+    });
   };
-  
 
   const handleAutocompleteChange = (event, value) => {
-    setSelectedOptions(value);
-    formik.setFieldValue("otherService", value);
-  };
-
-  useEffect(() => {
-    if (!isDefaultSet && options.length > 0) {
-      // Kiểm tra biến flag trước khi thiết lập giá trị mặc định
-      const defaultService = options.filter((option) => option.type === 3);
-      if (defaultService.length > 0) {
-        setSelectedOptions(defaultService);
-        formik.setFieldValue("otherService", defaultService);
-        setIsDefaultSet(true); // Đánh dấu rằng giá trị mặc định đã được thiết lập
+    if (value?.length > 0) {
+      for (let i = 0; i < value.length; i++) {
+        for (let j = i + 1; j < value.length; j++) {
+          if (value[i].id === value[j].id) {
+            value.splice(j, 1);
+            value.splice(i, 1);
+          }
+        }
       }
     }
-  }, [options, isDefaultSet, formik]);
+    setIsDefaultSet(value);
+    formik.setFieldValue("otherService", value);
+  };
+  useEffect(() => {
+    const arr = [];
+    if (formik?.initialValues.service) {
+      for (let i of formik.initialValues.service) {
+        if (i.service.type.id === 3) {
+          let a = {
+            id: i.service.id,
+            title: i.service.name,
+            type: i.service.type.id,
+          };
+          arr.push(a);
+        }
+      }
+      setIsDefaultSet(arr);
+    }
+  }, [formik.initialValues.service]);
+
+
 
   return (
     <Stack>
@@ -66,7 +89,7 @@ export default function OtherService({ formik }) {
         options={options}
         disableCloseOnSelect
         getOptionLabel={(option) => option.title}
-        value={selectedOptions}
+        value={isDefaultSet}
         onChange={handleAutocompleteChange}
         renderOption={(props, option) => {
           const selected = isOptionSelected(option);

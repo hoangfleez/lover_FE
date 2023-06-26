@@ -38,7 +38,7 @@ const AddProvider = () => {
 
   useEffect(() => {
     dispatch(showProviderByUser());
-  }, [dispatch]);
+  }, []);
 
   const formik = useFormik({
     enableReinitialize: true, // Cho phép sử dụng lại giá trị ban đầu khi initialValues thay đổi
@@ -55,9 +55,10 @@ const AddProvider = () => {
       desc: profile ? profile.desc : "",
       linkFB: profile ? profile.linkFB : "",
       price: profile ? profile.price : "",
-      image: profile ? profile.images :[],
-      service: profile ? profile.serviceProviders :[],
+      image: profile ? profile.images : [],
+      service: profile ? profile.serviceProviders : [],
     },
+    
     onSubmit: async (values) => {
       const { freeService, mainService, otherService, ...rest } = values;
 
@@ -74,62 +75,84 @@ const AddProvider = () => {
   });
 
   return (
-    <Box>
+    <Stack p={2}>
       <Typography variant="h4" gutterBottom>
         Cài đặt dịch vụ
       </Typography>
-      <form onSubmit={formik.handleSubmit}>
-        <Stack width={"45%"} gap={3}>
-          <AvatarProvider formik={formik} />
-          <NickName formik={formik} name="name" />
-          <Divider />
-          <Stack direction={"row"} spacing={4} justifyContent={"space-between"}>
-            <BasicService formik={formik} />
-            <Price formik={formik} name="price" />
-          </Stack>
-          <Divider />
-          <Stack>
-            <Stack direction={"column"} gap={2}>
-              <Stack>
-                <OtherService formik={formik} />
-              </Stack>
-              <Stack>
-                <FreeService formik={formik} />
+      <Box display={"flex"}>
+        <form onSubmit={formik.handleSubmit}>
+          <Stack width={"100%"} gap={3}>
+            <AvatarProvider formik={formik} />
+            <NickName formik={formik} name="name" />
+            <Divider />
+            <Stack
+              direction={"row"}
+              spacing={4}
+              justifyContent={"space-between"}
+            >
+              <BasicService formik={formik}  />
+              <Price formik={formik} name="price" />
+            </Stack>
+            <Divider />
+            <Stack>
+              <Stack direction={"column"} gap={2}>
+                <Stack>
+                  <OtherService formik={formik} />
+                </Stack>
+                <Stack>
+                  <FreeService formik={formik} />
+                </Stack>
               </Stack>
             </Stack>
+            <Divider />
+            <Birthday formik={formik} />
+            <Divider />
+            <CountryAndCityComponent
+              formik={formik}
+              selectedCountry={selectedCountry}
+              setSelectedCountry={setSelectedCountry}
+              selectedCity={selectedCity}
+              setSelectedCity={setSelectedCity}
+            />
+            <Divider />
+            <Stack
+              direction={"row"}
+              spacing={2}
+              justifyContent={"space-between"}
+            >
+              <Height formik={formik} name="height" />
+              <Weight formik={formik} name="weight" />
+            </Stack>
+            <Divider />
+            <Gender formik={formik} />
+            <Divider />
+            <LinkFB formik={formik} />
+            <Divider />
+            <ImageUploader formik={formik} image={formik.values.image} />
+            <Divider />
+            <Interest formik={formik} name="hobby" />
+            <Divider />
+            <Describe formik={formik} name="desc" />
+            <Divider />
+            <Button color="primary" variant="contained" fullWidth type="submit">
+              {profile === undefined ? "Đăng bài" : "Cập nhật"}
+            </Button>
           </Stack>
-          <Divider />
-          <Birthday formik={formik} />
-          <Divider />
-          <CountryAndCityComponent
-            formik={formik}
-            selectedCountry={selectedCountry}
-            setSelectedCountry={setSelectedCountry}
-            selectedCity={selectedCity}
-            setSelectedCity={setSelectedCity}
-          />
-          <Divider />
-          <Stack direction={"row"} spacing={2} justifyContent={"space-between"}>
-            <Height formik={formik} name="height" />
-            <Weight formik={formik} name="weight" />
-          </Stack>
-          <Divider />
-          <Gender formik={formik} />
-          <Divider />
-          <LinkFB formik={formik} />
-          <Divider />
-          <ImageUploader formik={formik} image={formik.values.image} />
-          <Divider />
-          <Interest formik={formik} name="hobby" />
-          <Divider />
-          <Describe formik={formik} name="desc" />
-          <Divider />
-          <Button color="primary" variant="contained" fullWidth type="submit">
-            {profile === undefined ? "Đăng bài" : "Cập nhật"}
-          </Button>
+        </form>
+        <Stack ml={10}>
+          {profile ? (
+            <Button
+              variant="contained"
+              sx={{ padding: "20px", backgroundColor: "red", color: "white" }}
+            >
+              Tắt dịch vụ
+            </Button>
+          ) : (
+            ""
+          )}
         </Stack>
-      </form>
-    </Box>
+      </Box>
+    </Stack>
   );
 };
 

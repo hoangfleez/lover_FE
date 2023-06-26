@@ -28,7 +28,7 @@ const DetailProvider = () => {
   const detailProviderDetail = useSelector((state) => {
     return state.provider.showOneProvider;
   });
-  console.log(detailProviderDetail);
+
 
   const handleClose = () => {
     setShowRent(false);

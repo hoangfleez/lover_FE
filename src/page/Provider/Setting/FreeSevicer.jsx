@@ -14,13 +14,18 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 export default function FreeService({ formik }) {
   const [freeServices, setFreeServices] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState([]);
-  const [isDefaultSet, setIsDefaultSet] = useState(false);
+  const [isDefaultSet, setIsDefaultSet] = useState({
+    id: "",
+    title: "",
+    type: "",
+  });
 
   useEffect(() => {
     axios
       .get("http://127.0.0.1:8181/services/free")
       .then((response) => {
-        setFreeServices(response.data.data);
+        const arr = response.data.data.reverse()
+        setFreeServices(arr);
       })
       .catch((error) => {
         console.error("Error fetching services:", error);
@@ -34,24 +39,42 @@ export default function FreeService({ formik }) {
   }));
 
   const isOptionSelected = (option) => {
-    return selectedOptions.some((service) => service.id === option.id);
+    return isDefaultSet.some((service) => {
+      return service.id === option.id;
+    });
   };
 
   const handleAutocompleteChange = (event, value) => {
-    setSelectedOptions(value);
-    formik.setFieldValue("freeService",  value.map((option) => option.id));
+    if (value?.length > 0) {
+      for (let i = 0; i < value.length; i++) {
+        for (let j = i + 1; j < value.length; j++) {
+          if (value[i].id === value[j].id) {
+            value.splice(j, 1);
+            value.splice(i, 1);
+          }
+        }
+      }
+    }
+    setIsDefaultSet(value);
+    formik.setFieldValue("freeService", value);
   };
 
   useEffect(() => {
-    if (!isDefaultSet && options.length > 0) {
-      const defaultServices = options.filter((option) => option.type === 2);
-      if (defaultServices) {
-        setSelectedOptions([defaultServices]);
-        formik.setFieldValue("freeService", [defaultServices.id]);
-        setIsDefaultSet(true);
+    const arr = [];
+    if (formik?.initialValues.service) {
+      for (let i of formik.initialValues.service) {
+        if (i.service.type.id === 2) {
+          let a = {
+            id: i.service.id,
+            title: i.service.name,
+            type: i.service.type.id,
+          };
+          arr.push(a);
+        }
       }
+      setIsDefaultSet(arr);
     }
-  }, [options, isDefaultSet, formik]);
+  }, [formik.initialValues.service]);
 
   return (
     <Stack>
@@ -65,7 +88,7 @@ export default function FreeService({ formik }) {
         options={options}
         disableCloseOnSelect
         getOptionLabel={(option) => option.title}
-        value={selectedOptions}
+        value={isDefaultSet}
         onChange={handleAutocompleteChange}
         renderOption={(props, option) => {
           const selected = isOptionSelected(option);

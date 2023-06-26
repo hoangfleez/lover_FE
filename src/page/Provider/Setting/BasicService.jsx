@@ -7,6 +7,8 @@ export default function BasicService({ formik }) {
   const [services, setServices] = useState([]);
   const [selectedService, setSelectedService] = useState(null);
 
+  const [services2, setServices2] = useState({ id: "", title: "", type: "" });
+
   useEffect(() => {
     axios
       .get("http://127.0.0.1:8181/services/basic")
@@ -17,6 +19,24 @@ export default function BasicService({ formik }) {
         console.error("Error fetching services:", error);
       });
   }, []);
+
+  useEffect(() => {
+    const arr = [];
+    if (formik?.initialValues.service) {
+      for (let i of formik.initialValues.service) {
+        console.log(i.service.type.id);
+        if (i.service.type.id === 1) {
+          let a = {
+            id: i.service.id,
+            title: i.service.name,
+            type: i.service.type.id,
+          };
+          setServices2(a);
+          arr.push(a);
+        }
+      }
+    }
+  }, [formik]);
 
   const options = services.map((service) => ({
     id: service.id,
@@ -29,35 +49,29 @@ export default function BasicService({ formik }) {
   };
 
   const handleServiceChange = (_, newValue) => {
-    if (newValue !== selectedService) {
-      setSelectedService(newValue);
-      formik.setFieldValue("mainService", newValue ? newValue : "");
-    }
+    setServices2(newValue);
+    formik.setFieldValue("mainService", newValue ? newValue : "");
   };
-
-  useEffect(() => {
-    const defaultService = options.find((option) => option.type === 1);
-    if (defaultService && !selectedService) {
-      setSelectedService(defaultService);
-      formik.setFieldValue("mainService", defaultService);
-    }
-  }, [options, selectedService, formik]);
 
   return (
     <Stack>
       <Typography variant="subtitle2" gutterBottom>
         Dịch vụ
       </Typography>
+
       <Autocomplete
         disablePortal
         id="basic-service-autocomplete"
         options={options}
-        value={selectedService}
+        value={services2}
         onChange={handleServiceChange}
         getOptionLabel={(option) => option.title}
         isOptionEqualToValue={isOptionEqualToValue}
         sx={{ width: 300 }}
-        renderInput={(params) => <TextField {...params} />}
+        renderInput={(params) => {
+          console.log(params);
+          return <TextField {...params} />;
+        }}
       />
     </Stack>
   );
