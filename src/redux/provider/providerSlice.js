@@ -4,7 +4,8 @@ import {
   filterProvider,
   getProvider,
   getProviderDetail, newlyJoinedProviders,
-  searchProviders
+  searchProviders,
+  showProviderByUser
 } from "../../services/providerService";
 import {getServiceProvider} from "../../services/serviceProviderService.js";
 // import { filterProvider, getProvider } from "../../sevives/providerService";
