@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import { Box, Button, CardActionArea, Chip, Stack } from "@mui/material";
 import ShowRating from "../../Rating/ShowRating";
 import { useDispatch, useSelector } from "react-redux";
-import { getProvider } from "../../../../services/providerService";
+import {getProvider, newlyJoinedProviders} from "../../../../services/providerService";
 import { useNavigate } from "react-router-dom";
 import { Badge } from "react-bootstrap";
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
@@ -18,10 +18,12 @@ export default function ShowAll() {
   const [totalPage, setTotalPage] = useState(0);
 
   const showProvider = useSelector((state) => {
-
     return state.provider.listProvider;
   });
 
+  const handleNewProvider = async () => {
+      await dispatch(newlyJoinedProviders())
+  }
 
   useEffect(() => {
     dispatch(getProvider());
@@ -29,6 +31,7 @@ export default function ShowAll() {
 
   return (
     <>
+        <button onClick={handleNewProvider}>Người đăng kí CCDV mới nhất</button>
       <img
         style={{ width: "93%" }}
         src="https://files.playerduo.net/production/images/banner/715867c6-698f-411a-b4f9-1e9093130b60__ff5aee00-79ee-11ed-a19f-23a3b10d190e__admin_banner.jpg"

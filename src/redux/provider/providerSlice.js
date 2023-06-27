@@ -3,9 +3,8 @@ import {
   addProvider,
   filterProvider,
   getProvider,
-  getProviderDetail,
-  searchProviders,
-  showProviderByUser
+  getProviderDetail, newlyJoinedProviders,
+  searchProviders
 } from "../../services/providerService";
 import {getServiceProvider} from "../../services/serviceProviderService.js";
 // import { filterProvider, getProvider } from "../../sevives/providerService";
@@ -45,6 +44,11 @@ const providerSlice = createSlice({
     });
 
     builder.addCase(searchProviders.fulfilled, (state, action) => {
+      state.listProvider = action.payload;
+      state.currenProvider = action.payload;
+    });
+
+    builder.addCase(newlyJoinedProviders.fulfilled, (state, action) => {
       state.listProvider = action.payload;
       state.currenProvider = action.payload;
     });

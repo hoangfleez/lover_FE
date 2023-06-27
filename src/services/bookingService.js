@@ -29,6 +29,18 @@ export const rentalListBooking = createAsyncThunk(
     }
 );
 
+export const doneListBooking = createAsyncThunk(
+    "booking/doneListBooking",
+    async () => {
+        try {
+            const res = await customAPI().get(`bookings/done` );
+            return res.data;
+        } catch (err) {
+            return err.response.data.payload;
+        }
+    }
+);
+
 
 export const detailBooking = createAsyncThunk(
     "booking/detailBooking",
@@ -80,6 +92,32 @@ export const pendingListBookingProvider = createAsyncThunk(
     }
 );
 
+export const acceptListBookingProvider = createAsyncThunk(
+    "booking/acceptListBookingProvider",
+    async () => {
+        try {
+            const res = await customAPI().get(`bookings/provider/accept` );
+            return res.data;
+        } catch (err) {
+            return err.response.data.payload;
+        }
+    }
+);
+
+
+export const rejectListBookingProvider = createAsyncThunk(
+    "booking/rejectListBookingProvider",
+    async () => {
+        try {
+            const res = await customAPI().get(`bookings/provider/reject` );
+            return res.data;
+        } catch (err) {
+            return err.response.data.payload;
+        }
+    }
+);
+
+
 export const acceptBooking = createAsyncThunk(
     "booking/acceptBooking",
     async (id) => {
@@ -97,6 +135,18 @@ export const rejectBooking = createAsyncThunk(
     async (id) => {
         try {
             const res = await customAPI().put(`bookings/reject/${id}` );
+            return res.data;
+        } catch (err) {
+            return err.response.data.payload;
+        }
+    }
+);
+
+export const doneBooking = createAsyncThunk(
+    "booking/doneBooking",
+    async (id) => {
+        try {
+            const res = await customAPI().put(`bookings/done/${id}` );
             return res.data;
         } catch (err) {
             return err.response.data.payload;
