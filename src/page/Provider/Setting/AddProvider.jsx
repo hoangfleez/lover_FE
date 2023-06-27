@@ -34,7 +34,6 @@ const AddProvider = () => {
   const profile = useSelector((state) => {
     return state.provider.showOneProvider;
   });
-  console.log(profile);
 
   useEffect(() => {
     dispatch(showProviderByUser());

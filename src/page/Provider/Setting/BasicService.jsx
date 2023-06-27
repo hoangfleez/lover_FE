@@ -1,13 +1,11 @@
+import React, { useEffect, useState } from "react";
 import { Autocomplete, TextField, Typography } from "@mui/material";
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { Stack } from "react-bootstrap";
+import { Stack } from "@mui/material";
 
 export default function BasicService({ formik }) {
   const [services, setServices] = useState([]);
   const [selectedService, setSelectedService] = useState(null);
-
-  const [services2, setServices2] = useState({ id: "", title: "", type: "" });
 
   useEffect(() => {
     axios
@@ -21,18 +19,15 @@ export default function BasicService({ formik }) {
   }, []);
 
   useEffect(() => {
-    const arr = [];
     if (formik?.initialValues.service) {
       for (let i of formik.initialValues.service) {
-        console.log(i.service.type.id);
         if (i.service.type.id === 1) {
-          let a = {
+          setSelectedService({
             id: i.service.id,
             title: i.service.name,
             type: i.service.type.id,
-          };
-          setServices2(a);
-          arr.push(a);
+          });
+          break;
         }
       }
     }
@@ -49,7 +44,7 @@ export default function BasicService({ formik }) {
   };
 
   const handleServiceChange = (_, newValue) => {
-    setServices2(newValue);
+    setSelectedService(newValue);
     formik.setFieldValue("mainService", newValue ? newValue : "");
   };
 
@@ -63,15 +58,12 @@ export default function BasicService({ formik }) {
         disablePortal
         id="basic-service-autocomplete"
         options={options}
-        value={services2}
+        value={selectedService}
         onChange={handleServiceChange}
         getOptionLabel={(option) => option.title}
         isOptionEqualToValue={isOptionEqualToValue}
         sx={{ width: 300 }}
-        renderInput={(params) => {
-          console.log(params);
-          return <TextField {...params} />;
-        }}
+        renderInput={(params) => <TextField {...params} />}
       />
     </Stack>
   );
