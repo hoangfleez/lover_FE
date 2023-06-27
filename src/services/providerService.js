@@ -43,8 +43,21 @@ export const searchProviders = createAsyncThunk(
     "provider/searchProviders",
     async (name) => {
         try {
-            const res = await customAPI().get(`providers?name=${name}`);
-            return res.data.docs;
+            const res = await axios.get(`http://127.0.0.1:8181/providers?name=${name}`);
+            return res.data.data.docs;
+        } catch (err) {
+            return err.response.data.payload;
+        }
+    }
+);
+
+export const newlyJoinedProviders = createAsyncThunk(
+    "provider/newlyJoinedProviders",
+    async (name) => {
+        try {
+            const res = await axios.get(`http://127.0.0.1:8181/providers/newlyJoinedProviders`);
+            console.log(res.data,7777)
+            return res.data.data;
         } catch (err) {
             return err.response.data.payload;
         }

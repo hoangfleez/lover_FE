@@ -15,6 +15,9 @@ import HomeAdmin from "./page/admin/AdminPage";
 import Order from "./page/booking/Order.jsx";
 import OrderAccept from "./page/booking/OrderAccept.jsx";
 import OrderPendingProvider from "./page/booking/OrderPendingProvider.jsx";
+import OrderAcceptProvider from "./page/booking/OrderAcceptProvider.jsx";
+import OrderRejectProvider from "./page/booking/OrderRejectProvider.jsx";
+import Done from "./page/booking/Done.jsx";
 
 function App() {
   return (
@@ -38,6 +41,9 @@ function App() {
           <Route path="order" element={<Order />} />
           <Route path="accept" element={<OrderAccept />} />
           <Route path="pendingProvider" element={<OrderPendingProvider />} />
+          <Route path="acceptProvider" element={<OrderAcceptProvider />} />
+          <Route path="rejectProvider" element={<OrderRejectProvider />} />
+          <Route path="done" element={<Done />} />
         </Route>
       </Routes>
     </>

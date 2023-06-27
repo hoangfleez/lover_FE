@@ -65,7 +65,6 @@ const AddProvider = () => {
         service: id,
       };
 
-      console.log(newProvider);
       await dispatch(addProvider(newProvider));
     },
   });
