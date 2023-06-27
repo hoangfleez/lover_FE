@@ -131,30 +131,34 @@ const AddProvider = () => {
           </Stack>
         </form>
         <Stack ml={10}>
-          {profile?.ready === "1" ? (
-            <Button
-              variant="contained"
-              sx={{
-                padding: "20px",
-                backgroundColor: "red",
-                color: "white",
-                "&:hover": {
-                  backgroundColor: "red",
-                  opacity: 1, 
-                },
-              }}
-              onClick={handleOff}
-            >
-              Tắt dịch vụ
-            </Button>
-          ) : (
-            <Button
-              variant="contained"
-              sx={{ padding: "20px" }}
-              onClick={handleOn}
-            >
-              Bật dịch vụ
-            </Button>
+          {profile && (
+            <>
+              {profile.ready === "1" ? (
+                <Button
+                  variant="contained"
+                  sx={{
+                    padding: "20px",
+                    backgroundColor: "red",
+                    color: "white",
+                    "&:hover": {
+                      backgroundColor: "red",
+                      opacity: 1,
+                    },
+                  }}
+                  onClick={handleOff}
+                >
+                  Tắt dịch vụ
+                </Button>
+              ) : (
+                <Button
+                  variant="contained"
+                  sx={{ padding: "20px" }}
+                  onClick={handleOn}
+                >
+                  Bật dịch vụ
+                </Button>
+              )}
+            </>
           )}
         </Stack>
       </Box>

@@ -3,7 +3,6 @@ import React from "react";
 
 export default function NickName({ formik }) {
   const { values, handleChange } = formik;
-  console.log({formik})
 
   return (
     <Stack>

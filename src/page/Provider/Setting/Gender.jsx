@@ -17,7 +17,7 @@ export default function Gender({ formik }) {
         <RadioGroup
           row
           aria-labelledby="demo-controlled-radio-buttons-group"
-          name="controlled-radio-buttons-group"
+          name="sex"
           value={values.sex}
           onChange={handleChange}
         >
