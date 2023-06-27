@@ -7,7 +7,7 @@ export default function Evaluate() {
       <Typography variant="h5" gutterBottom mt={2}>
         Đánh gía
       </Typography>
-      <Stack direction="row" spacing={2} p={2}>
+      {/* <Stack direction="row" spacing={2} p={2}>
         <Avatar
           alt="Remy Sharp"
           src="/static/images/avatar/1.jpg"
@@ -126,7 +126,7 @@ export default function Evaluate() {
           </Typography>
           <Divider />
         </Stack>
-      </Stack>
+      </Stack> */}
     </>
   );
 }

@@ -29,20 +29,20 @@ function App() {
           <Route path="customer_info" element={<UserContent />}>
             <Route path="" element={<ShowAndEditInfo />} />
             <Route path="email" element={<EmailUser />} />
+            <Route path="order" element={<Order />} />
+            <Route path="accept" element={<OrderAccept />} />
           </Route>
           <Route path="user_setting" element={<UserContent />}>
             <Route path="advance" element={<AdvanceSetting />} />
             <Route path="service" element={<ServiceSetting />} />
+            <Route path="pendingProvider" element={<OrderPendingProvider />} />
+            <Route path="rejectProvider" element={<OrderRejectProvider />} />
+            <Route path="acceptProvider" element={<OrderAcceptProvider />} />
           </Route>
           <Route path="add-provider" element={<AddProvider />} />
           <Route path="detail-provider/:id" element={<DetailProvider />} />
           <Route path="admin" element={<HomeAdmin />} />
           <Route path="user" element={<ShowAccountUser />} />
-          <Route path="order" element={<Order />} />
-          <Route path="accept" element={<OrderAccept />} />
-          <Route path="pendingProvider" element={<OrderPendingProvider />} />
-          <Route path="acceptProvider" element={<OrderAcceptProvider />} />
-          <Route path="rejectProvider" element={<OrderRejectProvider />} />
           <Route path="done" element={<Done />} />
         </Route>
       </Routes>

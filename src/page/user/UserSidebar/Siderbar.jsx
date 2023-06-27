@@ -13,11 +13,15 @@ import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest";
 import SettingsIcon from "@mui/icons-material/Settings";
 import BlockIcon from "@mui/icons-material/Block";
 import HistoryIcon from "@mui/icons-material/History";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function UserSiderbar() {
-  const [expanded, setExpanded] = React.useState(localStorage.getItem("expanded") ?  localStorage.getItem("expanded") :["1"])
-  const [selected, setSelected] =  React.useState(localStorage.getItem("selected") ?  localStorage.getItem("selected") :2)
+  const [expanded, setExpanded] = React.useState(
+    localStorage.getItem("expanded") ? localStorage.getItem("expanded") : ["1"]
+  );
+  const [selected, setSelected] = React.useState(
+    localStorage.getItem("selected") ? localStorage.getItem("selected") : 2
+  );
 
   const navigate = useNavigate();
 
@@ -88,8 +92,12 @@ export default function UserSiderbar() {
               nodeId="7"
               label="Lịch sử thuê"
               icon={<HistoryToggleOffIcon />}
+              onClick={() => {
+                navigate("/customer_info/order");
+              }}
             />
           </TreeItem>
+          <TreeItem nodeId="17" label="Đơn đang thực hiện" onClick={()=>{navigate("/customer_info/accept")}} icon={<HistoryIcon />} />
           <TreeItem nodeId="8" label="Thanh toán" icon={<PaymentIcon />} />
           <TreeItem nodeId="9" label="Ví" icon={<WalletIcon />} />
         </TreeItem>
@@ -116,8 +124,26 @@ export default function UserSiderbar() {
             nodeId="14"
             label="Lịch sử nhật đặt"
             icon={<HistoryIcon />}
+            onClick={() => {
+              navigate("/user_setting/pendingProvider")
+            }}
           />
-          <TreeItem nodeId="15" label="Danh sách chặn" icon={<BlockIcon />} />
+          <TreeItem
+            nodeId="16"
+            label="Đơn đang thực hiện"
+            icon={<HistoryToggleOffIcon />}
+            onClick={() => {
+              navigate("/user_setting/acceptProvider")
+            }}
+          />
+          <TreeItem
+            nodeId="15"
+            label="Danh sách từ chối"
+            icon={<BlockIcon />}
+            onClick={() => {
+              navigate("/user_setting/rejectProvider")
+            }}
+          />
         </TreeItem>
       </TreeView>
     </Box>

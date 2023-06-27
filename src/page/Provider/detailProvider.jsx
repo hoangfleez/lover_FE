@@ -25,6 +25,7 @@ const DetailProvider = () => {
   const dispatch = useDispatch();
   const [showRent, setShowRent] = useState(false);
   const [dataProvider, setDataProvider] = useState({});
+
   const detailProviderDetail = useSelector((state) => {
     return state.provider.showOneProvider;
   });
@@ -47,7 +48,7 @@ const DetailProvider = () => {
       sx={{
         marginTop: "64px",
         padding: "10px",
-        height: "100%",
+        height: "100vh",
         backgroundColor: "customColorSchemes.bgColorPage",
       }}
     >
@@ -200,7 +201,6 @@ const DetailProvider = () => {
                   {" "}
                   - Sinh nhật: {detailProviderDetail.dob}
                 </Typography>
-
                 <Typography variant="body2">
                   {" "}
                   - Sở thích: {detailProviderDetail.hobby}
@@ -237,6 +237,7 @@ const DetailProvider = () => {
                   fullWidth
                   variant="contained"
                   sx={{
+                    display: detailProviderDetail.ready ==="1"?"box":"none",
                     p: 1.5,
                     bgcolor: "red",
                     color: "white",
