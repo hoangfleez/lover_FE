@@ -1,9 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  changeRole,
-  findAllUser,
-} from "../../services/adminService";
+import { changeRole, findAllUser } from "../../services/adminService";
 
 import {
   Box,
@@ -24,7 +21,7 @@ import {
 
 const HomeAdmin = () => {
   const dispatch = useDispatch();
-  const users = useSelector((state) =>state.admin.listUser);
+  const users = useSelector((state) => state.admin.listUser);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [notification, setNotification] = React.useState({
@@ -59,9 +56,9 @@ const HomeAdmin = () => {
       }
       return user;
     });
-  
+
     const selectedUser = updatedUsers.find((user) => user.id === userId);
-    dispatch(changeRole({users: updatedUsers, user: selectedUser})); // Truyền chỉ user có ID tương ứng vào hàm changeRole
+    dispatch(changeRole({ users: updatedUsers, user: selectedUser })); // Truyền chỉ user có ID tương ứng vào hàm changeRole
     showNotification("");
   };
 
@@ -103,46 +100,51 @@ const HomeAdmin = () => {
               <TableCell>Email</TableCell>
               <TableCell>Số điện thoại</TableCell>
               <TableCell>CCCD/CMT</TableCell>
+              <TableCell>Nâng cấp</TableCell>
               <TableCell>Vai trò</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {displayedUsers.map((item) => (
-              <TableRow key={item.id}>
-                <TableCell>{item.id}</TableCell>
-                <TableCell>{item.username}</TableCell>
-                <TableCell>{item.email}</TableCell>
-                <TableCell>{item.phoneNumber || "N/A"}</TableCell>
-                <TableCell>{item.numberCard || "N/A"}</TableCell>
-                <TableCell>
-                  {item.role.id === 2 ? (
-                    item.role.name
-                  ) : (
-                    <Grid
-                      component="label"
-                      container
-                      alignItems="center"
-                      spacing={1}
-                    >
-                      <Grid item>{item.role.name}</Grid>
-                      <Grid item sx={{ marginLeft: "auto" }}>
-                        <FormControlLabel
-                          control={
-                            <Switch
-                              checked={item.role.id === 3}
-                              onChange={() =>
-                                handleRoleChange(item.id, item.role.id)
-                              }
-                            />
-                          }
-                          label=""
-                        />
+            {displayedUsers.map((item) => {
+              console.log(item)
+              return (
+                <TableRow key={item.id}>
+                  <TableCell>{item.id}</TableCell>
+                  <TableCell>{item.username}</TableCell>
+                  <TableCell>{item.email}</TableCell>
+                  <TableCell>{item.phoneNumber || "N/A"}</TableCell>
+                  <TableCell>{item.numberCard || "N/A"}</TableCell>
+                  <TableCell>{item.update}</TableCell>
+                  <TableCell>
+                    {item.role.id === 2 ? (
+                      item.role.name
+                    ) : (
+                      <Grid
+                        component="label"
+                        container
+                        alignItems="center"
+                        spacing={1}
+                      >
+                        <Grid item>{item.role.name}</Grid>
+                        <Grid item sx={{ marginLeft: "auto" }}>
+                          <FormControlLabel
+                            control={
+                              <Switch
+                                checked={item.role.id === 3}
+                                onChange={() =>
+                                  handleRoleChange(item.id, item.role.id)
+                                }
+                              />
+                            }
+                            label=""
+                          />
+                        </Grid>
                       </Grid>
-                    </Grid>
-                  )}
-                </TableCell>
-              </TableRow>
-            ))}
+                    )}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
         <TablePagination
@@ -162,10 +164,7 @@ const HomeAdmin = () => {
         onClose={handleCloseNotification}
         autoHideDuration={3000}
       >
-
-        <Alert  sx={{ width: "100%" }}>
-          Thay đổi thành công!
-        </Alert>
+        <Alert sx={{ width: "100%" }}>Thay đổi thành công!</Alert>
       </Snackbar>
     </Box>
   );

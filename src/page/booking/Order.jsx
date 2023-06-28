@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Toolbar, Dialog, DialogContent } from "@mui/material";
+import { Toolbar, Dialog, DialogContent, Button } from "@mui/material";
 import { detailBooking, rentalListBooking } from "../../services/bookingService.js";
 
 const Order = () => {
@@ -42,9 +42,9 @@ const Order = () => {
                                 <td>{item.hour}</td>
                                 <td>{item.status}</td>
                                 <td>{item.cost} VND</td>
-                                <button onClick={() => handleDetailOrder(item.id)}>
+                                <Button onClick={() => handleDetailOrder(item.id)}>
                                     chi tiet don thue
-                                </button>
+                                </Button>
                             </tr>
                         ))}
                     </tbody>
@@ -61,7 +61,7 @@ const Order = () => {
                             <div>Thời gian thuê (bao nhiêu tiếng): {detailOrder.hour} giờ</div>
                             <div>Trạng thái: {detailOrder.status}</div>
                             <div>Tổng đơn: {detailOrder.cost} VND</div>
-                            <button>Hoàn thành</button>
+                            <Button>Hoàn thành</Button>
                         </>
                     )}
                 </DialogContent>

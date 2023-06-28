@@ -75,15 +75,13 @@ export default function OtherService({ formik }) {
     }
   }, [formik.initialValues.service]);
 
-
-
   return (
-    <Stack>
+    <Stack >
       <Typography variant="subtitle2" gutterBottom>
         Dịch vụ mở rộng
       </Typography>
       <Autocomplete
-        sx={{ width: 300 }}
+        fullWidth
         multiple
         id="checkboxes-tags-demo"
         options={options}
@@ -105,7 +103,7 @@ export default function OtherService({ formik }) {
             </li>
           );
         }}
-        style={{ width: 500 }}
+        style={{ width: 615 }}
         renderInput={(params) => <TextField {...params} />}
       />
     </Stack>

@@ -82,7 +82,7 @@ export default function FreeService({ formik }) {
         Dịch vụ miễn phí
       </Typography>
       <Autocomplete
-        sx={{ width: 300 }}
+        fullWidth
         multiple
         id="checkboxes-tags-demo"
         options={options}
@@ -104,7 +104,7 @@ export default function FreeService({ formik }) {
             </li>
           );
         }}
-        style={{ width: 500 }}
+        style={{ width: 615 }}
         renderInput={(params) => <TextField {...params} />}
       />
     </Stack>

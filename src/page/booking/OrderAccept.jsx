@@ -1,4 +1,4 @@
-import {Toolbar} from "@mui/material";
+import {Button, Toolbar} from "@mui/material";
 import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {acceptListBooking, doneBooking} from "../../services/bookingService.js";
@@ -35,7 +35,7 @@ const OrderAccept = () => {
                                 <td>{item.hour}</td>
                                 <td>{item.status}</td>
                                 <td>{item.cost} VND</td>
-                                <button onClick={() => handleDone(item.id)}>Hoàn thành</button>
+                                <Button onClick={() => handleDone(item.id)}>Hoàn thành</Button>
                             </tr>
                         ))}
                     </tbody>

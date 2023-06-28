@@ -1,4 +1,4 @@
-import { Box, Toolbar } from "@mui/material";
+import { Box, Button, Toolbar } from "@mui/material";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {findAllUser, lockAccount, openAccount} from "../../services/adminService.js";
@@ -50,8 +50,8 @@ const ShowAccountUser = () => {
                     users.map((item) => (
                         <div key={item.id}>
                             <span> Tên tài khoản: {item.username}</span>
-                            <button onClick={() => handleBlockUsers(item.id)}>Block</button>
-                            <button onClick={() => handleOpenUsers(item.id)}>Open</button>
+                            <Button onClick={() => handleBlockUsers(item.id)}>Block</Button>
+                            <Button onClick={() => handleOpenUsers(item.id)}>Open</Button>
 
                         </div>
                     ))}

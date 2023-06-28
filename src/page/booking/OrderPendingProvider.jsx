@@ -1,4 +1,4 @@
-import {Dialog, DialogContent, Toolbar} from "@mui/material";
+import {Button, Dialog, DialogContent, Toolbar} from "@mui/material";
 import React, {useEffect, useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -83,20 +83,20 @@ const OrderPendingProvider = () => {
                                 <td>{calculateEndTime(item.startTime, item.hour)}</td>
                                 <td>{item.cost} VND</td>
                                 <td>{item.status}</td>
-                                <button onClick={() => handleDetailProvider(item.id)}
+                                <Button onClick={() => handleDetailProvider(item.id)}
                                 >
                                     Chi tiet don thue
-                                </button>
+                                </Button>
 
-                                <button onClick={() => handleAccept(item.id)}
+                                <Button onClick={() => handleAccept(item.id)}
                                 >
                                     Chấp nhận
-                                </button>
+                                </Button>
 
-                                <button onClick={() => handleReject(item.id)}
+                                <Button onClick={() => handleReject(item.id)}
                                 >
                                     Từ chối
-                                </button>
+                                </Button>
                             </tr>
                         ))}
                     </tbody>
@@ -114,7 +114,7 @@ const OrderPendingProvider = () => {
                             <div>Thời gian thuê (bao nhiêu tiếng): {detailProvider.hour} giờ</div>
                             <div>Trạng thái: {detailProvider.status}</div>
                             <div>Tổng đơn: {detailProvider.cost} VND</div>
-                            <button>Phản hồi về người thuê</button>
+                            <Button>Phản hồi về người thuê</Button>
                         </>
                     )}
                 </DialogContent>

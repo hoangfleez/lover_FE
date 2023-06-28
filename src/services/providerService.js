@@ -99,14 +99,4 @@ export const buttonOn = createAsyncThunk("providers/buttonOn", async (id) => {
   }
 });
 
-export const buttonOff = createAsyncThunk("providers/buttonOff", async (id) => {
-  try {
-    const res = await axios.put(
-      `http://127.0.0.1:8181/providers/privateProvider/${id}`
-    );
-    console.log(res.data)
-    return res.data;
-  } catch (err) {
-    return err.response.data;
-  }
-});
+

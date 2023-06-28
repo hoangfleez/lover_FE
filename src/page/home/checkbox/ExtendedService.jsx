@@ -13,17 +13,17 @@ export default function Extended({ setService }) {
         dispatch(getServices(id));
     };
 
-    const handleServiceToggle = (serviceId) => {
-        dispatch(getServiceProvider(serviceId))
-    };
+ const handleServiceToggle = (serviceId) => {
+  dispatch(getServiceProvider(serviceId))
+ };
 
     const types = useSelector((state) =>state.type.type);
     const services = useSelector((state) => state.service.service);
 
 
-    useEffect(() => {
-        dispatch(getTypes());
-    }, [dispatch]);
+  useEffect(() => {
+    dispatch(getTypes());
+  }, []);
 
     if (!types) {
         return null;
@@ -31,7 +31,7 @@ export default function Extended({ setService }) {
 
     return (
         <>
-            <FormGroup sx={{ paddingLeft: "10px" }}>
+            {/* <FormGroup sx={{ paddingLeft: "10px" }}>
                 {types &&
                     types.map((item) => (
                         <div key={item.id}>
@@ -50,7 +50,7 @@ export default function Extended({ setService }) {
                         </div>
                     ))}
                 </Box>
-            </FormGroup>
+            </FormGroup> */}
         </>
     );
 }

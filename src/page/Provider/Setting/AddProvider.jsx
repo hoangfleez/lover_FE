@@ -2,10 +2,10 @@ import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { Box, Button, Divider, Stack, Typography } from "@mui/material";
+import { Snackbar } from "@mui/material";
+import MuiAlert from "@mui/material/Alert";
 import {
   addProvider,
-  buttonOff,
-  buttonOn,
   showProviderByUser,
 } from "../../../services/providerService";
 import Birthday from "./Birthday";
@@ -23,29 +23,46 @@ import Gender from "./Gender";
 import LinkFB from "./LinkFB";
 import AvatarProvider from "./AvatarProvider";
 import ImageUploader from "./Image";
+import axios from "axios";
 
 const AddProvider = () => {
   const dispatch = useDispatch();
 
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
+  const [isServiceOn, setIsServiceOn] = useState(false); // State lưu trạng thái bật/tắt dịch vụ
 
   const profile = useSelector((state) => state.provider.showOneProvider);
   console.log(profile);
 
-  const idProvider = profile?.id;
-
   const handleOn = async () => {
-    await dispatch(buttonOn(idProvider));
+    try {
+      await axios.put(
+        `http://127.0.0.1:8181/providers/publicProvider/${profile?.id}`,{ ready: '1' }
+      );
+      console.log("Bật dịch vụ thành công");
+      setIsServiceOn(true); // Cập nhật state khi bật dịch vụ thành công
+    } catch (error) {
+      console.error("Lỗi khi bật dịch vụ:", error);
+    }
   };
 
   const handleOff = async () => {
-    await dispatch(buttonOff(idProvider));
+    try {
+      await axios.put(
+        `http://127.0.0.1:8181/providers/privateProvider/${profile?.id}`,{ ready: '0' }
+      );
+      console.log("Tắt dịch vụ thành công");
+      setIsServiceOn(false); // Cập nhật state khi tắt dịch vụ thành công
+    } catch (error) {
+      console.error("Lỗi khi tắt dịch vụ:", error);
+    }
   };
 
   useEffect(() => {
     dispatch(showProviderByUser());
-  }, [dispatch]);
+  }, []);
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -74,8 +91,19 @@ const AddProvider = () => {
         service: id,
       };
       await dispatch(addProvider(newProvider));
+      setIsSnackbarOpen(true);
     },
   });
+
+  const handleCloseSnackbar = () => {
+    setIsSnackbarOpen(false);
+  };
+
+  useEffect(() => {
+    if (profile) {
+      setIsServiceOn(profile.ready === "1"); // Cập nhật trạng thái dịch vụ khi component được khởi tạo
+    }
+  }, [profile]);
 
   return (
     <Stack p={2}>
@@ -133,7 +161,7 @@ const AddProvider = () => {
         <Stack ml={10}>
           {profile && (
             <>
-              {profile.ready === "1" ? (
+              {isServiceOn ? ( // Sử dụng state để kiểm tra trạng thái bật/tắt dịch vụ
                 <Button
                   variant="contained"
                   sx={{
@@ -162,6 +190,19 @@ const AddProvider = () => {
           )}
         </Stack>
       </Box>
+      <Snackbar
+        open={isSnackbarOpen}
+        autoHideDuration={3000}
+        onClose={handleCloseSnackbar}
+      >
+        <MuiAlert
+          onClose={handleCloseSnackbar}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          Đăng bài thành công!
+        </MuiAlert>
+      </Snackbar>
     </Stack>
   );
 };

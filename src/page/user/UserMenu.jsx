@@ -19,7 +19,10 @@ import { useNavigate } from "react-router-dom";
 import { logout } from "../../services/useService";
 import { useUserProfile } from "../../customHook/useUserProfile";
 import { clearLocalStorage } from "../../utils";
+import HowToRegIcon from "@mui/icons-material/HowToReg";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import RegisterService from "./Dialog/RegisterService";
+import { useState } from "react";
 
 const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
   const dispatch = useDispatch();
@@ -27,8 +30,17 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
 
   const user = useUserProfile();
 
+  const [openRegister, setOpenRegister] = useState(false);
+
+  const handleClickOpen = (event) => {
+    event.preventDefault();
+    setOpenRegister(true);
+  };
+
   const handleCloseUserMenu = () => {
-    setAnchorUserMenu(null);
+    if (!openRegister) {
+      setAnchorUserMenu(null);
+    }
   };
 
   const handleLogout = () => {
@@ -50,14 +62,27 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
   };
   const goAdminPage = () => {
     navigate("/admin");
-  }
+  };
+
+  const handleClickOutside = (event) => {
+    if (!event.target.closest(".MuiMenu-paper") && openRegister) {
+      setOpenRegister(false);
+    }
+  };
+
+  React.useEffect(() => {
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
 
   return (
     <Menu
       anchorEl={anchorUserMenu}
       open={Boolean(anchorUserMenu)}
       onClose={handleCloseUserMenu}
-      onClick={handleCloseUserMenu}
       PaperProps={{
         elevation: 0,
         sx: {
@@ -116,50 +141,39 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
         </Box>
       </MenuItem>
       <Divider />
-      {user?.role.name == "admin" ? (
+      {user?.role.name === "admin" && (
         <MenuItem onClick={goAdminPage}>
           <ListItemIcon>
             <ManageAccountsIcon />
           </ListItemIcon>
-          Đến trang quản lý
+          Đến trang quản lý
         </MenuItem>
-      ) : null}
-
+      )}
+      {user?.role.name === "provider" && (
+        <MenuItem>
+          <ListItemIcon>
+            <ManageAccountsIcon />
+          </ListItemIcon>
+          Đến trang dịch vụ
+        </MenuItem>
+      )}
+      {user?.role.name === "user" && (
+        <MenuItem onClick={handleClickOpen}>
+          <ListItemIcon>
+            <HowToRegIcon />
+          </ListItemIcon>
+          Đăng ký cung cấp dịch vụ
+        </MenuItem>
+      )}
       <Divider />
 
-      <MenuItem>
-        <ListItemIcon>
-          <SavingsIcon fontSize="small" />
-        </ListItemIcon>
-        Rút tiền
-      </MenuItem>
-
-      <MenuItem>
-        <ListItemIcon>
-          <PaymentIcon fontSize="small" />
-        </ListItemIcon>
-        Mua thẻ
-      </MenuItem>
-
-      <MenuItem>
-        <ListItemIcon>
-          <LockPersonIcon fontSize="small" />
-        </ListItemIcon>
-        Tạo khóa bảo vệ
-      </MenuItem>
-
       <MenuItem onClick={() => navigate("/done")}>
-        <ListItemIcon >
+        <ListItemIcon>
           <WatchLaterIcon fontSize="small" />
         </ListItemIcon>
         Lịch sử giao dịch
       </MenuItem>
-      <MenuItem>
-        <ListItemIcon>
-          <GroupsIcon fontSize="small" />
-        </ListItemIcon>
-        Danh sách theo dõi
-      </MenuItem>
+
       <MenuItem onClick={changeProfile}>
         <ListItemIcon>
           <Settings fontSize="small" />
@@ -173,6 +187,10 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
         </ListItemIcon>
         Đăng xuất
       </MenuItem>
+      <RegisterService
+        openRegister={openRegister}
+        setOpenRegister={setOpenRegister}
+      />
     </Menu>
   );
 };
