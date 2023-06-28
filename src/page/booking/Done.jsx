@@ -2,6 +2,7 @@ import {Toolbar} from "@mui/material";
 import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {doneListBooking} from "../../services/bookingService";
+import "./booking.css";
 
 
 const Done = () => {

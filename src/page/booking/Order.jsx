@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Toolbar, Dialog, DialogContent } from "@mui/material";
 import { detailBooking, rentalListBooking } from "../../services/bookingService.js";
+import "./booking.css";
 
 const Order = () => {
     const dispatch = useDispatch();
