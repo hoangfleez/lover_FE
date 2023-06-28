@@ -13,6 +13,7 @@ import {
   apiGetProvinces,
 } from "../../services/googleMapService.js";
 
+
 const style = {
   position: "absolute",
   top: "40%",

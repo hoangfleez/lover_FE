@@ -7,6 +7,7 @@ import {
     pendingListBookingProvider,
     rejectBooking
 } from "../../services/bookingService.js";
+import "./booking.css";
 
 const OrderPendingProvider = () => {
     const dispatch = useDispatch();

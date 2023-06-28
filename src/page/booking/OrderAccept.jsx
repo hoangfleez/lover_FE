@@ -2,6 +2,7 @@ import {Button, Toolbar} from "@mui/material";
 import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {acceptListBooking, doneBooking} from "../../services/bookingService.js";
+import "./booking.css";
 
 const OrderAccept = () => {
     const dispatch = useDispatch();

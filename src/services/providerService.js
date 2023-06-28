@@ -4,10 +4,10 @@ import customAPI from "./customAPI.js";
 
 export const getProvider = createAsyncThunk(
   "provider/getProvider",
-  async () => {
+  async (page) => {
     try {
-      const res = await axios.get("http://127.0.0.1:8181/providers");
-      return res.data.data.docs;
+      const res = await axios.get(`http://127.0.0.1:8181/providers?page=${page}`);
+      return res.data.data;
     } catch (err) {
       return err.response.data.payload;
     }
@@ -19,7 +19,6 @@ export const addProvider = createAsyncThunk(
   async (provider) => {
     try {
       const res = await customAPI().post("providers", provider);
-      console.log(res.data);
       return res.data;
     } catch (err) {
       return err.response.data.payload;
@@ -46,11 +45,50 @@ export const searchProviders = createAsyncThunk(
       const res = await axios.get(
         `http://127.0.0.1:8181/providers?name=${name}`
       );
-      return res.data.data.docs;
+      return res.data.data;
     } catch (err) {
       return err.response.data.payload;
     }
   }
+);
+
+
+export const searchCityProviders = createAsyncThunk(
+    "provider/searchCityProviders",
+    async (city) => {
+        try {
+            const res = await axios.get(
+                `http://127.0.0.1:8181/providers?city=${city}`
+            );
+            return res.data.data;
+        } catch (err) {
+            return err.response.data.payload;
+        }
+    }
+);
+
+export const searchSexMaleProviders = createAsyncThunk(
+    "provider/searchSexMaleProviders",
+    async () => {
+        try {
+            const res = await axios.get(`http://127.0.0.1:8181/providers?sex=male`);
+            return res.data.data;
+        } catch (err) {
+            return err.response.data.payload;
+        }
+    }
+);
+
+export const searchSexFemaleProviders = createAsyncThunk(
+    "provider/searchSexProviders",
+    async () => {
+        try {
+            const res = await axios.get(`http://127.0.0.1:8181/providers?sex=female`);
+            return res.data.data;
+        } catch (err) {
+            return err.response.data.payload;
+        }
+    }
 );
 
 export const newlyJoinedProviders = createAsyncThunk(
@@ -92,7 +130,17 @@ export const buttonOn = createAsyncThunk("providers/buttonOn", async (id) => {
     const res = await axios.put(
       `http://127.0.0.1:8181/providers/publicProvider/${id}`
     );
-    console.log(res.data)
+    return res.data;
+  } catch (err) {
+    return err.response.data;
+  }
+});
+
+export const buttonOff = createAsyncThunk("providers/buttonOff", async (id) => {
+  try {
+    const res = await axios.put(
+      `http://127.0.0.1:8181/providers/privateProvider/${id}`
+    );
     return res.data;
   } catch (err) {
     return err.response.data;
@@ -100,3 +148,13 @@ export const buttonOn = createAsyncThunk("providers/buttonOn", async (id) => {
 });
 
 
+export const topProviders = createAsyncThunk("providers/topProviders", async (id) => {
+    try {
+        const res = await axios.get(
+            `http://127.0.0.1:8181/providers/topProviders`
+        );
+        return res.data.data;
+    } catch (err) {
+        return err.response.data;
+    }
+});
