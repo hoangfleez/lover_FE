@@ -55,21 +55,31 @@ export const showUser = createAsyncThunk("users/showUser", async (id) => {
   }
 });
 
-export const editUser = createAsyncThunk(
-  "users/editUser",
-  async (arg, thunkAPI) => {
-    try {
-      const res = await customAPI().put(`/users/${arg.id}`, arg);
-      return res.data;
-    } catch (err) {
-      return err.response.data.payload;
-    }
-  }
-);
+// export const editUser = createAsyncThunk(
+//   "users/editUser",
+//   async (arg) => {
+//     try {
+//       const res = await customAPI().put(`/users/${arg.id}`, arg);
+//       console.log(res)
+//       return res.data;
+//     } catch (err) {
+//       return err.response.data.payload;
+//     }
+//   }
+// );
+export const editUser = createAsyncThunk("users/editUser", async (profile) => {
+  return axios
+    .put(`http://127.0.0.1:8181//users/${profile.id}`, profile)
+    .then((data) => {
+      console.log(data);
+      return data;
+    })
+    .catch((err) => {
+      console;
+    });
+});
 
 export const logout = createAsyncThunk("users/logout", async () => {
   localStorage.removeItem("token");
   return undefined;
 });
-
-

@@ -34,7 +34,7 @@ const AddProvider = () => {
   const [isServiceOn, setIsServiceOn] = useState(false); // State lưu trạng thái bật/tắt dịch vụ
 
   const profile = useSelector((state) => state.provider.showOneProvider);
-  console.log(profile);
+
 
   const handleOn = async () => {
     try {
@@ -208,3 +208,8 @@ const AddProvider = () => {
 };
 
 export default AddProvider;
+
+
+
+
+

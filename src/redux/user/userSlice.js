@@ -20,17 +20,14 @@ const userSlice = createSlice({
       }
     });
 
-    builder.addCase(logout.fulfilled, (state, action) => {
-      state.currentUser = action.payload;
-    });
 
     builder.addCase(showUser.fulfilled, (state, action) => {
       state.profile = action.payload;
     });
 
-    builder.addCase(editUser.fulfilled, (state, action) => {
-      state.currentUser = action.payload;
-    });
+    // builder.addCase(editUser.fulfilled, (state, action) => {
+    //   state.profile = action.payload;
+    // });
   },
 });
 export default userSlice.reducer;

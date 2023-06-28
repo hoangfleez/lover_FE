@@ -1,11 +1,10 @@
 import { Box } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import React, {  useEffect } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { TreeView, TreeItem } from "@mui/lab";
 import PersonIcon from "@mui/icons-material/Person";
 import FeaturedPlayListIcon from "@mui/icons-material/FeaturedPlayList";
-import MailLockIcon from "@mui/icons-material/MailLock";
 import HistoryToggleOffIcon from "@mui/icons-material/HistoryToggleOff";
 import PaymentIcon from "@mui/icons-material/Payment";
 import WalletIcon from "@mui/icons-material/Wallet";
@@ -13,7 +12,7 @@ import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest";
 import SettingsIcon from "@mui/icons-material/Settings";
 import BlockIcon from "@mui/icons-material/Block";
 import HistoryIcon from "@mui/icons-material/History";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function UserSiderbar() {
   const [expanded, setExpanded] = React.useState(
@@ -78,14 +77,6 @@ export default function UserSiderbar() {
             icon={<FeaturedPlayListIcon />}
           />
           <TreeItem nodeId="4" label="Cài đặt">
-            <TreeItem
-              nodeId="5"
-              label="Email"
-              icon={<MailLockIcon />}
-              onClick={() => {
-                navigate("/customer_info/email ");
-              }}
-            />
           </TreeItem>
           <TreeItem nodeId="6" label="Lịch sử giao dịch">
             <TreeItem

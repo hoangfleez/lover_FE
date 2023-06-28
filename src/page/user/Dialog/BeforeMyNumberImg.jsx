@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { Button, CircularProgress, Card, CardMedia, Typography } from "@mui/material";
+import {
+  Button,
+  CircularProgress,
+  Card,
+  CardMedia,
+  Typography,
+} from "@mui/material";
 import { styled } from "@mui/system";
 import { uploadBytes, getDownloadURL, ref } from "@firebase/storage";
 import { storage } from "../../../services/firebase.js";
@@ -116,6 +122,11 @@ export default function BeforeMyNumberImg({ formik }) {
           )}
         </UploadCard>
       </label>
+      {formik.touched.beforeImageCard && formik.errors.beforeImageCard && (
+        <Typography variant="body2" color="error" mt={1}>
+          {formik.errors.beforeImageCard}
+        </Typography>
+      )}
     </div>
   );
 }

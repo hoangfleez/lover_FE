@@ -13,7 +13,7 @@ import PaymentIcon from "@mui/icons-material/Payment";
 import LockPersonIcon from "@mui/icons-material/LockPerson";
 import WatchLaterIcon from "@mui/icons-material/WatchLater";
 import GroupsIcon from "@mui/icons-material/Groups";
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../services/useService";
@@ -38,9 +38,7 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
   };
 
   const handleCloseUserMenu = () => {
-    if (!openRegister) {
-      setAnchorUserMenu(null);
-    }
+    setAnchorUserMenu(null);
   };
 
   const handleLogout = () => {
@@ -64,134 +62,125 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
     navigate("/admin");
   };
 
-  const handleClickOutside = (event) => {
-    if (!event.target.closest(".MuiMenu-paper") && openRegister) {
-      setOpenRegister(false);
-    }
-  };
-
-  React.useEffect(() => {
-    document.addEventListener("click", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
+  useEffect(() => {}, [user]);
 
   return (
-    <Menu
-      anchorEl={anchorUserMenu}
-      open={Boolean(anchorUserMenu)}
-      onClose={handleCloseUserMenu}
-      PaperProps={{
-        elevation: 0,
-        sx: {
-          overflow: "visible",
-          filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-          bgcolor: "customColorSchemes.backgroundColor",
-          mt: 1.5,
-          "& .MuiAvatar-root": {
-            width: 50,
-            height: 50,
-            ml: -0.5,
-            mr: 1,
-            mt: 2,
-          },
-          "&:before": {
-            content: '""',
-            display: "block",
-            position: "absolute",
-            top: 0,
-            right: 20,
-            width: 10,
-            height: 10,
+    <>
+      <Menu
+        anchorEl={anchorUserMenu}
+        open={Boolean(anchorUserMenu)}
+        onClose={handleCloseUserMenu}
+        onClick={handleCloseUserMenu}
+        PaperProps={{
+          elevation: 0,
+          sx: {
+            overflow: "visible",
+            filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
             bgcolor: "customColorSchemes.backgroundColor",
-            transform: "translateY(-50%) rotate(45deg)",
-            zIndex: 0,
+            mt: 1.5,
+            "& .MuiAvatar-root": {
+              width: 50,
+              height: 50,
+              ml: -0.5,
+              mr: 1,
+              mt: 2,
+            },
+            "&:before": {
+              content: '""',
+              display: "block",
+              position: "absolute",
+              top: 0,
+              right: 20,
+              width: 10,
+              height: 10,
+              bgcolor: "customColorSchemes.backgroundColor",
+              transform: "translateY(-50%) rotate(45deg)",
+              zIndex: 0,
+            },
           },
-        },
-      }}
-      transformOrigin={{ horizontal: "right", vertical: "top" }}
-      anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-    >
-      <MenuItem>
-        <Box sx={{ display: "flex" }} onClick={handlePage}>
-          <Avatar src={user?.avatar} />
-          <Box>
-            <Typography variant="subtitle1" gutterBottom>
-              {user?.lastname}
-            </Typography>
-            <Typography
-              variant="caption"
-              display="block"
-              gutterBottom
-              color="red"
-            >
-              ID:{user?.email}
-            </Typography>
-            <Typography
-              variant="caption"
-              display="block"
-              gutterBottom
-              color="gray"
-            >
-              Xem trang cá nhân của bạn
-            </Typography>
-          </Box>
-        </Box>
-      </MenuItem>
-      <Divider />
-      {user?.role.name === "admin" && (
-        <MenuItem onClick={goAdminPage}>
-          <ListItemIcon>
-            <ManageAccountsIcon />
-          </ListItemIcon>
-          Đến trang quản lý
-        </MenuItem>
-      )}
-      {user?.role.name === "provider" && (
+        }}
+        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+      >
         <MenuItem>
-          <ListItemIcon>
-            <ManageAccountsIcon />
-          </ListItemIcon>
-          Đến trang dịch vụ
+          <Box sx={{ display: "flex" }} onClick={handlePage}>
+            <Avatar src={user?.avatar} />
+            <Box>
+              <Typography variant="subtitle1" gutterBottom>
+                {user?.lastname}
+              </Typography>
+              <Typography
+                variant="caption"
+                display="block"
+                gutterBottom
+                color="red"
+              >
+                ID:{user?.email}
+              </Typography>
+              <Typography
+                variant="caption"
+                display="block"
+                gutterBottom
+                color="gray"
+              >
+                Xem trang cá nhân của bạn
+              </Typography>
+            </Box>
+          </Box>
         </MenuItem>
-      )}
-      {user?.role.name === "user" && (
-        <MenuItem onClick={handleClickOpen}>
+        <Divider />
+        {user?.role?.name === "admin" && (
+          <MenuItem onClick={goAdminPage}>
+            <ListItemIcon>
+              <ManageAccountsIcon />
+            </ListItemIcon>
+            Đến trang quản lý
+          </MenuItem>
+        )}
+        {user?.role?.name === "provider" && (
+          <MenuItem>
+            <ListItemIcon>
+              <ManageAccountsIcon />
+            </ListItemIcon>
+            Đến trang dịch vụ
+          </MenuItem>
+        )}
+        {user?.role?.name === "user" && (
+          <MenuItem onClick={handleClickOpen}>
+            <ListItemIcon>
+              <HowToRegIcon />
+            </ListItemIcon>
+            Đăng ký cung cấp dịch vụ
+          </MenuItem>
+        )}
+        <Divider />
+
+        <MenuItem onClick={() => navigate("/done")}>
           <ListItemIcon>
-            <HowToRegIcon />
+            <WatchLaterIcon fontSize="small" />
           </ListItemIcon>
-          Đăng ký cung cấp dịch vụ
+          Lịch sử giao dịch
         </MenuItem>
-      )}
-      <Divider />
 
-      <MenuItem onClick={() => navigate("/done")}>
-        <ListItemIcon>
-          <WatchLaterIcon fontSize="small" />
-        </ListItemIcon>
-        Lịch sử giao dịch
-      </MenuItem>
+        <MenuItem onClick={changeProfile}>
+          <ListItemIcon>
+            <Settings fontSize="small" />
+          </ListItemIcon>
+          Cài đặt tài khoản
+        </MenuItem>
 
-      <MenuItem onClick={changeProfile}>
-        <ListItemIcon>
-          <Settings fontSize="small" />
-        </ListItemIcon>
-        Cài đặt tài khoản
-      </MenuItem>
-
-      <MenuItem onClick={handleLogout}>
-        <ListItemIcon>
-          <Logout fontSize="small" />
-        </ListItemIcon>
-        Đăng xuất
-      </MenuItem>
+        <MenuItem onClick={handleLogout}>
+          <ListItemIcon>
+            <Logout fontSize="small" />
+          </ListItemIcon>
+          Đăng xuất
+        </MenuItem>
+      </Menu>
       <RegisterService
         openRegister={openRegister}
         setOpenRegister={setOpenRegister}
       />
-    </Menu>
+    </>
   );
 };
 

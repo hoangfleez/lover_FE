@@ -7,7 +7,6 @@ import ShowAndEditInfo from "./page/user/Profile/ShowAndEditInfo";
 import DetailProvider from "./page/Provider/detailProvider";
 import PersonalPage from "./page/user/personalPage/PersonalPage";
 import UserContent from "./page/user/UserContent";
-import EmailUser from "./page/user/UserSidebar/Email/EmailUser";
 import ShowAccountUser from "./page/admin/ShowAccountUser.jsx";
 import AdvanceSetting from "./page/Provider/AdvanceSetting";
 import ServiceSetting from "./page/Provider/ServiceSetting";
@@ -31,7 +30,6 @@ function App() {
           <Route path="page" element={<PersonalPage />} />
           <Route path="customer_info" element={<UserContent />}>
             <Route path="" element={<ShowAndEditInfo />} />
-            <Route path="email" element={<EmailUser />} />
             <Route path="order" element={<Order />} />
             <Route path="accept" element={<OrderAccept />} />
           </Route>
