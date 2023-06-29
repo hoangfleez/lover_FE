@@ -63,45 +63,83 @@ export default function ShowAll() {
     return (
         <>
             <img
-                style={{ width: "99%" }}
+                style={{ width: "96.5%" }}
                 src="https://files.playerduo.net/production/images/banner/715867c6-698f-411a-b4f9-1e9093130b60__ff5aee00-79ee-11ed-a19f-23a3b10d190e__admin_banner.jpg"
             />
-            <button
-                style={{
-                    backgroundColor: "#2e6c30",
-                    border: "none",
-                    color: "white",
-                    padding: "10px 20px",
-                    textAlign: "center",
-                    textDecoration: "none",
-                    display: "inline-block",
-                    fontSize: "16px",
-                    borderRadius: "4px",
-                    cursor: "pointer",
-                }}
-                onClick={handleNewProvider}
-            >
-                Người đăng kí CCDV mới nhất
-            </button>
-            <button
-                style={{
-                    backgroundColor: "#2e6c30",
-                    border: "none",
-                    color: "white",
-                    padding: "10px 20px",
-                    textAlign: "center",
-                    textDecoration: "none",
-                    display: "inline-block",
-                    fontSize: "16px",
-                    borderRadius: "4px",
-                    cursor: "pointer",
-                }}
-                onClick={handleTopProviders}
-            >
-                Người có lượt thuê nhiều nhất
-            </button>
-            <button onClick={handleMale}>Nam</button>
-            <button onClick={handleFemale}>Nữ</button>
+            <Box sx={{margin: "3px 0 10px 10px"}}>
+                <button
+                    style={{
+                        backgroundColor: "#000000FB",
+                        border: "none",
+                        color: "white",
+                        padding: "10px 20px",
+                        textAlign: "center",
+                        textDecoration: "none",
+                        display: "inline-block",
+                        fontSize: "16px",
+                        borderRadius: "6px",
+                        cursor: "pointer",
+                        marginLeft: 3
+                    }}
+                    onClick={handleNewProvider}
+                >
+                    Người đăng kí CCDV mới nhất
+                </button>
+                <button
+                    style={{
+                        backgroundColor: "#000000FB",
+                        border: "none",
+                        color: "white",
+                        padding: "10px 20px",
+                        textAlign: "center",
+                        textDecoration: "none",
+                        display: "inline-block",
+                        fontSize: "16px",
+                        borderRadius: "6px",
+                        cursor: "pointer",
+                        marginLeft: 10
+                    }}
+                    onClick={handleTopProviders}
+                >
+                    Người có lượt thuê nhiều nhất
+                </button>
+                <button
+                    style={{
+                        backgroundColor: "#000000FB",
+                        border: "none",
+                        color: "white",
+                        padding: "10px 20px",
+                        textAlign: "center",
+                        textDecoration: "none",
+                        display: "inline-block",
+                        fontSize: "16px",
+                        borderRadius: "6px",
+                        cursor: "pointer",
+                        marginLeft: 10
+                    }}
+                    onClick={handleMale}>
+                    Nam
+                </button>
+                <button
+                    style={{
+                        backgroundColor: "#000000FB",
+                        border: "none",
+                        color: "white",
+                        padding: "10px 20px",
+                        textAlign: "center",
+                        textDecoration: "none",
+                        display: "inline-block",
+                        fontSize: "16px",
+                        borderRadius: "6px",
+                        cursor: "pointer",
+                        marginLeft: 10
+                    }}
+                    onClick={handleFemale}>
+                    Nữ
+                </button>
+
+            </Box>
+
             <Box
                 sx={{
                     display: "flex",

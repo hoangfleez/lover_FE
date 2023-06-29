@@ -115,6 +115,7 @@ export default function AdvanceSetting() {
       beforeImageCard: beforeImageUrls || formState.beforeImageCard,
       afterImageCard: afterImageUrls || formState.afterImageCard,
     };
+    console.log(editProfile,6565)
 
     let update = await dispatch(editUser(editProfile));
 
