@@ -6,6 +6,7 @@ import { Snackbar } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
 import {
   addProvider,
+  editProvider,
   showProviderByUser,
 } from "../../../services/providerService";
 import Birthday from "./Birthday";
@@ -32,10 +33,8 @@ const AddProvider = () => {
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
-  const [isServiceOn, setIsServiceOn] = useState(false); // State lưu trạng thái bật/tắt dịch vụ
 
   const profile = useSelector((state) => state.provider.showOneProvider);
-  
 
 
   useEffect(() => {
@@ -59,6 +58,9 @@ const AddProvider = () => {
       price: profile?.price || "",
       image: profile?.images || [],
       service: profile?.serviceProviders || [],
+      freeService: profile?.freeService || [], // Add this line
+      mainService: profile?.mainService || "", // Add this line
+      otherService: profile?.otherService || [], // Add this line
     },
     onSubmit: async (values) => {
       const { freeService, mainService, otherService, ...rest } = values;
@@ -68,7 +70,12 @@ const AddProvider = () => {
         ...rest,
         service: id,
       };
-      await dispatch(addProvider(newProvider));
+      if (profile) {
+        console.log(newProvider)
+        await dispatch(editProvider (newProvider,profile.id));
+      } else {
+        await dispatch(addProvider(newProvider));
+      }
       setIsSnackbarOpen(true);
     },
   });
@@ -77,9 +84,7 @@ const AddProvider = () => {
     setIsSnackbarOpen(false);
   };
 
-  useEffect(() => {
-
-  }, [profile]);
+  useEffect(() => {}, [profile]);
 
   return (
     <Stack p={2}>
@@ -92,7 +97,7 @@ const AddProvider = () => {
             <AvatarProvider formik={formik} />
             <NickName formik={formik} name="name" />
             <Divider />
-            <MyNumber/>
+            <MyNumber />
             <Divider />
             <Stack direction="row" spacing={4} justifyContent="space-between">
               <BasicService formik={formik} />
@@ -155,8 +160,3 @@ const AddProvider = () => {
 };
 
 export default AddProvider;
-
-
-
-
-

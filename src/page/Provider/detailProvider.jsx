@@ -44,10 +44,8 @@ const DetailProvider = () => {
 
   useEffect(() => {
     dispatch(getProviderDetail(id));
-  }, []);
-  useEffect(() => {
     setReady(detailProviderDetail?.ready);
-  }, [detailProviderDetail?.ready]);
+  }, [detailProviderDetail?.ready,dispatch]);
   return (
     <Box
       sx={{

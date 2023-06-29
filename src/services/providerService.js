@@ -14,6 +14,19 @@ export const getProvider = createAsyncThunk(
   }
 );
 
+export const editProvider = createAsyncThunk(
+  "provider/editProvider",
+  async (provider,id) => {
+    try {
+      console.log(provider,id)
+      const res = await axios.get(`http://127.0.0.1:8181/providers/${provider.id}`);
+      return res.data;
+    } catch (err) {
+      return err.response.data.payload;
+    }
+  }
+);
+
 export const addProvider = createAsyncThunk(
   "provider/addProvider",
   async (provider) => {
