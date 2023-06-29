@@ -49,7 +49,7 @@ export default function Login(props) {
     onSubmit: (user) => {
       dispatch(login(user))
         .then((data) => {
-          console.log(data);
+
           if (data.payload.err === "Password is wrong") {
             setErrorMessage("Sai tên đăng nhập hoặc mật khẩu.");
           } else if (data.payload.err === "User is not exist") {

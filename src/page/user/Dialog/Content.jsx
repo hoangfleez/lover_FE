@@ -17,6 +17,7 @@ export default function Content({ setOpenRegister }) {
   const profile = useUserProfile();
   const [sttUpdate, setSttUpdate] = useState("");
   console.log(sttUpdate);
+  console.log(profile);
 
   const validationSchema = Yup.object().shape({
     numberCard: Yup.string()
@@ -43,7 +44,7 @@ export default function Content({ setOpenRegister }) {
 
       dispatch(editUser(newProfile))
         .then(() => {
-          console.log(newProfile);
+          setSttUpdate("pending");
           Swal.fire({
             icon: "success",
             title: "Gửi thông tin thành công, hãy đợi phê duyệt",
@@ -59,6 +60,7 @@ export default function Content({ setOpenRegister }) {
   });
 
   useEffect(() => {
+    console.log(111111111111111)
     setSttUpdate(profile?.update);
   }, [profile]);
 

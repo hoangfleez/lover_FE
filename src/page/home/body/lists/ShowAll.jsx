@@ -25,8 +25,7 @@ export default function ShowAll() {
     const [totalProviders, setTotalProviders] = useState(0);
     const [totalPage, setTotalPage] = useState(0);
 
-    const showProvider = useSelector((state) => {
-        console.log(state.provider.listProvider.meta, 999);
+    const showProvider = useSelector((state) => {;
         const ProviderList = state.provider.listProvider.docs;
         if (!ProviderList) return [];
         if (ProviderList && totalPage === 0) {

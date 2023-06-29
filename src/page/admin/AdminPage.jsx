@@ -106,7 +106,6 @@ const HomeAdmin = () => {
           </TableHead>
           <TableBody>
             {displayedUsers.map((item) => {
-              console.log(item)
               return (
                 <TableRow key={item.id}>
                   <TableCell>{item.id}</TableCell>
