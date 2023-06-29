@@ -3,14 +3,16 @@ import {
   Avatar,
   Box,
   Divider,
+  FormControlLabel,
   ListItemIcon,
   Menu,
   MenuItem,
+  Stack,
   Typography,
 } from "@mui/material";
 import WatchLaterIcon from "@mui/icons-material/WatchLater";
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../services/useService";
 import { useUserProfile } from "../../customHook/useUserProfile";
@@ -19,12 +21,17 @@ import HowToRegIcon from "@mui/icons-material/HowToReg";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import RegisterService from "./Dialog/RegisterService";
 import { useState } from "react";
+import { showProviderByUser } from "../../services/providerService";
+import Switch from "@mui/material/Switch";
+import CustomizedSwitches from "./Swich";
 
 const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const user = useUserProfile();
+
+  const profile = useSelector((state) => state.provider.showOneProvider);
 
   const [openRegister, setOpenRegister] = useState(false);
 
@@ -56,7 +63,13 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
     navigate("/admin");
   };
 
-  useEffect(() => {}, [user]);
+  useEffect(() => {
+    dispatch(showProviderByUser());
+  }, []);
+
+  const handleSwitchClick = (event) => {
+    event.stopPropagation();
+  };
 
   return (
     <>
@@ -132,12 +145,34 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
           </MenuItem>
         )}
         {user?.role?.name === "provider" && (
-          <MenuItem onClick={()=>{navigate("/provider_setting")}}>
-            <ListItemIcon>
-              <ManageAccountsIcon />
-            </ListItemIcon>
-            Đến trang dịch vụ
-          </MenuItem>
+          <>
+            <MenuItem
+              onClick={() => {
+                navigate("/provider_setting");
+              }}
+            >
+              <ListItemIcon>
+                <ManageAccountsIcon />
+              </ListItemIcon>
+              Đến trang dịch vụ
+            </MenuItem>
+            {profile ? (
+              <MenuItem>
+                <Stack
+                  direction={"row"}
+                  onClick={handleSwitchClick}
+                  alignItems={"center"}
+                  gap={7}
+                >
+                  <Box>Trạng thái</Box>
+
+                  <CustomizedSwitches profile={profile}/>
+                </Stack>
+              </MenuItem>
+            ) : (
+              ""
+            )}
+          </>
         )}
         {user?.role?.name === "user" && (
           <MenuItem onClick={handleClickOpen}>

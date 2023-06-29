@@ -38,30 +38,6 @@ const AddProvider = () => {
   
 
 
-  const handleOn = async () => {
-    try {
-      await axios.put(
-        `http://127.0.0.1:8181/providers/publicProvider/${profile?.id}`,{ ready: '1' }
-      );
-      console.log("Bật dịch vụ thành công");
-      setIsServiceOn(true); // Cập nhật state khi bật dịch vụ thành công
-    } catch (error) {
-      console.error("Lỗi khi bật dịch vụ:", error);
-    }
-  };
-
-  const handleOff = async () => {
-    try {
-      await axios.put(
-        `http://127.0.0.1:8181/providers/privateProvider/${profile?.id}`,{ ready: '0' }
-      );
-      console.log("Tắt dịch vụ thành công");
-      setIsServiceOn(false); // Cập nhật state khi tắt dịch vụ thành công
-    } catch (error) {
-      console.error("Lỗi khi tắt dịch vụ:", error);
-    }
-  };
-
   useEffect(() => {
     dispatch(showProviderByUser());
   }, []);
@@ -162,37 +138,6 @@ const AddProvider = () => {
             </Button>
           </Stack>
         </form>
-        <Stack ml={10}>
-          {profile && (
-            <>
-              {isServiceOn ? ( // Sử dụng state để kiểm tra trạng thái bật/tắt dịch vụ
-                <Button
-                  variant="contained"
-                  sx={{
-                    padding: "20px",
-                    backgroundColor: "red",
-                    color: "white",
-                    "&:hover": {
-                      backgroundColor: "red",
-                      opacity: 1,
-                    },
-                  }}
-                  onClick={handleOff}
-                >
-                  Tắt dịch vụ
-                </Button>
-              ) : (
-                <Button
-                  variant="contained"
-                  sx={{ padding: "20px" }}
-                  onClick={handleOn}
-                >
-                  Bật dịch vụ
-                </Button>
-              )}
-            </>
-          )}
-        </Stack>
       </Box>
       <Snackbar
         open={isSnackbarOpen}

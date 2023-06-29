@@ -59,6 +59,9 @@ export default function ShowAll() {
     useEffect(() => {
         dispatch(getProvider());
     }, [dispatch]);
+    useEffect(() => {
+        dispatch(getProvider());
+    }, [dispatch, showProvider]);
 
     return (
         <>
