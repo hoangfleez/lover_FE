@@ -63,7 +63,7 @@ export default function ShowAll() {
     return (
         <>
             <img
-                style={{ width: "96.5%" }}
+                style={{ width: "100%" }}
                 src="https://files.playerduo.net/production/images/banner/715867c6-698f-411a-b4f9-1e9093130b60__ff5aee00-79ee-11ed-a19f-23a3b10d190e__admin_banner.jpg"
             />
             <Box sx={{margin: "3px 0 10px 10px"}}>

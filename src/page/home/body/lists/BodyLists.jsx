@@ -52,36 +52,7 @@ export default function BodyLists({ service, setService }) {
   }, []);
   return (
     <Box sx={{ width: "100%" }}>
-      <Box>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label="basic tabs example"
-          sx={{
-            position: "fixed",
-            zIndex: 1,
-            backgroundColor: "customColorSchemes.basicColor",
-            "& .MuiTabs-indicator": { display: "none" },
-          }}
-        >
-          <CustomTab
-            label="Tất cả"
-            onClick={() => {
-              navigate("");
-            }}
-          />
-          {services?.map((item) => {
-            return (
-              <CustomTab
-                key={item.id}
-                label={item.name}
-                onClick={() => handleServiceToggle(item?.id)}
-              />
-            );
-          })}
-        </Tabs>
-      </Box>
-      <Box sx={{ marginTop: "48px" }}>
+      <Box sx={{ padding: "30px" }}>
         <Outlet />
       </Box>
     </Box>
