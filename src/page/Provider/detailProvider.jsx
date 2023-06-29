@@ -175,23 +175,23 @@ const DetailProvider = () => {
                     display: "flex",
                   }}
                 >
-                  {detailProviderDetail?.images?.map((image, index) => (
-                    <Card
-                      key={index}
-                      sx={{
-                        width: 150,
-                        height: 150,
-                        cursor: "pointer",
-                        marginRight: "10px",
-                      }}
-                    >
-                      <CardMedia
-                        component="img"
-                        src={image}
-                        sx={{ height: 150 }}
-                      />
-                    </Card>
-                  ))}
+                    {detailProviderDetail?.images?.map((image, index) => (
+                        <Card
+                            key={index}
+                            sx={{
+                                width: 150,
+                                height: 150,
+                                cursor: "pointer",
+                                marginRight: "10px",
+                            }}
+                        >
+                            <CardMedia
+                                component="img"
+                                src={image.imageURL}
+                                sx={{ height: 150 }}
+                            />
+                        </Card>
+                    ))}
                 </Box>
                 <Typography variant="body2">
                   {" "}
