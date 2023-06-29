@@ -3,12 +3,11 @@ import {
   addProvider,
   filterProvider,
   getProvider,
-  getProviderDetail,
-  searchProviders
+  getProviderDetail, newlyJoinedProviders,
+  searchProviders, searchSexFemaleProviders, searchSexMaleProviders,
+  showProviderByUser, topProviders
 } from "../../services/providerService";
 import {getServiceProvider} from "../../services/serviceProviderService.js";
-// import { filterProvider, getProvider } from "../../sevives/providerService";
-// import { addProvider, filterProvider, getProvider } from "../../services/providerService"
 
 const initialState = {
   listProvider: [],
@@ -24,7 +23,7 @@ const providerSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getProvider.fulfilled, (state, action) => {
       state.listProvider = action.payload;
-      state.currenProvider = action.payload;
+      // state.currenProvider = action.payload;
     });
 
     builder.addCase(filterProvider.fulfilled, (state, { payload }) => {
@@ -48,9 +47,31 @@ const providerSlice = createSlice({
       state.currenProvider = action.payload;
     });
 
-    builder.addCase(getServiceProvider.fulfilled, (state, action) => {
+    builder.addCase(searchSexMaleProviders.fulfilled, (state, action) => {
       state.listProvider = action.payload;
       state.currenProvider = action.payload;
+    });
+
+    builder.addCase(searchSexFemaleProviders.fulfilled, (state, action) => {
+      state.listProvider = action.payload;
+      state.currenProvider = action.payload;
+    });
+
+    builder.addCase(newlyJoinedProviders.fulfilled, (state, action) => {
+      state.listProvider = action.payload;
+      state.currenProvider = action.payload;
+    });
+    builder.addCase(topProviders.fulfilled, (state, action) => {
+      state.listProvider = action.payload;
+      state.currenProvider = action.payload;
+    });
+
+    builder.addCase(getServiceProvider.fulfilled, (state, action) => {
+      state.listProvider = action.payload;
+    });
+
+    builder.addCase(showProviderByUser.fulfilled, (state, action) => {
+      state.showOneProvider = action.payload;
     });
   },
   

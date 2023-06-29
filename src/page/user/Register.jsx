@@ -71,7 +71,6 @@ export default function Register(props) {
     onSubmit: (values) => {
       dispatch(register(values))
         .then((data) => {
-          console.log(data)
         if (data.payload === "trung tai khoan"){
           setErrorMessage("Tai khoan da ton tai")
         }else if(data.payload === "sai otp"){
@@ -193,6 +192,7 @@ export default function Register(props) {
                     variant="contained"
                     fullWidth
                     onClick={handleButtonChange}
+                    sx={{padding:"12px"}}
                   >
                     Gửi
                   </Button>

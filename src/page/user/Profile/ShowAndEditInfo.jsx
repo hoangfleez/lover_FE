@@ -11,18 +11,23 @@ import {
   Grid,
   Typography,
   Divider,
+  InputAdornment,
+  Alert,
 } from "@mui/material";
-import "./ShowAndEditInfo.css";
+import CheckIcon from "@mui/icons-material/Check";
 import { ref, uploadBytes, getDownloadURL } from "@firebase/storage";
+import { Snackbar } from "@mui/material";
 import { storage } from "../../../services/firebase.js";
 import { v4 } from "uuid";
 import { useUserProfile } from "../../../customHook/useUserProfile.js";
-
 
 const ShowAndEditInfo = () => {
   const dispatch = useDispatch();
 
   const profile = useUserProfile();
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   const [formState, setFormState] = useState({
     username: "",
@@ -36,7 +41,6 @@ const ShowAndEditInfo = () => {
     avatar: "",
   });
 
-  console.log(formState, 9999);
   const [imageUpload, setImageUpload] = useState(null);
   const [tempAvatar, setTempAvatar] = useState("");
   const [open, setOpen] = useState(false);
@@ -51,8 +55,9 @@ const ShowAndEditInfo = () => {
     setTempAvatar(""); // Xóa giá trị của tempAvatar
   };
 
-  const handleSubmitEditProfile = async (event) => {
-    alert("Cập nhật thành công");
+  const handleSubmitEditProfile = async (event, data) => {
+    setSnackbarMessage("Cập nhật thành công");
+    setSnackbarOpen(true);
     event.preventDefault();
 
     const editProfile = {
@@ -187,13 +192,9 @@ const ShowAndEditInfo = () => {
                   <CardMedia
                     className="hover-image"
                     component="img"
+                    sx={{ width: "100%", height: "100%", objectFit: "cover" }}
                     image={formState.avatar}
                     alt="Avatar"
-                    style={{
-                      objectFit: "container",
-                      width: "100%",
-                      height: "100%",
-                    }}
                   />
                 </Box>
                 <Box onClick={handleOpenModal} sx={{ cursor: "pointer" }}>
@@ -324,6 +325,41 @@ const ShowAndEditInfo = () => {
                     }
                   />
                 </Box>
+                <Box>
+                  <Typography variant="overline" gutterBottom>
+                    SỐ ĐIỆN THOẠI
+                  </Typography>
+                  <TextField
+                    fullWidth
+                    multiline
+                    defaultValue={formState.phoneNumber}
+                    onChange={(event) =>
+                      setFormState({
+                        ...formState,
+                        phoneNumber: event.target.value,
+                      })
+                    }
+                  />
+                </Box>
+
+                <Box>
+                  <Typography variant="overline" gutterBottom>
+                    Email
+                  </Typography>
+                  <TextField
+                    disabled
+                    fullWidth
+                    multiline
+                    defaultValue={profile?.email}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <CheckIcon sx={{ color: "green" }} />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Box>
                 <Divider sx={{ marginTop: 3 }} />
               </Box>
               <Box sx={{ width: "70ch", marginTop: 3 }}>
@@ -332,10 +368,9 @@ const ShowAndEditInfo = () => {
                   variant="contained"
                   fullWidth
                   sx={{
-                    backgroundColor: "red",
                     color: "white",
                     padding: "10px",
-                    backgroundColor: "red",
+                    bgcolor: "red",
                     "&:hover": {
                       backgroundColor: "red",
                     },
@@ -348,6 +383,23 @@ const ShowAndEditInfo = () => {
           )}
         </form>
       </Box>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={() => setSnackbarOpen(false)}
+        sx={{
+          width: "20%",
+          "& .MuiAlert-root": {
+            width: "100%",
+            fontSize: "1.3rem",
+            fontWeight: "bold",
+          },
+        }}
+      >
+        <Alert severity="success" sx={{ width: "100%" }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </>
   );
 };

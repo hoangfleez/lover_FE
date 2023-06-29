@@ -10,7 +10,7 @@ export function useUserProfile() {
   const decodedToken = JSON.parse(atob(token.split(".")[1]));
   const userId = decodedToken.idUser;
 
-  const profile = useSelector((state) => {
+  const profile = useSelector((state) => {;
     if (state.user.profile?.data) {
       return state.user.profile.data;
     }

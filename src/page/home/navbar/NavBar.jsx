@@ -6,15 +6,21 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
+import Badge from "@mui/material/Badge";
+import MenuItem from "@mui/material/MenuItem";
+import Menu from "@mui/material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import MoreIcon from "@mui/icons-material/MoreVert";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ModeToggle from "../../../theme/DarkMode";
 import { useSelector, useDispatch } from "react-redux";
 import UserIcons from "../../user/UserIcons";
 import PersonIcon from "@mui/icons-material/Person";
 import BasicModal from "../../user/Modal";
-import {searchProviders} from "../../../services/providerService.js";
-import { useNavigate } from "react-router-dom";
+import { searchProviders } from "../../../services/providerService.js";
+import { Link, useNavigate } from "react-router-dom";
 import { clearLocalStorage } from "../../../utils";
 
 const Search = styled("div")(({ theme }) => ({
@@ -50,45 +56,47 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function NavBar() {
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [open, setOpen] = React.useState(false);
-  const [name, setName] = React.useState('')
+  const [name, setName] = React.useState("");
   const handleOpen = () => setOpen(true);
 
-  const goHome = () =>{
-    clearLocalStorage()
-    navigate("/")
-  }
-  
+  const goHome = () => {
+    clearLocalStorage();
+    navigate("/");
+  };
+
   const user = useSelector(({ user }) => {
     return user.currentUser;
   });
 
-  let handleInput = (e) =>{
-    console.log(e.target.value, 55443)
-    setName(e.target.value)
+  let handleInput = (e) => {
+    setName(e.target.value);
   };
 
-  const handleSearch = async () => {
-    let abc = await dispatch(searchProviders(name))
-    console.log(abc,66666)
-    setName("")
-  }
-
-
-
+  const handleSearch = async (searchName) => {
+    if (searchName !== "") {
+      let abc = await dispatch(searchProviders(searchName));
+      setName("");
+    }
+  };
 
   return (
     <Box>
       <AppBar
         position="fixed"
-        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 , backgroundColor:"customColorSchemes.backgroundColor"}}
+        sx={{
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+          backgroundColor: "customColorSchemes.backgroundColor",
+        }}
       >
         <Toolbar>
-          <FavoriteIcon sx={{ mr: 2, color: "red", cursor:"pointer" }} onClick={goHome}  />
+          <FavoriteIcon
+            sx={{ mr: 2, color: "red", cursor: "pointer" }}
+            onClick={goHome}
+          />
           <Typography
             variant="h6"
             noWrap
@@ -98,15 +106,16 @@ export default function NavBar() {
             Love&Love
           </Typography>
           <Box sx={{ flexGrow: 1.3 }} />
-          <Search sx={{ color:"customColorSchemes.textColor"}}>
+          <Search sx={{ color: "customColorSchemes.textColor" }}>
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
               value={name}
               onChange={handleInput}
             />
-            <SearchIcon onClick={handleSearch}/>
+            <SearchIcon onClick={() => handleSearch(name)} />
           </Search>
+
           <Box sx={{ flexGrow: 1 }} />
           <Box
             sx={{
@@ -116,7 +125,7 @@ export default function NavBar() {
             }}
           >
             {!user ? (
-              <IconButton  onClick={handleOpen}>
+              <IconButton onClick={handleOpen}>
                 <PersonIcon />
               </IconButton>
             ) : (
@@ -125,10 +134,8 @@ export default function NavBar() {
             <BasicModal open={open} setOpen={setOpen} />
           </Box>
           <ModeToggle />
-
         </Toolbar>
       </AppBar>
-
     </Box>
   );
 }

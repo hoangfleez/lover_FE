@@ -11,7 +11,6 @@ export const login = createAsyncThunk("users/login", async (user) => {
         data = res.data.data;
       })
       .catch((err) => {
-        console.log(err);
         data = err.response.data.data;
         return err.response.data.data;
       });
@@ -56,17 +55,29 @@ export const showUser = createAsyncThunk("users/showUser", async (id) => {
   }
 });
 
-export const editUser = createAsyncThunk(
-  "users/editUser",
-  async (arg, thunkAPI) => {
-    try {
-      const res = await customAPI().put(`/users/${arg.id}`, arg);
-      return res.data;
-    } catch (err) {
-      return err.response.data.payload;
-    }
-  }
-);
+// export const editUser = createAsyncThunk(
+//   "users/editUser",
+//   async (arg) => {
+//     try {
+//       const res = await customAPI().put(`/users/${arg.id}`, arg);
+//       console.log(res)
+//       return res.data;
+//     } catch (err) {
+//       return err.response.data.payload;
+//     }
+//   }
+// );
+export const editUser = createAsyncThunk("users/editUser", async (profile) => {
+  return axios
+    .put(`http://127.0.0.1:8181//users/${profile.id}`, profile)
+    .then((data) => {
+      console.log(data.data.data);
+      return data.data.data;
+    })
+    .catch((err) => {
+      console.log(err)
+    });
+});
 
 export const logout = createAsyncThunk("users/logout", async () => {
   localStorage.removeItem("token");

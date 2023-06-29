@@ -24,26 +24,21 @@ export default function BasicModal({ open, setOpen }) {
   const [signIn, setSignIn] = React.useState(false);
 
   return (
-    <div>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-description">
-            {signIn ? (
-              <Register setSignIn={setSignIn}  />
-            ) : (
-              <Login setSignIn={setSignIn} setOpen={setOpen} />
-            )}
-          </Typography>
-        </Box>
-      </Modal>
-    </div>
+    <Modal
+      open={open}
+      onClose={handleClose}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
+      <Box sx={style}>
+        <Typography id="modal-modal-description">
+          {signIn ? (
+            <Register setSignIn={setSignIn} />
+          ) : (
+            <Login setSignIn={setSignIn} setOpen={setOpen} />
+          )}
+        </Typography>
+      </Box>
+    </Modal>
   );
 }
-
-
-

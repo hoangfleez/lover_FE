@@ -13,9 +13,6 @@ import { useDispatch } from "react-redux";
 import { login } from "../../services/useService";
 import * as yup from "yup";
 
-
-
-
 function Copyright(props) {
   return (
     <Typography
@@ -33,7 +30,6 @@ function Copyright(props) {
     </Typography>
   );
 }
-
 
 const validationSchema = yup.object({
   username: yup.string().required("Không được để trống"),
@@ -53,8 +49,11 @@ export default function Login(props) {
     onSubmit: (user) => {
       dispatch(login(user))
         .then((data) => {
+
           if (data.payload.err === "Password is wrong") {
             setErrorMessage("Sai tên đăng nhập hoặc mật khẩu.");
+          } else if (data.payload.err === "User is not exist") {
+            setErrorMessage("Tài khoản không tồn taị.");
           } else {
             setErrorMessage("");
             props.setOpen(false);
