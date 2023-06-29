@@ -42,7 +42,7 @@ const DetailProvider = () => {
 
   useEffect(() => {
     dispatch(getProviderDetail(id));
-  }, [detailProviderDetail]);
+  }, []);
   return (
     <Box
       sx={{

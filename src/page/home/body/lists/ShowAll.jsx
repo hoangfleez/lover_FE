@@ -61,7 +61,7 @@ export default function ShowAll() {
     }, [dispatch]);
     useEffect(() => {
         dispatch(getProvider());
-    }, [dispatch, showProvider]);
+    }, [dispatch]);
 
     return (
         <>
@@ -201,12 +201,12 @@ export default function ShowAll() {
                                                 </Typography>
                                                 {item.ready === "1" ? (
                                                     <FiberManualRecordIcon
-                                                        fontSize="s"
+                                                        fontSize="medium"
                                                         sx={{ color: "green" }}
                                                     />
                                                 ) : (
                                                     <FiberManualRecordIcon
-                                                        fontSize="s"
+                                                        fontSize="medium"
                                                         sx={{ color: "gray" }}
                                                     />
                                                 )}

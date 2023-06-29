@@ -78,9 +78,7 @@ const AddProvider = () => {
   };
 
   useEffect(() => {
-    if (profile) {
-      setIsServiceOn(profile.ready === "1"); // Cập nhật trạng thái dịch vụ khi component được khởi tạo
-    }
+
   }, [profile]);
 
   return (

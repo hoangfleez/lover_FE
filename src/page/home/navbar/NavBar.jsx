@@ -6,13 +6,7 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
-import Badge from "@mui/material/Badge";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import MoreIcon from "@mui/icons-material/MoreVert";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ModeToggle from "../../../theme/DarkMode";
 import { useSelector, useDispatch } from "react-redux";
@@ -20,7 +14,7 @@ import UserIcons from "../../user/UserIcons";
 import PersonIcon from "@mui/icons-material/Person";
 import BasicModal from "../../user/Modal";
 import { searchProviders } from "../../../services/providerService.js";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { clearLocalStorage } from "../../../utils";
 
 const Search = styled("div")(({ theme }) => ({
@@ -94,14 +88,15 @@ export default function NavBar() {
       >
         <Toolbar>
           <FavoriteIcon
+          fontSize="large"
             sx={{ mr: 2, color: "red", cursor: "pointer" }}
             onClick={goHome}
           />
           <Typography
-            variant="h6"
+            variant="h5"
             noWrap
             component="div"
-            sx={{ display: { xs: "none", sm: "block", color: "red" } }}
+            sx={{ display: { xs: "none", sm: "block", color: "#e1b6be" } }}
           >
             Love&Love
           </Typography>
