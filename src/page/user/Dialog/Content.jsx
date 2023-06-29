@@ -16,8 +16,6 @@ export default function Content({ setOpenRegister }) {
   const dispatch = useDispatch();
   const profile = useUserProfile();
   const [sttUpdate, setSttUpdate] = useState("");
-  console.log(sttUpdate);
-  console.log(profile);
 
   const validationSchema = Yup.object().shape({
     numberCard: Yup.string()
@@ -60,12 +58,11 @@ export default function Content({ setOpenRegister }) {
   });
 
   useEffect(() => {
-    console.log(111111111111111)
     setSttUpdate(profile?.update);
   }, [profile]);
 
   return (
-    <>
+    <Box>
       {sttUpdate === "pending" ? (
         <Stack sx={{ width: "100%" }} textAlign={"center"}>
           <Typography variant="h3" gutterBottom color={"green"}>
@@ -102,6 +99,6 @@ export default function Content({ setOpenRegister }) {
           </Box>
         </form>
       )}
-    </>
+    </Box>
   );
 }
