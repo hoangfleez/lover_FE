@@ -4,7 +4,7 @@ import { Box, Button } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { getTypes } from "../../../services/typeService.js";
 import { getServices } from "../../../services/serviceService.js";
-import {getServiceProvider} from "../../../services/serviceProviderService.js";
+import { getServiceProvider } from "../../../services/serviceProviderService.js";
 
 export default function Extended({ setService }) {
     const dispatch = useDispatch();
@@ -13,45 +13,124 @@ export default function Extended({ setService }) {
         dispatch(getServices(id));
     };
 
- const handleServiceToggle = (serviceId) => {
-  dispatch(getServiceProvider(serviceId))
- };
+    const handleServiceToggle = (serviceId) => {
+        dispatch(getServiceProvider(serviceId));
+    };
 
-    const types = useSelector((state) =>state.type.type);
+    const types = useSelector((state) => state.type.type);
     const services = useSelector((state) => state.service.service);
 
-
-  useEffect(() => {
-    dispatch(getTypes());
-  }, []);
+    useEffect(() => {
+        dispatch(getTypes());
+    }, []);
 
     if (!types) {
         return null;
     }
 
+    const imageUrls = [
+        "https://i0.wp.com/www.techsignin.com/wp-content/uploads/2022/10/viewsonic-x2000-harman-kardon.jpg",
+        "https://s3.cloud.cmctelecom.vn/tinhte2/2020/05/5026734_TheTerrace_TV_1.jpeg",
+        "https://toigingiuvedep.vn/wp-content/uploads/2021/05/hinh-anh-dep-ve-tinh-ban-be-cung-vui-choi.jpg",
+        "https://duhocchaudaiduong.edu.vn/hinh-nen-luffy-4k/imager_4605.jpg",
+        "https://sinhnhatnhi.com/wp-content/uploads/2021/12/sinh-nhat-ban-1.jpg",
+        "https://cdn.vietnammoi.vn/171464242508312576/2021/2/21/azar-16138951350791548956637.png"
+    ];
+
     return (
         <>
-            {/* <FormGroup sx={{ paddingLeft: "10px" }}>
-                {types &&
-                    types.map((item) => (
-                        <div key={item.id}>
-                            <h2
-                                onClick={() => handleServiceClick(item.id)}
-                                style={{ cursor: "pointer" }}
+            <FormGroup sx={{ padding: "0 10px 0 10px" }}>
+                <Box>
+                    {types &&
+                        types.map((item) => (
+                            <div key={item.id}>
+                                <h2
+                                    onClick={() => handleServiceClick(item.id)}
+                                    style={{ cursor: "pointer", fontSize: "25px" }}
+                                >
+                                    <i className="fa-solid fa-magnifying-glass"></i>
+                                    {item.type}
+                                </h2>
+                            </div>
+                        ))}
+                </Box>
+
+                <Box
+                    sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        flexWrap: "wrap",
+                        justifyContent: "center",
+                        alignItems: "center",
+                    }}
+                >
+                    {services.map((service, index) => (
+                        <div
+                            key={service.id}
+                            style={{
+                                marginBottom: "10px",
+                                marginTop: "10px",
+                                position: "relative",
+                                textAlign: "center",
+                                overflow: "hidden",
+                            }}
+                        >
+                            <label
+                                onClick={() => handleServiceToggle(service.id)}
+                                style={{
+                                    cursor: "pointer",
+                                    fontWeight: "bold",
+                                    position: "absolute",
+                                    top: "50%",
+                                    left: "50%",
+                                    transform: "translate(-50%, -50%)",
+                                    zIndex: 1,
+                                    color: "white",
+                                    padding: "10px",
+                                    borderRadius: "5px",
+                                    whiteSpace: "nowrap", // Thêm thuộc tính whiteSpace vào đây
+                                }}
                             >
-                                {item.type}
-                            </h2>
-                        </div>
-                    ))}
-                <Box sx={{ display: "flex", flexDirection: "column", paddingLeft: "20px" }}>
-                    {services.map((service) => (
-                        <div key={service.id}>
-                            <label onClick={() => handleServiceToggle(service.id)}>{service.name}</label>
+                                {service.name}
+                            </label>
+                            <div
+                                style={{
+                                    position: "relative",
+                                    zIndex: 0,
+                                }}
+                            >
+                                <img
+                                    src={imageUrls[index % imageUrls.length]}
+                                    alt="Service Image"
+                                    style={{
+                                        borderRadius: "6px",
+                                        maxWidth: "100%",
+                                        width: "300px",
+                                        height: "68px",
+                                        opacity: 0.5,
+                                        display: "block",
+                                        marginLeft: "auto",
+                                        marginRight: "auto",
+                                        filter: "brightness(60%)",
+                                        boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.5)",
+                                    }}
+                                />
+                                <div
+                                    style={{
+                                        position: "absolute",
+                                        top: 0,
+                                        left: 0,
+                                        width: "100%",
+                                        height: "100%",
+                                        backgroundColor: "#000000BF",
+                                        zIndex: -1,
+                                    }}
+                                ></div>
+                            </div>
                         </div>
                     ))}
                 </Box>
-            </FormGroup> */}
+            </FormGroup>
         </>
     );
 }
-
