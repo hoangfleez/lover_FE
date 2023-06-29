@@ -26,6 +26,9 @@ const ImageUploader = ({ formik, image }) => {
 
   const handleUpload = async (event) => {
     const file = event.target.files[0];
+
+    if (!file) return; // No file selected
+
     const storageRef = ref(storage);
     const timestamp = Date.now();
     const fileRef = ref(storageRef, `${timestamp}_${file.name}`);
@@ -43,6 +46,8 @@ const ImageUploader = ({ formik, image }) => {
       }
     } catch (error) {
       console.log("Error uploading image:", error);
+      setErrorMessage("Error uploading image. Please try again later.");
+      setSnackbarOpen(true);
     }
   };
 
@@ -70,7 +75,7 @@ const ImageUploader = ({ formik, image }) => {
 
   return (
     <>
-      <label htmlFor="upload-input">
+      <label htmlFor="upload-input3">
         <Button variant="contained" component="span">
           Tải lên
         </Button>
@@ -79,7 +84,7 @@ const ImageUploader = ({ formik, image }) => {
         type="file"
         onChange={handleUpload}
         style={{ display: "none" }}
-        id="upload-input"
+        id="upload-input3"
       />
       <Snackbar
         open={snackbarOpen}

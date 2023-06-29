@@ -8,11 +8,7 @@ import {
   MenuItem,
   Typography,
 } from "@mui/material";
-import SavingsIcon from "@mui/icons-material/Savings";
-import PaymentIcon from "@mui/icons-material/Payment";
-import LockPersonIcon from "@mui/icons-material/LockPerson";
 import WatchLaterIcon from "@mui/icons-material/WatchLater";
-import GroupsIcon from "@mui/icons-material/Groups";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -44,7 +40,6 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
   const handleLogout = () => {
     dispatch(logout());
     navigate("/");
-    window.location.reload();
     handleCloseUserMenu();
   };
 
@@ -52,7 +47,6 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
     event.preventDefault();
     navigate("/customer_info");
     clearLocalStorage();
-    window.location.reload();
   };
   const handlePage = () => {
     // clearLocalStorage()
@@ -138,7 +132,7 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
           </MenuItem>
         )}
         {user?.role?.name === "provider" && (
-          <MenuItem>
+          <MenuItem onClick={()=>{navigate("/provider_setting")}}>
             <ListItemIcon>
               <ManageAccountsIcon />
             </ListItemIcon>

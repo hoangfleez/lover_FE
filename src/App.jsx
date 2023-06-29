@@ -8,7 +8,6 @@ import DetailProvider from "./page/Provider/detailProvider";
 import PersonalPage from "./page/user/personalPage/PersonalPage";
 import UserContent from "./page/user/UserContent";
 import ShowAccountUser from "./page/admin/ShowAccountUser.jsx";
-import AdvanceSetting from "./page/Provider/AdvanceSetting";
 import ServiceSetting from "./page/Provider/ServiceSetting";
 import HomeAdmin from "./page/admin/AdminPage";
 import Order from "./page/booking/Order.jsx";
@@ -18,6 +17,7 @@ import OrderAcceptProvider from "./page/booking/OrderAcceptProvider.jsx";
 import OrderRejectProvider from "./page/booking/OrderRejectProvider.jsx";
 import Done from "./page/booking/Done.jsx";
 import ShowAll from "./page/home/body/lists/ShowAll";
+import ProviderContent from "./page/Provider/ProviderContent/ProviderContent";
 
 function App() {
   return (
@@ -33,8 +33,7 @@ function App() {
             <Route path="order" element={<Order />} />
             <Route path="accept" element={<OrderAccept />} />
           </Route>
-          <Route path="user_setting" element={<UserContent />}>
-            <Route path="advance" element={<AdvanceSetting />} />
+          <Route path="provider_setting" element={<ProviderContent />}>
             <Route path="service" element={<ServiceSetting />} />
             <Route path="pendingProvider" element={<OrderPendingProvider />} />
             <Route path="rejectProvider" element={<OrderRejectProvider />} />

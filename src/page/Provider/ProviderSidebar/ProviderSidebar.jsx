@@ -3,19 +3,18 @@ import React, { useEffect } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { TreeView, TreeItem } from "@mui/lab";
-import PersonIcon from "@mui/icons-material/Person";
 import HistoryToggleOffIcon from "@mui/icons-material/HistoryToggleOff";
 import SettingsIcon from "@mui/icons-material/Settings";
 import BlockIcon from "@mui/icons-material/Block";
 import HistoryIcon from "@mui/icons-material/History";
 import { useNavigate } from "react-router-dom";
 
-export default function UserSiderbar() {
+export default function ProviderSidebar() {
   const [expanded, setExpanded] = React.useState(
-    localStorage.getItem("expanded") ? localStorage.getItem("expanded") : ["1"]
+    localStorage.getItem("expanded") ? localStorage.getItem("expanded") : ["10"]
   );
   const [selected, setSelected] = React.useState(
-    localStorage.getItem("selected") ? localStorage.getItem("selected") : 2
+    localStorage.getItem("selected") ? localStorage.getItem("selected") : 13
   );
 
   const navigate = useNavigate();
@@ -58,35 +57,41 @@ export default function UserSiderbar() {
         onNodeToggle={handleToggle}
         onNodeSelect={handleSelect}
       >
-        <TreeItem nodeId="1" label="TÀI KHOẢN" defaultExpanded>
+        <TreeItem nodeId="10" label="TRANG CUNG CẤP DỊCH VỤ">
           <TreeItem
-            nodeId="2"
-            label="Thông tin cá nhân"
-            icon={<PersonIcon />}
+            nodeId="13"
+            label="Cài đặt dịch vụ"
+            icon={<SettingsIcon />}
             onClick={() => {
-              navigate("/customer_info");
+              navigate("/provider_setting/service ");
             }}
           />
 
           <TreeItem
-            nodeId="7"
-            label="Lịch sử thuê"
+            nodeId="14"
+            label="Lịch sử nhật đặt"
+            icon={<HistoryIcon />}
+            onClick={() => {
+              navigate("/provider_setting/pendingProvider");
+            }}
+          />
+          <TreeItem
+            nodeId="16"
+            label="Đơn đang thực hiện"
             icon={<HistoryToggleOffIcon />}
             onClick={() => {
-              navigate("/customer_info/order");
+              navigate("/provider_setting/acceptProvider");
             }}
           />
-
           <TreeItem
-            nodeId="17"
-            label="Đơn đang thực hiện"
+            nodeId="15"
+            label="Danh sách từ chối"
+            icon={<BlockIcon />}
             onClick={() => {
-              navigate("/customer_info/accept");
+              navigate("/provider_setting/rejectProvider");
             }}
-            icon={<HistoryIcon />}
           />
         </TreeItem>
-
       </TreeView>
     </Box>
   );

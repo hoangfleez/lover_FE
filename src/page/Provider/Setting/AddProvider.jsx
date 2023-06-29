@@ -24,6 +24,7 @@ import LinkFB from "./LinkFB";
 import AvatarProvider from "./AvatarProvider";
 import ImageUploader from "./Image";
 import axios from "axios";
+import MyNumber from "./MyNumber";
 
 const AddProvider = () => {
   const dispatch = useDispatch();
@@ -34,6 +35,7 @@ const AddProvider = () => {
   const [isServiceOn, setIsServiceOn] = useState(false); // State lưu trạng thái bật/tắt dịch vụ
 
   const profile = useSelector((state) => state.provider.showOneProvider);
+  
 
 
   const handleOn = async () => {
@@ -115,6 +117,8 @@ const AddProvider = () => {
           <Stack width="100%" gap={3}>
             <AvatarProvider formik={formik} />
             <NickName formik={formik} name="name" />
+            <Divider />
+            <MyNumber/>
             <Divider />
             <Stack direction="row" spacing={4} justifyContent="space-between">
               <BasicService formik={formik} />

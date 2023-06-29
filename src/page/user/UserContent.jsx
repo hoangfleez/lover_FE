@@ -10,13 +10,13 @@ export default function UserContent() {
         sx={{
           display: "flex",
           marginTop: "64px",
-          height: "230vh",
+          height: "250vh",
           
         }}
       >
         <Box
           sx={{
-            width: "25%",
+            width: "20%",
             bgcolor: "customColorSchemes.backgroundColor",
             height: "100%",
             padding: "15px"
@@ -26,9 +26,9 @@ export default function UserContent() {
         </Box>
         <Box
           sx={{
-            width: "75%",
+            width: "80%",
             bgcolor: "customColorSchemes.bgColor",
-            padding: "10px",
+            padding: "10px",  
           }}
         >
           <Outlet  />
