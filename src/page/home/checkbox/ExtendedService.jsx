@@ -17,7 +17,10 @@ export default function Extended({ setService }) {
         dispatch(getServiceProvider(serviceId));
     };
 
-    const types = useSelector((state) => state.type.type);
+    const types = useSelector((state) => {
+        console.log(state.type.type[0],665)
+        return state.type?.type[0]
+    });
     const services = useSelector((state) => state.service.service);
 
     useEffect(() => {
@@ -41,18 +44,15 @@ export default function Extended({ setService }) {
         <>
             <FormGroup sx={{ padding: "0 10px 0 10px" }}>
                 <Box>
-                    {types &&
-                        types.map((item) => (
-                            <div key={item.id}>
+                            <div key={types.id}>
                                 <h2
-                                    onClick={() => handleServiceClick(item.id)}
+                                    onClick={() => handleServiceClick(types.id)}
                                     style={{ cursor: "pointer", fontSize: "25px" }}
                                 >
-                                    <i className="fa-solid fa-magnifying-glass"></i>
-                                    {item.type}
+                                    {types.type}
                                 </h2>
                             </div>
-                        ))}
+
                 </Box>
 
                 <Box
