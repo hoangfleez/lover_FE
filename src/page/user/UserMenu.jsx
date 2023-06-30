@@ -46,8 +46,8 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate("/");
     handleCloseUserMenu();
+    window.location.reload(true);
   };
 
   const changeProfile = (event) => {

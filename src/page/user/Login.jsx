@@ -49,7 +49,6 @@ export default function Login(props) {
     onSubmit: (user) => {
       dispatch(login(user))
         .then((data) => {
-
           if (data.payload.err === "Password is wrong") {
             setErrorMessage("Sai tên đăng nhập hoặc mật khẩu.");
           } else if (data.payload.err === "User is not exist") {
@@ -77,48 +76,54 @@ export default function Login(props) {
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
           <FavoriteIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography  variant="h5" gutterBottom>
           Đăng nhập
         </Typography>
         <Box sx={{ mt: 1 }} noValidate>
-          <form onSubmit={formik.handleSubmit}>
-            <TextField
-              sx={{ mt: 3, mb: 2 }}
-              fullWidth
-              id="username"
-              name="username"
-              placeholder="Tài khoản"
-              value={formik.values.username}
-              onChange={formik.handleChange}
-              error={formik.touched.username && Boolean(formik.errors.username)}
-              helperText={formik.touched.username && formik.errors.username}
-            />
-            <TextField
-              sx={{ mt: 3, mb: 2 }}
-              fullWidth
-              id="password"
-              name="password"
-              label="Mật khẩu"
-              type="password"
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              error={formik.touched.password && Boolean(formik.errors.password)}
-              helperText={formik.touched.password && formik.errors.password}
-            />
-            {errorMessage && (
-              <Typography variant="body2" color="error" sx={{ mb: 2 }}>
-                {errorMessage}
-              </Typography>
-            )}
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Đăng nhập
-            </Button>
-          </form>
+          <div>
+            <form onSubmit={formik.handleSubmit}>
+              <TextField
+                sx={{ mt: 3, mb: 2 }}
+                fullWidth
+                id="username"
+                name="username"
+                placeholder="Tài khoản"
+                value={formik.values.username}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.username && Boolean(formik.errors.username)
+                }
+                helperText={formik.touched.username && formik.errors.username}
+              />
+              <TextField
+                sx={{ mt: 3, mb: 2 }}
+                fullWidth
+                id="password"
+                name="password"
+                label="Mật khẩu"
+                type="password"
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.password && Boolean(formik.errors.password)
+                }
+                helperText={formik.touched.password && formik.errors.password}
+              />
+              {errorMessage && (
+                <Typography variant="body2" color="error" sx={{ mb: 2 }}>
+                  {errorMessage}
+                </Typography>
+              )}
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Đăng nhập
+              </Button>
+            </form>
+          </div>
           <Grid container>
             <Grid item xs>
               <Link href="#" variant="body2">

@@ -19,35 +19,60 @@ import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
 import moment from "moment";
 import Rent from "../booking/Rent.jsx";
 import Evaluate from "./Evaluate";
+import BasicModal from "../user/Modal";
+import { useUserProfile } from "../../customHook/useUserProfile";
 
 const DetailProvider = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const [showRent, setShowRent] = useState(false);
   const [dataProvider, setDataProvider] = useState({});
+  const [open, setOpen] = useState(false);
+  const [disabled, setDisabled] = useState(false);
 
+  const user = useUserProfile();
 
   const detailProviderDetail = useSelector((state) => {
     return state.provider.showOneProvider;
   });
-  const [ready, setReady] = useState(detailProviderDetail?.ready)
-  console.log(ready)
+
+  const profile = useSelector((state) => {
+    return state.provider.profile;
+  });
+  console.log(profile.id, 2);
+  console.log(detailProviderDetail.id, 3);
+  const [ready, setReady] = useState(detailProviderDetail?.ready);
 
   const handleClose = () => {
     setShowRent(false);
   };
 
   const handleRentProvider = (provider) => {
-    setDataProvider(provider);
-    setShowRent(true);
+    if (user) {
+      setDataProvider(provider);
+      setShowRent(true);
+    } else {
+      setOpen(true);
+      // window.location.reload(true);
+    }
   };
 
   useEffect(() => {
     dispatch(getProviderDetail(id));
-  }, []);
+  }, [dispatch]);
+
   useEffect(() => {
     setReady(detailProviderDetail?.ready);
   }, [detailProviderDetail?.ready]);
+
+  useEffect(() => {
+    if(detailProviderDetail?.id === profile?.id){
+      setDisabled(true);
+    }else {
+      setDisabled(false);
+    }
+  },[user, detailProviderDetail?.id, profile?.id])
+
   return (
     <Box
       sx={{
@@ -91,25 +116,26 @@ const DetailProvider = () => {
                 Không sẵn sàng
               </Typography>
             )}
-
-            <Link to={detailProviderDetail.linkFB}>
+            <Link to={detailProviderDetail?.linkFB}>
               <FacebookIcon sx={{ color: "blue", fontSize: "40px" }} />
             </Link>
-            <Typography variant="button" display="block" gutterBottom>
+            <Typography variant="body2" display="block" gutterBottom>
               NGÀY THAM GIA:
-              {moment(detailProviderDetail.joinDate).format("DD/MM/YYYY")}
+              {moment(detailProviderDetail?.joinDate).format("DD/MM/YYYY")}
             </Typography>
             <Typography variant="body2">
               {" "}
-              Quốc tịch: {detailProviderDetail.country}
+              Quốc tịch: {detailProviderDetail?.country}
             </Typography>
             <Typography variant="body2">
               {" "}
-              Nơi ở: {detailProviderDetail.city}
+              Nơi ở: {detailProviderDetail?.city}
             </Typography>
           </Box>
           <Box sx={{ width: "60%", padding: "0 10px" }}>
-            <Typography variant="h3">{detailProviderDetail.name}</Typography>
+            <Typography variant="h3" gutterBottom>
+              {detailProviderDetail?.name}
+            </Typography>
             <Box
               sx={{
                 display: "flex",
@@ -118,11 +144,11 @@ const DetailProvider = () => {
                 width: "120px",
               }}
             >
-              <Typography variant="button" color={"gray"}>
+              <Typography variant="body2" color={"gray"}>
                 ĐÃ DƯỢC THUÊ
               </Typography>
-              <Typography variant="button" color={"red"}>
-                {detailProviderDetail.count}/người
+              <Typography variant="body2" color={"red"}>
+                {detailProviderDetail?.count}/người
               </Typography>
             </Box>
             <Divider />
@@ -149,18 +175,18 @@ const DetailProvider = () => {
                   (service, serviceKey) => {
                     if (service.service.type.id === 2) {
                       return (
-                        <Chip key={serviceKey} label={service.service.name} />
+                        <Chip key={serviceKey} label={service?.service.name} />
                       );
-                    } else if (service.service.type.id === 3) {
+                    } else if (service?.service.type.id === 3) {
                       return (
                         <Chip
                           key={serviceKey}
-                          label={service.service.name}
+                          label={service?.service.name}
                           variant="outlined"
                         />
                       );
                     } else {
-                      return null
+                      return null;
                     }
                   }
                 )}
@@ -171,7 +197,7 @@ const DetailProvider = () => {
               <Stack gap={1}>
                 <Typography variant="h5">Thông tin</Typography>
                 <Typography variant="body2">
-                  - Mô tả: {detailProviderDetail.desc}
+                  - Mô tả: {detailProviderDetail?.desc}
                 </Typography>
                 <Box
                   sx={{
@@ -180,43 +206,43 @@ const DetailProvider = () => {
                     display: "flex",
                   }}
                 >
-                    {detailProviderDetail?.images?.map((image, index) => (
-                        <Card
-                            key={index}
-                            sx={{
-                                width: 150,
-                                height: 150,
-                                cursor: "pointer",
-                                marginRight: "10px",
-                            }}
-                        >
-                            <CardMedia
-                                component="img"
-                                src={image.imageURL}
-                                sx={{ height: 150 }}
-                            />
-                        </Card>
-                    ))}
+                  {detailProviderDetail?.images?.map((image, index) => (
+                    <Card
+                      key={index}
+                      sx={{
+                        width: 150,
+                        height: 150,
+                        cursor: "pointer",
+                        marginRight: "10px",
+                      }}
+                    >
+                      <CardMedia
+                        component="img"
+                        src={image.imageURL}
+                        sx={{ height: 150 }}
+                      />
+                    </Card>
+                  ))}
                 </Box>
                 <Typography variant="body2">
                   {" "}
-                  - Giới tính: {detailProviderDetail.sex}
+                  - Giới tính: {detailProviderDetail?.sex}
                 </Typography>
                 <Typography variant="body2">
                   {" "}
-                  - Sinh nhật: {detailProviderDetail.dob}
+                  - Sinh nhật: {detailProviderDetail?.dob}
                 </Typography>
                 <Typography variant="body2">
                   {" "}
-                  - Sở thích: {detailProviderDetail.hobby}
+                  - Sở thích: {detailProviderDetail?.hobby}
                 </Typography>
                 <Typography variant="body2">
                   {" "}
-                  - Chiều cao: {detailProviderDetail.height}
+                  - Chiều cao: {detailProviderDetail?.height}
                 </Typography>
                 <Typography variant="body2">
                   {" "}
-                  - Cân nặng: {detailProviderDetail.weight}
+                  - Cân nặng: {detailProviderDetail?.weight}
                 </Typography>
               </Stack>
             </Box>
@@ -233,7 +259,7 @@ const DetailProvider = () => {
               }}
             >
               <Typography variant="h4" gutterBottom sx={{ color: "red" }}>
-                {detailProviderDetail.price} đ/1h
+                {detailProviderDetail?.price} đ/1h
                 <Rating readOnly />
               </Typography>
               <Box sx={{ flexWrap: "wrap", gap: "15px", display: "flex" }}>
@@ -241,8 +267,9 @@ const DetailProvider = () => {
                   onClick={() => handleRentProvider(detailProviderDetail)}
                   fullWidth
                   variant="contained"
+                  disabled={disabled}
                   sx={{
-                    display: ready ==="1"?"box":"none",
+                    display: ready === "1" ? "box" : "none",
                     p: 1.5,
                     bgcolor: "red",
                     color: "white",
@@ -298,6 +325,7 @@ const DetailProvider = () => {
         handleClose={handleClose}
         dataProvider={dataProvider}
       />
+      <BasicModal open={open} setOpen={setOpen} />
     </Box>
   );
 };

@@ -53,6 +53,7 @@ export default function RegisterService({ openRegister, setOpenRegister }) {
                 id="keep-mounted-modal-title"
                 variant="h6"
                 component="h2"
+                gutterBottom
               >
                 Đăng ký cung cấp dịch vụ
               </Typography>

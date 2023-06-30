@@ -13,8 +13,8 @@ const initialState = {
   listProvider: [],
   currenProvider: [],
   lease: [],
-  showOneProvider: {}
-
+  showOneProvider: {},
+  profile: {},
 };
 
 const providerSlice = createSlice({
@@ -75,7 +75,7 @@ const providerSlice = createSlice({
     });
 
     builder.addCase(showProviderByUser.fulfilled, (state, action) => {
-      state.showOneProvider = action.payload;
+      state.profile = action.payload;
     });
   },
   

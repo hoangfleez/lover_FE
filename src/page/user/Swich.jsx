@@ -4,6 +4,8 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { showProviderByUser } from "../../services/providerService";
 
 const Android12Switch = styled(Switch)(({ theme }) => ({
   padding: 8,
@@ -38,9 +40,13 @@ const Android12Switch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-export default function CustomizedSwitches({ profile }) {
-  const { ready } = profile;
+export default function CustomizedSwitches() {
+  const dispatch = useDispatch();
+
   const [isServiceOn, setIsServiceOn] = useState(false); // State lưu trạng thái bật/tắt dịch vụ
+
+  const profile = useSelector((state) => state.provider.profile);
+  const ready = profile.ready;
 
   const handleOn = async () => {
     try {
@@ -80,13 +86,14 @@ export default function CustomizedSwitches({ profile }) {
     setIsServiceOn(ready === "1");
   }, [ready]);
 
+  useEffect(() => {
+    dispatch(showProviderByUser());
+  }, []);
+
   return (
     <FormControlLabel
       control={
-        <Android12Switch
-          checked={isServiceOn}
-          onChange={handleSwitchChange}
-        />
+        <Android12Switch checked={isServiceOn} onChange={handleSwitchChange} />
       }
     />
   );

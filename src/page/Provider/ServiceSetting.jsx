@@ -10,10 +10,12 @@ export default function ServiceSetting() {
   return (
     <>
       {user?.role.name === "user" ? (
-        <Typography variant="h3" gutterBottom color="red">
-          <RemoveCircleOutlineIcon fontSize="" />
-          Bạn không thể sử dụng tín năng này
-        </Typography>
+        <>
+          <Typography variant="h3" gutterBottom color="red">
+            <RemoveCircleOutlineIcon fontSize="" />
+            Bạn không thể sử dụng tín năng này
+          </Typography>
+        </>
       ) : (
         <AddProvider />
       )}

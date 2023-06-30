@@ -5,7 +5,7 @@ const SelectAddress = ({label, options, value, setValue, type}) => {
     return(
         <div>
             <label htmlFor="select-address">{label}</label>
-            <select value={value} onChange={(e) => setValue(e.target.value)} id="select-address" className="flex flex-col gap-2">
+            <select value={value} onChange={(e) => setValue(e.target.value)} id="select-address" className="flex flex-col gap-2" style={{width: '100%', display:"flex"}}>
                 <option value="">{`--Chọn ${label}--`}</option>
                 {options && options.map(item => {
                     return (
