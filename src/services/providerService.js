@@ -38,6 +38,20 @@ export const getProviderDetail = createAsyncThunk(
   }
 );
 
+
+export const editProvider = createAsyncThunk(
+    "provider/editProvider",
+    async (api) => {
+        try {
+            const res = await customAPI().put(`providers/${api.id}`, api);
+            return res.data;
+        } catch (err) {
+            return err.response.data.payload;
+        }
+    }
+);
+
+
 export const searchProviders = createAsyncThunk(
   "provider/searchProviders",
   async (name) => {

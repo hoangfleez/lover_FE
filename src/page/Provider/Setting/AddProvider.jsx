@@ -1,3 +1,4 @@
+
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -6,6 +7,7 @@ import { Snackbar } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
 import {
   addProvider,
+  editProvider,
   showProviderByUser,
 } from "../../../services/providerService";
 import Birthday from "./Birthday";
@@ -35,8 +37,6 @@ const AddProvider = () => {
   const [isServiceOn, setIsServiceOn] = useState(false); // State lưu trạng thái bật/tắt dịch vụ
 
   const profile = useSelector((state) => state.provider.showOneProvider);
-  
-
 
   useEffect(() => {
     dispatch(showProviderByUser());
@@ -45,6 +45,7 @@ const AddProvider = () => {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
+      id: profile?.id || "", // Thêm giá trị mặc định cho id
       name: profile?.name || "",
       dob: profile?.dob || "",
       sex: profile?.sex || "",
@@ -59,105 +60,107 @@ const AddProvider = () => {
       price: profile?.price || "",
       image: profile?.images || [],
       service: profile?.serviceProviders || [],
+      freeService: [],
+      mainService: {}, // Thêm giá trị mặc định cho mainService
+      otherService: [], // Add an empty array for otherService
     },
     onSubmit: async (values) => {
       const { freeService, mainService, otherService, ...rest } = values;
       const serviceArray = [...freeService, mainService, ...otherService];
       const id = serviceArray.map((item) => item.id);
-      const newProvider = {
+      const updatedProvider = {
         ...rest,
         service: id,
       };
-      await dispatch(addProvider(newProvider));
+      if (profile) {
+        await dispatch(editProvider(updatedProvider));
+      } else {
+        await dispatch(addProvider(updatedProvider));
+      }
       setIsSnackbarOpen(true);
     },
   });
-  console.log(formik,32723)
 
   const handleCloseSnackbar = () => {
     setIsSnackbarOpen(false);
   };
 
-  useEffect(() => {
-
-  }, [profile]);
-
   return (
-    <Stack p={2}>
-      <Typography variant="h4" gutterBottom>
-        Cài đặt dịch vụ
-      </Typography>
-      <Box display="flex">
-        <form onSubmit={formik.handleSubmit}>
-          <Stack width="100%" gap={3}>
-            <AvatarProvider formik={formik} />
-            <NickName formik={formik} name="name" />
-            <Divider />
-            <MyNumber/>
-            <Divider />
-            <Stack direction="row" spacing={4} justifyContent="space-between">
-              <BasicService formik={formik} />
-              <Price formik={formik} name="price" />
-            </Stack>
-            <Divider />
-            <Stack>
-              <Stack direction="column" gap={2}>
-                <OtherService formik={formik} />
-                <FreeService formik={formik} />
+      <Stack p={2}>
+        <Typography variant="h4" gutterBottom>
+          Cài đặt dịch vụ
+        </Typography>
+        <Box display="flex">
+          <form onSubmit={formik.handleSubmit}>
+            <Stack width="100%" gap={3}>
+              <AvatarProvider formik={formik} />
+              <NickName formik={formik} name="name" />
+              <Divider />
+              <MyNumber />
+              <Divider />
+              <Stack direction="row" spacing={4} justifyContent="space-between">
+                <BasicService formik={formik} />
+                <Price formik={formik} name="price" />
               </Stack>
+              <Divider />
+              <Stack>
+                <Stack direction="column" gap={2}>
+                  <OtherService formik={formik} />
+                  <FreeService formik={formik} />
+                </Stack>
+              </Stack>
+              <Divider />
+              <Birthday formik={formik} />
+              <Divider />
+              <CountryAndCityComponent
+                  formik={formik}
+                  selectedCountry={selectedCountry}
+                  setSelectedCountry={setSelectedCountry}
+                  selectedCity={selectedCity}
+                  setSelectedCity={setSelectedCity}
+              />
+              <Divider />
+              <Stack direction="row" spacing={2} justifyContent="space-between">
+                <Height formik={formik} name="height" />
+                <Weight formik={formik} name="weight" />
+              </Stack>
+              <Divider />
+              <Gender formik={formik} />
+              <Divider />
+              <LinkFB formik={formik} />
+              <Divider />
+              <ImageUploader formik={formik} image={formik.values.image} />
+              <Divider />
+              <Interest formik={formik} name="hobby" />
+              <Divider />
+              <Describe formik={formik} name="desc" />
+              <Divider />
+              <Button
+                  color="primary"
+                  variant="contained"
+                  fullWidth
+                  type="submit"
+              >
+                {profile ? "Cập nhật" : "Đăng bài"}
+              </Button>
             </Stack>
-            <Divider />
-            <Birthday formik={formik} />
-            <Divider />
-            <CountryAndCityComponent
-              formik={formik}
-              selectedCountry={selectedCountry}
-              setSelectedCountry={setSelectedCountry}
-              selectedCity={selectedCity}
-              setSelectedCity={setSelectedCity}
-            />
-            <Divider />
-            <Stack direction="row" spacing={2} justifyContent="space-between">
-              <Height formik={formik} name="height" />
-              <Weight formik={formik} name="weight" />
-            </Stack>
-            <Divider />
-            <Gender formik={formik} />
-            <Divider />
-            <LinkFB formik={formik} />
-            <Divider />
-            <ImageUploader formik={formik} image={formik.values.image} />
-            <Divider />
-            <Interest formik={formik} name="hobby" />
-            <Divider />
-            <Describe formik={formik} name="desc" />
-            <Divider />
-            <Button color="primary" variant="contained" fullWidth type="submit">
-              {profile ? "Cập nhật" : "Đăng bài"}
-            </Button>
-          </Stack>
-        </form>
-      </Box>
-      <Snackbar
-        open={isSnackbarOpen}
-        autoHideDuration={3000}
-        onClose={handleCloseSnackbar}
-      >
-        <MuiAlert
-          onClose={handleCloseSnackbar}
-          severity="success"
-          sx={{ width: "100%" }}
+          </form>
+        </Box>
+        <Snackbar
+            open={isSnackbarOpen}
+            autoHideDuration={3000}
+            onClose={handleCloseSnackbar}
         >
-          Đăng bài thành công!
-        </MuiAlert>
-      </Snackbar>
-    </Stack>
+          <MuiAlert
+              onClose={handleCloseSnackbar}
+              severity="success"
+              sx={{ width: "100%" }}
+          >
+            Đăng bài thành công!
+          </MuiAlert>
+        </Snackbar>
+      </Stack>
   );
 };
 
 export default AddProvider;
-
-
-
-
-

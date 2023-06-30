@@ -11,28 +11,24 @@ import { Stack, Typography } from "@mui/material";
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-export default function FreeService({ formik }) {
-  const [freeServices, setFreeServices] = useState([]);
+export default function OtherService({ formik }) {
+  const [moreServices, setMoreServices] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState([]);
-  const [isDefaultSet, setIsDefaultSet] = useState({
-    id: "",
-    title: "",
-    type: "",
-  });
+  const [isDefaultSet, setIsDefaultSet] = useState([]);
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8181/services/free")
-      .then((response) => {
-        const arr = response.data.data.reverse()
-        setFreeServices(arr);
-      })
-      .catch((error) => {
-        console.error("Error fetching services:", error);
-      });
+        .get("http://127.0.0.1:8181/services/more")
+        .then((response) => {
+          const arr = response.data.data.reverse();
+          setMoreServices(arr);
+        })
+        .catch((error) => {
+          console.error("Error fetching services:", error);
+        });
   }, []);
 
-  const options = freeServices.map((service) => ({
+  const options = moreServices.map((service) => ({
     id: service.id,
     title: service.name,
     type: service.type.id,
@@ -56,14 +52,14 @@ export default function FreeService({ formik }) {
       }
     }
     setIsDefaultSet(value);
-    formik.setFieldValue("freeService", value);
+    formik.setFieldValue("otherService", value);
   };
 
   useEffect(() => {
     const arr = [];
     if (formik?.initialValues.service) {
       for (let i of formik.initialValues.service) {
-        if (i.service.type.id === 2) {
+        if (i.service.type.id === 3) {
           let a = {
             id: i.service.id,
             title: i.service.name,
@@ -77,36 +73,36 @@ export default function FreeService({ formik }) {
   }, [formik.initialValues.service]);
 
   return (
-    <Stack>
-      <Typography variant="subtitle2" gutterBottom>
-        Dịch vụ miễn phí
-      </Typography>
-      <Autocomplete
-        fullWidth
-        multiple
-        id="checkboxes-tags-demo"
-        options={options}
-        disableCloseOnSelect
-        getOptionLabel={(option) => option.title}
-        value={isDefaultSet}
-        onChange={handleAutocompleteChange}
-        renderOption={(props, option) => {
-          const selected = isOptionSelected(option);
-          return (
-            <li {...props}>
-              <Checkbox
-                icon={icon}
-                checkedIcon={checkedIcon}
-                style={{ marginRight: 8 }}
-                checked={selected}
-              />
-              {option.title}
-            </li>
-          );
-        }}
-        style={{ width: 615 }}
-        renderInput={(params) => <TextField {...params} />}
-      />
-    </Stack>
+      <Stack>
+        <Typography variant="subtitle2" gutterBottom>
+          Dịch vụ mở rộng
+        </Typography>
+        <Autocomplete
+            fullWidth
+            multiple
+            id="checkboxes-tags-demo"
+            options={options}
+            disableCloseOnSelect
+            getOptionLabel={(option) => option.title}
+            value={isDefaultSet}
+            onChange={handleAutocompleteChange}
+            renderOption={(props, option) => {
+              const selected = isOptionSelected(option);
+              return (
+                  <li {...props}>
+                    <Checkbox
+                        icon={icon}
+                        checkedIcon={checkedIcon}
+                        style={{ marginRight: 8 }}
+                        checked={selected}
+                    />
+                    {option.title}
+                  </li>
+              );
+            }}
+            style={{ width: 615 }}
+            renderInput={(params) => <TextField {...params} />}
+        />
+      </Stack>
   );
 }
