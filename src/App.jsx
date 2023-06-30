@@ -34,7 +34,7 @@ function App() {
             <Route path="accept" element={<OrderAccept />} />
           </Route>
           <Route path="provider_setting" element={<ProviderContent />}>
-            <Route path="service" element={<ServiceSetting />} />
+            <Route path="" element={<ServiceSetting />} />
             <Route path="pendingProvider" element={<OrderPendingProvider />} />
             <Route path="rejectProvider" element={<OrderRejectProvider />} />
             <Route path="acceptProvider" element={<OrderAcceptProvider />} />

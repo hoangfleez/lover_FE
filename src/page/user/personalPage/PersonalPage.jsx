@@ -80,9 +80,11 @@ export default function PersonalPage() {
                                     <Typography gutterBottom variant="h5" align="center">
                                         Lizard
                                     </Typography>
+                                    <>
                                     <Typography gutterBottom variant="h6" align="center">
                                         (biet danh)
                                     </Typography>
+                                    </>
                                     <Typography
                                         variant="body2"
                                         color="text.secondary"

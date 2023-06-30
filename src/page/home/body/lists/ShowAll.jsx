@@ -59,9 +59,7 @@ export default function ShowAll() {
     useEffect(() => {
         dispatch(getProvider());
     }, [dispatch]);
-    useEffect(() => {
-        dispatch(getProvider());
-    }, [dispatch]);
+
 
     return (
         <>
@@ -196,9 +194,11 @@ export default function ShowAll() {
                                                 justifyContent={"space-between"}
                                                 alignItems={"center"}
                                             >
+                                                <>
                                                 <Typography variant="h6" gutterBottom>
                                                     {item.name}
                                                 </Typography>
+                                                </>
                                                 {item.ready === "1" ? (
                                                     <FiberManualRecordIcon
                                                         fontSize="medium"

@@ -65,7 +65,7 @@ const ShowAndEditInfo = () => {
       ...formState,
     };
 
-    let res = await dispatch(editUser(editProfile));
+    await dispatch(editUser(editProfile));
   };
 
   const handleChangeImage = (event) => {

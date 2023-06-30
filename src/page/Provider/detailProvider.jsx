@@ -26,10 +26,12 @@ const DetailProvider = () => {
   const [showRent, setShowRent] = useState(false);
   const [dataProvider, setDataProvider] = useState({});
 
+
   const detailProviderDetail = useSelector((state) => {
     return state.provider.showOneProvider;
   });
-
+  const [ready, setReady] = useState(detailProviderDetail?.ready)
+  console.log(ready)
 
   const handleClose = () => {
     setShowRent(false);
@@ -43,6 +45,9 @@ const DetailProvider = () => {
   useEffect(() => {
     dispatch(getProviderDetail(id));
   }, []);
+  useEffect(() => {
+    setReady(detailProviderDetail?.ready);
+  }, [detailProviderDetail?.ready]);
   return (
     <Box
       sx={{
@@ -77,7 +82,7 @@ const DetailProvider = () => {
               image={detailProviderDetail?.avatarProvider}
               alt="Avatar"
             />
-            {detailProviderDetail?.ready == "1" ? (
+            {ready == "1" ? (
               <Typography variant="h5" gutterBottom sx={{ color: "green" }}>
                 Đang sẵn sàng
               </Typography>
@@ -237,7 +242,7 @@ const DetailProvider = () => {
                   fullWidth
                   variant="contained"
                   sx={{
-                    display: detailProviderDetail.ready ==="1"?"box":"none",
+                    display: ready ==="1"?"box":"none",
                     p: 1.5,
                     bgcolor: "red",
                     color: "white",
