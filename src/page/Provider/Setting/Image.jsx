@@ -13,12 +13,13 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 
 const ImageUploader = ({ formik, image }) => {
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState(image || []);
   const [errorMessage, setErrorMessage] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
+
 
   useEffect(() => {
     setImages(image || []);
@@ -37,7 +38,7 @@ const ImageUploader = ({ formik, image }) => {
       if (images.length < 4) {
         await uploadBytes(fileRef, file);
         const imageUrl = await getDownloadURL(fileRef);
-        const newImages = [...formik.values.image, imageUrl];
+        const newImages = [...images, { id: timestamp, imageURL: imageUrl }];
         setImages(newImages);
         formik.setFieldValue("image", newImages);
       } else {
@@ -58,7 +59,7 @@ const ImageUploader = ({ formik, image }) => {
   };
 
   const handleDeleteImage = (index) => {
-    const newImages = [...formik.values.image];
+    const newImages = [...images];
     newImages.splice(index, 1);
     setImages(newImages);
     formik.setFieldValue("image", newImages);
@@ -74,55 +75,55 @@ const ImageUploader = ({ formik, image }) => {
   };
 
   return (
-    <>
-      <label htmlFor="upload-input3">
-        <Button variant="contained" component="span">
-          Tải lên
-        </Button>
-      </label>
-      <Input
-        type="file"
-        onChange={handleUpload}
-        style={{ display: "none" }}
-        id="upload-input3"
-      />
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={4000}
-        onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-      >
-        <Alert severity="error" onClose={handleSnackbarClose}>
-          {errorMessage}
-        </Alert>
-      </Snackbar>
-      <Stack direction="row" spacing={2}>
-        {images.map((image, index) => (
-          <Card
-            key={index}
-            onClick={() => handleImageClick(index)}
-            sx={{
-              width: 150,
-              height: 150,
-              cursor: "pointer",
-              ...(selectedIndex === index && { backgroundColor: "lightblue" }),
-            }}
-          >
-            <CardMedia component="img" src={image} alt={`Image ${index}`} />
-          </Card>
-        ))}
-      </Stack>
-      <Dialog open={dialogOpen} onClose={handleDialogClose} maxWidth={"lg"}>
-        <DialogContent>
-          <DialogContentText>
-            <img src={selectedImage} alt="Selected Image" style={{ width: "100%" }} />
-          </DialogContentText>
-          <Button variant="contained" color="error" onClick={() => handleDeleteImage(selectedIndex)}>
-            Xóa
+      <>
+        <label htmlFor="upload-input3">
+          <Button variant="contained" component="span">
+            Tải lên
           </Button>
-        </DialogContent>
-      </Dialog>
-    </>
+        </label>
+        <Input
+            type="file"
+            onChange={handleUpload}
+            style={{ display: "none" }}
+            id="upload-input3"
+        />
+        <Snackbar
+            open={snackbarOpen}
+            autoHideDuration={4000}
+            onClose={handleSnackbarClose}
+            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+        >
+          <Alert severity="error" onClose={handleSnackbarClose}>
+            {errorMessage}
+          </Alert>
+        </Snackbar>
+        <Stack direction="row" spacing={2}>
+          {images.map((image, index) => (
+              <Card
+                  key={index}
+                  onClick={() => handleImageClick(index)}
+                  sx={{
+                    width: 150,
+                    height: 150,
+                    cursor: "pointer",
+                    ...(selectedIndex === index && { backgroundColor: "lightblue" }),
+                  }}
+              >
+                <CardMedia component="img" src={image.imageURL} alt={`Image ${index}`} />
+              </Card>
+          ))}
+        </Stack>
+        <Dialog open={dialogOpen} onClose={handleDialogClose} maxWidth={"lg"}>
+          <DialogContent>
+            <DialogContentText>
+              <img src={selectedImage?.imageURL} alt="Selected Image" style={{ width: "100%" }} />
+            </DialogContentText>
+            <Button variant="contained" color="error" onClick={() => handleDeleteImage(selectedIndex)}>
+              Xóa
+            </Button>
+          </DialogContent>
+        </Dialog>
+      </>
   );
 };
 

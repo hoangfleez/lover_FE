@@ -80,6 +80,7 @@ const AddProvider = () => {
       setIsSnackbarOpen(true);
     },
   });
+  console.log(formik,32723)
 
   const handleCloseSnackbar = () => {
     setIsSnackbarOpen(false);
