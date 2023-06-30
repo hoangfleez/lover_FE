@@ -13,7 +13,6 @@ import {
   apiGetProvinces,
 } from "../../services/googleMapService.js";
 
-
 const style = {
   position: "absolute",
   top: "40%",
@@ -98,9 +97,11 @@ const Rent = (props) => {
       >
         <Box sx={style}>
           <Stack p={2} alignItems={"center"}>
-            <Typography variant="h6" id="modal-title">
-              THUÊ NGƯỜI YÊU
-            </Typography>
+            <>
+              <Typography variant="h6" id="modal-title">
+                THUÊ NGƯỜI YÊU
+              </Typography>
+            </>
           </Stack>
           <Divider />
           <Stack p={2} direction={"column"}>

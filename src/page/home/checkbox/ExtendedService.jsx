@@ -18,7 +18,6 @@ export default function Extended({ setService }) {
     };
 
     const types = useSelector((state) => {
-        console.log(state.type.type[0],665)
         return state.type?.type[0]
     });
     const services = useSelector((state) => state.service.service);

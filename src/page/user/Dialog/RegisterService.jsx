@@ -48,15 +48,17 @@ export default function RegisterService({ openRegister, setOpenRegister }) {
               alignItems: "center",
             }}
           >
-            <Typography
-              id="keep-mounted-modal-title"
-              variant="h6"
-              component="h2"
-            >
-              Đăng ký cung cấp dịch vụ
-            </Typography>
+            <>
+              <Typography
+                id="keep-mounted-modal-title"
+                variant="h6"
+                component="h2"
+              >
+                Đăng ký cung cấp dịch vụ
+              </Typography>
+            </>
           </Box>
-          <Divider sx={{mt:"20px", mb:"30px"}}/>
+          <Divider sx={{ mt: "20px", mb: "30px" }} />
           <Typography id="keep-mounted-modal-description" sx={{ mt: 2 }}>
             <Content setOpenRegister={setOpenRegister} />
           </Typography>

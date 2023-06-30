@@ -5,7 +5,7 @@ import customAPI from "./customAPI.js";
 export const login = createAsyncThunk("users/login", async (user) => {
   try {
     let data = "";
-    const res = await axios
+    await axios
       .post("http://127.0.0.1:8181/users/login", user)
       .then((res) => {
         data = res.data.data;
@@ -69,13 +69,13 @@ export const showUser = createAsyncThunk("users/showUser", async (id) => {
 // );
 export const editUser = createAsyncThunk("users/editUser", async (profile) => {
   return axios
-    .put(`http://127.0.0.1:8181//users/${profile.id}`, profile)
+    .put(`http://127.0.0.1:8181/users/${profile.id}`, profile)
     .then((data) => {
       console.log(data.data.data);
       return data.data.data;
     })
     .catch((err) => {
-      console.log(err)
+      console.log(err);
     });
 });
 

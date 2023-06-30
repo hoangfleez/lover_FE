@@ -31,7 +31,7 @@ export default function BasicService({ formik }) {
         }
       }
     }
-  }, [formik]);
+  }, [formik.initialValues.service]);
 
   const options = services.map((service) => ({
     id: service.id,

@@ -6,6 +6,7 @@ import { Snackbar } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
 import {
   addProvider,
+  editProvider,
   showProviderByUser,
 } from "../../../services/providerService";
 import Birthday from "./Birthday";
@@ -35,8 +36,6 @@ const AddProvider = () => {
   const [isServiceOn, setIsServiceOn] = useState(false); // State lưu trạng thái bật/tắt dịch vụ
 
   const profile = useSelector((state) => state.provider.showOneProvider);
-  
-
 
   useEffect(() => {
     dispatch(showProviderByUser());
@@ -59,6 +58,9 @@ const AddProvider = () => {
       price: profile?.price || "",
       image: profile?.images || [],
       service: profile?.serviceProviders || [],
+      freeService: profile?.freeService || [],
+      mainService: profile?.mainService || "",
+      otherService: profile?.otherService || [],
     },
     onSubmit: async (values) => {
       const { freeService, mainService, otherService, ...rest } = values;
@@ -67,8 +69,14 @@ const AddProvider = () => {
       const newProvider = {
         ...rest,
         service: id,
+        id: profile?.id,
       };
-      await dispatch(addProvider(newProvider));
+      if (profile) {
+        await dispatch(editProvider(newProvider));
+      } else {
+        await dispatch(addProvider(newProvider));
+      }
+
       setIsSnackbarOpen(true);
     },
   });
@@ -77,9 +85,7 @@ const AddProvider = () => {
     setIsSnackbarOpen(false);
   };
 
-  useEffect(() => {
-
-  }, [profile]);
+  useEffect(() => {}, [profile]);
 
   return (
     <Stack p={2}>
@@ -92,7 +98,7 @@ const AddProvider = () => {
             <AvatarProvider formik={formik} />
             <NickName formik={formik} name="name" />
             <Divider />
-            <MyNumber/>
+            <MyNumber />
             <Divider />
             <Stack direction="row" spacing={4} justifyContent="space-between">
               <BasicService formik={formik} />
@@ -155,8 +161,3 @@ const AddProvider = () => {
 };
 
 export default AddProvider;
-
-
-
-
-
