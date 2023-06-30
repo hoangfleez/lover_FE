@@ -17,6 +17,9 @@ import { useNavigate } from "react-router-dom";
 import { Badge } from "react-bootstrap";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import ReactPaginate from "react-paginate";
+import { createSelector } from 'reselect';
+
+export const getProviderList = (state) => state.provider.listProvider.docs;
 
 export default function ShowAll() {
     const dispatch = useDispatch();
@@ -25,16 +28,12 @@ export default function ShowAll() {
     const [totalProviders, setTotalProviders] = useState(0);
     const [totalPage, setTotalPage] = useState(0);
 
-    const showProvider = useSelector((state) => {;
-        const ProviderList = state.provider.listProvider.docs;
-        if (!ProviderList) return [];
-        if (ProviderList && totalPage === 0) {
-            setTotalPage(state.provider.listProvider.meta.totalPage);
-            setTotalProviders(state.provider.listProvider.meta.total);
-        }
-        return ProviderList;
-    });
+    const selectProviderList = createSelector(
+        getProviderList,
+        (providerList) => providerList || []
+    );
 
+    const showProvider = useSelector(selectProviderList);
 
     const handleNewProvider = async () => {
         await dispatch(newlyJoinedProviders());
@@ -60,14 +59,13 @@ export default function ShowAll() {
         dispatch(getProvider());
     }, [dispatch]);
 
-
     return (
         <>
             <img
                 style={{ width: "100%" }}
                 src="https://files.playerduo.net/production/images/banner/715867c6-698f-411a-b4f9-1e9093130b60__ff5aee00-79ee-11ed-a19f-23a3b10d190e__admin_banner.jpg"
             />
-            <Box sx={{margin: "3px 0 10px 10px"}}>
+            <Box sx={{ margin: "3px 0 10px 10px" }}>
                 <button
                     style={{
                         backgroundColor: "#000000FB",
@@ -118,8 +116,9 @@ export default function ShowAll() {
                         cursor: "pointer",
                         marginLeft: 10
                     }}
-                    onClick={handleMale}>
-                    Nam
+                    onClick={handleMale}
+                >
+                    CCDV nam
                 </button>
                 <button
                     style={{
@@ -135,142 +134,112 @@ export default function ShowAll() {
                         cursor: "pointer",
                         marginLeft: 10
                     }}
-                    onClick={handleFemale}>
-                    Nữ
+                    onClick={handleFemale}
+                >
+                    CCDV nữ
                 </button>
-
             </Box>
-
             <Box
                 sx={{
                     display: "flex",
                     flexWrap: "wrap",
-                    width: "100%",
-                    gap: 1,
+                    justifyContent: "center",
+                    gap: "20px",
                 }}
             >
-                {showProvider &&
-                    showProvider.map((item, key) => {
-                        return (
-                            <Card
-                                sx={{ width: 250 }}
-                                key={key}
-                                onClick={() => navigate(`/detail-provider/${item.id}`)}
-                            >
-                                <CardActionArea>
-                                    <CardMedia
-                                        component="img"
-                                        height="250"
-                                        image={item.avatarProvider}
-                                        alt="green iguana"
-                                    />
-                                    <Box
-                                        sx={{
-                                            display: "flex",
-                                            justifyContent: "flex-end",
-                                            position: "relative",
-                                        }}
-                                    >
-                                        <Button
-                                            variant="contained"
-                                            color="error"
-                                            sx={{
-                                                position: "absolute",
-                                                bottom: "10px",
-                                                right: "10px",
-                                            }}
-                                        >
-                                            {item.price}/1h
-                                        </Button>
-                                    </Box>
-                                    <CardContent>
-                                        <Badge
-                                            color="secondary"
-                                            badgeContent=" "
-                                            variant="dot"
-                                        >
-                                            <Stack
-                                                direction={"row"}
-                                                justifyContent={"space-between"}
-                                                alignItems={"center"}
-                                            >
-                                                <>
-                                                <Typography variant="h6" gutterBottom>
-                                                    {item.name}
-                                                </Typography>
-                                                </>
-                                                {item.ready === "1" ? (
-                                                    <FiberManualRecordIcon
-                                                        fontSize="medium"
-                                                        sx={{ color: "green" }}
-                                                    />
-                                                ) : (
-                                                    <FiberManualRecordIcon
-                                                        fontSize="medium"
-                                                        sx={{ color: "gray" }}
-                                                    />
-                                                )}
-                                            </Stack>
-                                        </Badge>
-                                        <Typography
-                                            variant="caption"
-                                            display="block"
-                                            gutterBottom
-                                            color={"gray"}
-                                        >
-                                            {item.desc}
-                                        </Typography>
-                                    </CardContent>
-                                </CardActionArea>
-
+                {showProvider.length > 0 &&
+                    showProvider.map((item) => (
+                        <Card
+                            sx={{
+                                width: 300,
+                                display: "flex",
+                                flexDirection: "column",
+                                justifyContent: "space-between",
+                            }}
+                            key={item.id}
+                        >
+                            <CardActionArea onClick={() => navigate(`/provider/${item._id}`)}>
+                                <CardMedia
+                                    component="img"
+                                    height="200"
+                                    image={item.profilePicture}
+                                    alt={item.name}
+                                />
                                 <CardContent>
-                                    <ShowRating />
+                                    <Typography gutterBottom variant="h5" component="div">
+                                        {item.name}
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        {item.description}
+                                    </Typography>
+                                    <ShowRating rating={item.avgRating} />
                                 </CardContent>
-                            </Card>
-                        );
-                    })}
+                            </CardActionArea>
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    alignItems: "center",
+                                    padding: "10px",
+                                    backgroundColor: "#e8e8e8",
+                                }}
+                            >
+                                <Typography variant="subtitle2">Giá thuê</Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    {item.price} VND/giờ
+                                </Typography>
+                            </Box>
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    alignItems: "center",
+                                    padding: "10px",
+                                    backgroundColor: "#e8e8e8",
+                                }}
+                            >
+                                <Badge color="secondary" variant="dot">
+                                    <Stack
+                                        direction="row"
+                                        justifyContent="space-between"
+                                        alignItems="center"
+                                    >
+                                        <Typography variant="h6" gutterBottom>
+                                            {item.name}
+                                        </Typography>
+                                        {item.ready === "1" ? (
+                                            <FiberManualRecordIcon
+                                                fontSize="medium"
+                                                sx={{ color: "green" }}
+                                            />
+                                        ) : (
+                                            <FiberManualRecordIcon
+                                                fontSize="medium"
+                                                sx={{ color: "gray" }}
+                                            />
+                                        )}
+                                    </Stack>
+                                </Badge>
+                            </Box>
+                        </Card>
+                    ))}
             </Box>
-            <ReactPaginate
-                breakLabel="..."
-                nextLabel="next >"
-                onPageChange={handlePageClick}
-                pageRangeDisplayed={5}
-                pageCount={totalPage}
-                previousLabel="< previous"
-                renderOnZeroPageCount={null}
-                containerClassName="pagination-container"
-                activeClassName="active-page"
-            />
-            <style>
-                {`
-          .pagination-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            list-style: none;
-            padding: 0;
-          }
-
-          .pagination-container li {
-            display: inline-block;
-            margin: 0 5px;
-          }
-
-          .pagination-container li a {
-            display: block;
-            padding: 5px 10px;
-            color: #000;
-            text-decoration: none;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-          }
-
-          .active-page a {
-            background-color: #2e6c30;
-            color: #fff;
-          }
-        `}
-            </style>
+            {totalProviders > 10 && (
+                <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
+                    <ReactPaginate
+                        previousLabel={"previous"}
+                        nextLabel={"next"}
+                        breakLabel={"..."}
+                        breakClassName={"break-me"}
+                        pageCount={totalPage}
+                        marginPagesDisplayed={2}
+                        pageRangeDisplayed={5}
+                        onPageChange={handlePageClick}
+                        containerClassName={"pagination"}
+                        activeClassName={"active"}
+                    />
+                </Box>
+            )}
         </>
     );
 }
