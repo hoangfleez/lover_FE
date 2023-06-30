@@ -20,6 +20,7 @@ import moment from "moment";
 import Rent from "../booking/Rent.jsx";
 import Evaluate from "./Evaluate";
 import BasicModal from "../user/Modal";
+import { useUserProfile } from "../../customHook/useUserProfile";
 
 const DetailProvider = () => {
   const { id } = useParams();
@@ -27,15 +28,19 @@ const DetailProvider = () => {
   const [showRent, setShowRent] = useState(false);
   const [dataProvider, setDataProvider] = useState({});
   const [open, setOpen] = useState(false);
+  const [disabled, setDisabled] = useState(false);
 
-  const user = useSelector((state) => {
-    return state.user.currentUser;
-  });
+  const user = useUserProfile();
 
   const detailProviderDetail = useSelector((state) => {
     return state.provider.showOneProvider;
   });
 
+  const profile = useSelector((state) => {
+    return state.provider.profile;
+  });
+  console.log(profile.id, 2);
+  console.log(detailProviderDetail.id, 3);
   const [ready, setReady] = useState(detailProviderDetail?.ready);
 
   const handleClose = () => {
@@ -59,6 +64,15 @@ const DetailProvider = () => {
   useEffect(() => {
     setReady(detailProviderDetail?.ready);
   }, [detailProviderDetail?.ready]);
+
+  useEffect(() => {
+    if(detailProviderDetail?.id === profile?.id){
+      setDisabled(true);
+    }else {
+      setDisabled(false);
+    }
+  },[user, detailProviderDetail?.id, profile?.id])
+
   return (
     <Box
       sx={{
@@ -253,6 +267,7 @@ const DetailProvider = () => {
                   onClick={() => handleRentProvider(detailProviderDetail)}
                   fullWidth
                   variant="contained"
+                  disabled={disabled}
                   sx={{
                     display: ready === "1" ? "box" : "none",
                     p: 1.5,

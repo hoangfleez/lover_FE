@@ -124,9 +124,9 @@ const Rent = (props) => {
                 </Typography>
               </Grid>
               <Grid item xs={4}>
-                <Typography variant="body1" gutterBottom>
+                <Typography variant="body1" gutterBottom >
                   <select
-                    fullWidth
+                    style={{width: '100%'}}
                     value={selectedOption}
                     onChange={(event) => setSelectedOption(event.target.value)}
                   >

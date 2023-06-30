@@ -18,9 +18,11 @@ import Done from "./page/booking/Done.jsx";
 import ShowAll from "./page/home/body/lists/ShowAll";
 import ProviderContent from "./page/Provider/ProviderContent/ProviderContent";
 import { useUserProfile } from "./customHook/useUserProfile";
+import NotFound from "./page/404/NotFound";
 
 function App() {
   let user = useUserProfile();
+
   return (
     <>
       <Routes>
@@ -57,7 +59,7 @@ function App() {
                 </>
               ) : (
                 <>
-                  <Route path={"*"} element={<Navigate to={"/"} />} />
+                  <Route path={"*"} element={<NotFound />} />
                 </>
               )}
               {user?.role.name === "admin" ? (
@@ -68,13 +70,13 @@ function App() {
                 </>
               ) : (
                 <>
-                  <Route path={"*"} element={<Navigate to={"/"} />} />
+                  <Route path={"*"} element={<NotFound/>} />
                 </>
               )}
             </>
           ) : (
             <>
-              <Route path={"*"} element={<Navigate to={"/"} />} />
+              <Route path={"*"} element={<NotFound/>} />
             </>
           )}
         </Route>

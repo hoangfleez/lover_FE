@@ -14,38 +14,41 @@ import {
   TableHead,
   TableRow,
   Paper,
-  TablePagination,
   Snackbar,
   Alert,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button,
 } from "@mui/material";
 
 const HomeAdmin = () => {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.admin.listUser);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [notification, setNotification] = React.useState({
     open: false,
     message: "",
   });
+  const [confirmationDialogOpen, setConfirmationDialogOpen] = React.useState(false);
+  const [selectedUserId, setSelectedUserId] = React.useState(null);
+  const [selectedUserRole, setSelectedUserRole] = React.useState(null);
 
   useEffect(() => {
     dispatch(findAllUser());
   }, [dispatch]);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+  const handleRoleChange = (userId, userRoleId) => {
+    setSelectedUserId(userId);
+    setSelectedUserRole(userRoleId);
+    openConfirmationDialog();
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const handleRoleChange = (userId) => {
+  const handleRoleChangeConfirmed = () => {
     const updatedUsers = users.map((user) => {
-      if (user.id === userId) {
-        const newRoleId = user.role.id === 1 ? 3 : 1;
+      if (user.id === selectedUserId) {
+        const newRoleId = selectedUserRole === 1 ? 3 : 1;
         return {
           ...user,
           role: {
@@ -57,14 +60,11 @@ const HomeAdmin = () => {
       return user;
     });
 
-    const selectedUser = updatedUsers.find((user) => user.id === userId);
-    dispatch(changeRole({ users: updatedUsers, user: selectedUser })); // Truyền chỉ user có ID tương ứng vào hàm changeRole
+    const selectedUser = updatedUsers.find((user) => user.id === selectedUserId);
+    dispatch(changeRole({ users: updatedUsers, user: selectedUser }));
     showNotification("");
+    closeConfirmationDialog();
   };
-
-  const displayedUsers = Array.isArray(users)
-    ? users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-    : [];
 
   const showNotification = (message) => {
     setNotification({
@@ -78,6 +78,14 @@ const HomeAdmin = () => {
       open: false,
       message: "",
     });
+  };
+
+  const openConfirmationDialog = () => {
+    setConfirmationDialogOpen(true);
+  };
+
+  const closeConfirmationDialog = () => {
+    setConfirmationDialogOpen(false);
   };
 
   return (
@@ -105,7 +113,9 @@ const HomeAdmin = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {displayedUsers.map((item) => {
+            {users.map((item) => {
+              const switchStyle =
+                item.role.id === 3 ? { cursor: "no-drop" } : {};
               return (
                 <TableRow key={item.id}>
                   <TableCell>{item.id}</TableCell>
@@ -129,10 +139,12 @@ const HomeAdmin = () => {
                           <FormControlLabel
                             control={
                               <Switch
+                                disabled={item.role.id === 3}
                                 checked={item.role.id === 3}
                                 onChange={() =>
                                   handleRoleChange(item.id, item.role.id)
                                 }
+                                sx={switchStyle}
                               />
                             }
                             label=""
@@ -146,27 +158,33 @@ const HomeAdmin = () => {
             })}
           </TableBody>
         </Table>
-        <TablePagination
-          sx={{ width: "100vw" }}
-          rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-          colSpan={6}
-          count={Array.isArray(users) ? users.length : 0}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
       </TableContainer>
       <Snackbar
         open={notification.open}
-        // message={notification.message}
         onClose={handleCloseNotification}
         autoHideDuration={3000}
       >
         <Alert sx={{ width: "100%" }}>Thay đổi thành công!</Alert>
       </Snackbar>
+      <Dialog
+        open={confirmationDialogOpen}
+        onClose={closeConfirmationDialog}
+        aria-labelledby="confirmation-dialog-title"
+      >
+        <DialogTitle id="confirmation-dialog-title">Xác nhận nâng cấp</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Bạn có muốn nâng cấp cho tài khoản này không?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleRoleChangeConfirmed}>Đồng ý</Button>
+          <Button onClick={closeConfirmationDialog}>Không</Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
 
 export default HomeAdmin;
+F
