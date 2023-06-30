@@ -48,8 +48,8 @@
 //                     providers.map((item) => (
 //                         <div key={item.id}>
 //                             <span> Tên tài khoản: {item.username}</span>
-//                             <button onClick={() => handleBlockProvider(item.id)}>Block</button>
-//                             <button onClick={() => handleOpenProvider(item.id)}>Open</button>
+//                             <Button onClick={() => handleBlockProvider(item.id)}>Block</Button>
+//                             <Button onClick={() => handleOpenProvider(item.id)}>Open</Button>
 //                         </div>
 //                     ))}
 //             </div>

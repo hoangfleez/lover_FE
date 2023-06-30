@@ -95,7 +95,7 @@ const DetailProvider = () => {
             <Link to={detailProviderDetail.linkFB}>
               <FacebookIcon sx={{ color: "blue", fontSize: "40px" }} />
             </Link>
-            <Typography variant="button" display="block" gutterBottom>
+            <Typography variant="body2" display="block" gutterBottom>
               NGÀY THAM GIA:
               {moment(detailProviderDetail.joinDate).format("DD/MM/YYYY")}
             </Typography>
@@ -109,7 +109,7 @@ const DetailProvider = () => {
             </Typography>
           </Box>
           <Box sx={{ width: "60%", padding: "0 10px" }}>
-            <Typography variant="h3">{detailProviderDetail.name}</Typography>
+            <Typography variant="h3" gutterBottom>{detailProviderDetail.name}</Typography>
             <Box
               sx={{
                 display: "flex",
@@ -118,10 +118,10 @@ const DetailProvider = () => {
                 width: "120px",
               }}
             >
-              <Typography variant="button" color={"gray"}>
+              <Typography variant="body2" color={"gray"}>
                 ĐÃ DƯỢC THUÊ
               </Typography>
-              <Typography variant="button" color={"red"}>
+              <Typography variant="body2" color={"red"}>
                 {detailProviderDetail.count}/người
               </Typography>
             </Box>

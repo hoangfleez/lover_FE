@@ -33,7 +33,7 @@ export const changeRole = createAsyncThunk(
   "admin/changeRole",
   async ({users, user}) => {
     try {
-      await customAPI().put(`admin/${user.id}`, { role: user.role.id });
+      await customAPI().put(`admin/role/${user.id}`, { role: user.role.id });
       return users;
     } catch (err) {
       return err.response?.data?.payload;

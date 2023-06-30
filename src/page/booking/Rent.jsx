@@ -98,7 +98,7 @@ const Rent = (props) => {
         <Box sx={style}>
           <Stack p={2} alignItems={"center"}>
             <>
-              <Typography variant="h6" id="modal-title">
+              <Typography variant="h6" id="modal-title" gutterBottom>
                 THUÊ NGƯỜI YÊU
               </Typography>
             </>

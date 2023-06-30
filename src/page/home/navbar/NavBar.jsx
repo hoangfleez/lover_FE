@@ -14,7 +14,7 @@ import UserIcons from "../../user/UserIcons";
 import PersonIcon from "@mui/icons-material/Person";
 import BasicModal from "../../user/Modal";
 import { searchProviders } from "../../../services/providerService.js";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { clearLocalStorage } from "../../../utils";
 
 const Search = styled("div")(({ theme }) => ({
@@ -88,7 +88,7 @@ export default function NavBar() {
       >
         <Toolbar>
           <FavoriteIcon
-          fontSize="large"
+            fontSize="large"
             sx={{ mr: 2, color: "red", cursor: "pointer" }}
             onClick={goHome}
           />
@@ -126,11 +126,11 @@ export default function NavBar() {
             ) : (
               <UserIcons />
             )}
-            <BasicModal open={open} setOpen={setOpen} />
           </Box>
           <ModeToggle />
         </Toolbar>
       </AppBar>
+      <BasicModal open={open} setOpen={setOpen} />
     </Box>
   );
 }
