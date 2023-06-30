@@ -8,7 +8,6 @@ import DetailProvider from "./page/Provider/detailProvider";
 import PersonalPage from "./page/user/personalPage/PersonalPage";
 import UserContent from "./page/user/UserContent";
 import ShowAccountUser from "./page/admin/ShowAccountUser.jsx";
-import ServiceSetting from "./page/Provider/ServiceSetting";
 import HomeAdmin from "./page/admin/AdminPage";
 import Order from "./page/booking/Order.jsx";
 import OrderAccept from "./page/booking/OrderAccept.jsx";
@@ -18,13 +17,10 @@ import OrderRejectProvider from "./page/booking/OrderRejectProvider.jsx";
 import Done from "./page/booking/Done.jsx";
 import ShowAll from "./page/home/body/lists/ShowAll";
 import ProviderContent from "./page/Provider/ProviderContent/ProviderContent";
-import { useSelector } from "react-redux";
+import { useUserProfile } from "./customHook/useUserProfile";
 
 function App() {
-  let user = useSelector(({ user }) => {
-    return user.currentUser;
-  });
-
+  let user = useUserProfile();
   return (
     <>
       <Routes>
@@ -41,25 +37,40 @@ function App() {
                 <Route path="order" element={<Order />} />
                 <Route path="accept" element={<OrderAccept />} />
               </Route>
-              <Route path="provider_setting" element={<ProviderContent />}>
-                <Route path="" element={<ServiceSetting />} />
-                <Route
-                  path="pendingProvider"
-                  element={<OrderPendingProvider />}
-                />
-                <Route
-                  path="rejectProvider"
-                  element={<OrderRejectProvider />}
-                />
-                <Route
-                  path="acceptProvider"
-                  element={<OrderAcceptProvider />}
-                />
-              </Route>
-              <Route path="add-provider" element={<AddProvider />} />
-              <Route path="admin" element={<HomeAdmin />} />
-              <Route path="user" element={<ShowAccountUser />} />
-              <Route path="done" element={<Done />} />
+              {user?.role.name === "provider" ? (
+                <>
+                  <Route path="provider_setting" element={<ProviderContent />}>
+                    <Route path="" element={<AddProvider />} />
+                    <Route
+                      path="pendingProvider"
+                      element={<OrderPendingProvider />}
+                    />
+                    <Route
+                      path="rejectProvider"
+                      element={<OrderRejectProvider />}
+                    />
+                    <Route
+                      path="acceptProvider"
+                      element={<OrderAcceptProvider />}
+                    />
+                  </Route>
+                </>
+              ) : (
+                <>
+                  <Route path={"*"} element={<Navigate to={"/"} />} />
+                </>
+              )}
+              {user?.role.name === "admin" ? (
+                <>
+                  <Route path="admin" element={<HomeAdmin />} />
+                  <Route path="user" element={<ShowAccountUser />} />
+                  <Route path="done" element={<Done />} />
+                </>
+              ) : (
+                <>
+                  <Route path={"*"} element={<Navigate to={"/"} />} />
+                </>
+              )}
             </>
           ) : (
             <>
