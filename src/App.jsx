@@ -19,6 +19,8 @@ import ShowAll from "./page/home/body/lists/ShowAll";
 import ProviderContent from "./page/Provider/ProviderContent/ProviderContent";
 import { useUserProfile } from "./customHook/useUserProfile";
 import NotFound from "./page/404/NotFound";
+import AdminContent from "./page/admin/AdminContent";
+import ShowAccountProvider from "./page/admin/ShowAccountProvider";
 
 function App() {
   let user = useUserProfile();
@@ -64,19 +66,22 @@ function App() {
               )}
               {user?.role.name === "admin" ? (
                 <>
-                  <Route path="admin" element={<HomeAdmin />} />
-                  <Route path="user" element={<ShowAccountUser />} />
-                  <Route path="done" element={<Done />} />
+                  <Route path="admin" element={<AdminContent />}>
+                    <Route path="" element={<HomeAdmin />} />
+                    <Route path="user-account" element={<ShowAccountUser />} /> 
+                    <Route path="user-provider" element={<ShowAccountProvider />} /> 
+                    <Route path="done" element={<Done />} />
+                  </Route>
                 </>
               ) : (
                 <>
-                  <Route path={"*"} element={<NotFound/>} />
+                  <Route path={"*"} element={<NotFound />} />
                 </>
               )}
             </>
           ) : (
             <>
-              <Route path={"*"} element={<NotFound/>} />
+              <Route path={"*"} element={<NotFound />} />
             </>
           )}
         </Route>

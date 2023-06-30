@@ -56,6 +56,7 @@ export default function NavBar() {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
 
+
   const handleOpen = () => setOpen(true);
 
   const goHome = () => {
@@ -108,7 +109,7 @@ export default function NavBar() {
           >
             Love&Love
           </Typography>
-          <Box sx={{ flexGrow: 1.3 }} />
+          <Box sx={{ flexGrow: 1 }} />
           <Search sx={{ color: "customColorSchemes.textColor" }}>
             <StyledInputBase
               placeholder="Search…"

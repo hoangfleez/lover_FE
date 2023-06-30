@@ -22,6 +22,7 @@ import {
   DialogContentText,
   DialogActions,
   Button,
+  Typography,
 } from "@mui/material";
 
 const HomeAdmin = () => {
@@ -31,7 +32,8 @@ const HomeAdmin = () => {
     open: false,
     message: "",
   });
-  const [confirmationDialogOpen, setConfirmationDialogOpen] = React.useState(false);
+  const [confirmationDialogOpen, setConfirmationDialogOpen] =
+    React.useState(false);
   const [selectedUserId, setSelectedUserId] = React.useState(null);
   const [selectedUserRole, setSelectedUserRole] = React.useState(null);
 
@@ -60,7 +62,9 @@ const HomeAdmin = () => {
       return user;
     });
 
-    const selectedUser = updatedUsers.find((user) => user.id === selectedUserId);
+    const selectedUser = updatedUsers.find(
+      (user) => user.id === selectedUserId
+    );
     dispatch(changeRole({ users: updatedUsers, user: selectedUser }));
     showNotification("");
     closeConfirmationDialog();
@@ -92,13 +96,15 @@ const HomeAdmin = () => {
     <Box
       sx={{
         display: "block",
-        height: "100vh",
-        marginTop: "65px",
+        height: "100%",
         flexGrow: 1,
         backgroundColor: "customColorSchemes.bgColorPage",
-        padding: "50px 10px",
+        padding: "0 10px",
       }}
     >
+      <Typography variant="h4" gutterBottom>
+        Danh sách tất cả tài khoản
+      </Typography>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -110,6 +116,7 @@ const HomeAdmin = () => {
               <TableCell>CCCD/CMT</TableCell>
               <TableCell>Nâng cấp</TableCell>
               <TableCell>Vai trò</TableCell>
+              <TableCell>Khác</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -153,6 +160,7 @@ const HomeAdmin = () => {
                       </Grid>
                     )}
                   </TableCell>
+                  <TableCell>{item.update}</TableCell>
                 </TableRow>
               );
             })}
@@ -162,16 +170,23 @@ const HomeAdmin = () => {
       <Snackbar
         open={notification.open}
         onClose={handleCloseNotification}
-        autoHideDuration={3000}
+        autoHideDuration={2000}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        style={{ marginTop: "40px", marginRight: "16px" }}
       >
-        <Alert sx={{ width: "100%" }}>Thay đổi thành công!</Alert>
+        <Alert sx={{ width: "100%" }}>Thay đổi thành công!</Alert>
       </Snackbar>
       <Dialog
         open={confirmationDialogOpen}
         onClose={closeConfirmationDialog}
         aria-labelledby="confirmation-dialog-title"
       >
-        <DialogTitle id="confirmation-dialog-title">Xác nhận nâng cấp</DialogTitle>
+        <DialogTitle id="confirmation-dialog-title">
+          Xác nhận nâng cấp
+        </DialogTitle>
         <DialogContent>
           <DialogContentText>
             Bạn có muốn nâng cấp cho tài khoản này không?
@@ -187,4 +202,3 @@ const HomeAdmin = () => {
 };
 
 export default HomeAdmin;
-F
