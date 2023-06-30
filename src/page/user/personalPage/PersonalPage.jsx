@@ -78,20 +78,13 @@ export default function PersonalPage() {
                                 />
                                 <CardContent>
                                     <Typography gutterBottom variant="h5" align="center">
-                                        Lizard
+                                        {profile?.lastname}
                                     </Typography>
-                                    <>
-                                    <Typography gutterBottom variant="h6" align="center">
-                                        (biet danh)
-                                    </Typography>
-                                    </>
                                     <Typography
                                         variant="body2"
                                         color="text.secondary"
                                         align="center"
                                     >
-                                        Nam sinh:
-                                        <br />
                                         Song tai: {profile?.address}
                                     </Typography>
                                 </CardContent>

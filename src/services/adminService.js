@@ -1,17 +1,14 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import customAPI from "./customAPI.js";
 
-export const findAllUser = createAsyncThunk(
-  "admin/findAllUser",
-  async () => {
-      try {
-          const res = await customAPI().get("/admin/find-all");
-          return res.data.data.docs;
-      } catch (err) {
-          return err.response?.data?.payload;
-      }
+export const findAllUser = createAsyncThunk("admin/findAllUser", async () => {
+  try {
+    const res = await customAPI().get("/admin/find-all");
+    return res.data.data.docs;
+  } catch (err) {
+    return err.response?.data?.payload;
   }
-);
+});
 
 // export const changeRole = createAsyncThunk(
 //   "admin/changeRole",
@@ -31,20 +28,19 @@ export const findAllUser = createAsyncThunk(
 
 export const changeRole = createAsyncThunk(
   "admin/changeRole",
-  async ({users, user}) => {
+  async ({ users, user }) => {
     try {
-      await customAPI().put(`admin/${user.id}`, { role: user.role.id });
+      await customAPI().put(`admin/role/${user.id}`, { role: user.role.id });
       return users;
     } catch (err) {
       return err.response?.data?.payload;
     }
-  
   }
 );
 
 export const lockAccount = createAsyncThunk("admin/lockAccount", async (id) => {
   try {
-    const res = await customAPI().put(`/admin/lock-user/${id}`);
+    await customAPI().put(`/admin/lock-user/${id}`);
   } catch (err) {
     return err.response?.data?.payload;
   }
@@ -52,7 +48,7 @@ export const lockAccount = createAsyncThunk("admin/lockAccount", async (id) => {
 
 export const openAccount = createAsyncThunk("admin/openAccount", async (id) => {
   try {
-    const res = await customAPI().put(`/admin/open-user/${id}`);
+    await customAPI().put(`/admin/open-user/${id}`);
   } catch (err) {
     return err.response?.data?.payload;
   }

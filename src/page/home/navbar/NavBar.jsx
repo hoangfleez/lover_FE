@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -13,8 +13,8 @@ import { useSelector, useDispatch } from "react-redux";
 import UserIcons from "../../user/UserIcons";
 import PersonIcon from "@mui/icons-material/Person";
 import BasicModal from "../../user/Modal";
-import { searchProviders } from "../../../services/providerService.js";
-import {  useNavigate } from "react-router-dom";
+import { searchProviders } from "../../../services/providerService";
+import { useNavigate } from "react-router-dom";
 import { clearLocalStorage } from "../../../utils";
 
 const Search = styled("div")(({ theme }) => ({
@@ -53,8 +53,10 @@ export default function NavBar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [open, setOpen] = React.useState(false);
-  const [name, setName] = React.useState("");
+  const [open, setOpen] = useState(false);
+  const [name, setName] = useState("");
+
+
   const handleOpen = () => setOpen(true);
 
   const goHome = () => {
@@ -62,20 +64,19 @@ export default function NavBar() {
     navigate("/");
   };
 
-  const user = useSelector(({ user }) => {
-    return user.currentUser;
-  });
-
-  let handleInput = (e) => {
+  const user = useSelector((state) => state.user.currentUser);
+  const handleInput = (e) => {
     setName(e.target.value);
   };
 
   const handleSearch = async (searchName) => {
     if (searchName !== "") {
-      let abc = await dispatch(searchProviders(searchName));
+      await dispatch(searchProviders(searchName));
       setName("");
     }
   };
+
+
 
   return (
     <Box>
@@ -88,7 +89,7 @@ export default function NavBar() {
       >
         <Toolbar>
           <FavoriteIcon
-          fontSize="large"
+            fontSize="large"
             sx={{ mr: 2, color: "red", cursor: "pointer" }}
             onClick={goHome}
           />
@@ -96,11 +97,19 @@ export default function NavBar() {
             variant="h5"
             noWrap
             component="div"
-            sx={{ display: { xs: "none", sm: "block", color: "#e1b6be" } }}
+            sx={{
+              display: {
+                xs: "none",
+                sm: "block",
+                color: "#e1b6be",
+                cursor: "pointer",
+              },
+            }}
+            onClick={goHome}
           >
             Love&Love
           </Typography>
-          <Box sx={{ flexGrow: 1.3 }} />
+          <Box sx={{ flexGrow: 1 }} />
           <Search sx={{ color: "customColorSchemes.textColor" }}>
             <StyledInputBase
               placeholder="Search…"
@@ -126,11 +135,11 @@ export default function NavBar() {
             ) : (
               <UserIcons />
             )}
-            <BasicModal open={open} setOpen={setOpen} />
           </Box>
           <ModeToggle />
         </Toolbar>
       </AppBar>
+      <BasicModal open={open} setOpen={setOpen} />
     </Box>
   );
 }

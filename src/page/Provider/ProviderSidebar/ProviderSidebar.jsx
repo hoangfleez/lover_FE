@@ -63,7 +63,7 @@ export default function ProviderSidebar() {
             label="Cài đặt dịch vụ"
             icon={<SettingsIcon />}
             onClick={() => {
-              navigate("/provider_setting/service ");
+              navigate("/provider_setting ");
             }}
           />
 
