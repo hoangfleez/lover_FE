@@ -96,7 +96,8 @@ export default function NavBar() {
             variant="h5"
             noWrap
             component="div"
-            sx={{ display: { xs: "none", sm: "block", color: "#e1b6be" } }}
+            sx={{ display: { xs: "none", sm: "block", color: "#e1b6be",cursor: "pointer" } }}
+            onClick={goHome}
           >
             Love&Love
           </Typography>
