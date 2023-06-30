@@ -38,6 +38,7 @@ export const editProvider = createAsyncThunk(
         `http://127.0.0.1:8181/providers/${profile.id}`,
         provider
       );
+        console.log(res,7767)
       return res.data;
     } catch (err) {
       return err.response.data.payload;
