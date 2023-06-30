@@ -1,4 +1,3 @@
-
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -45,7 +44,6 @@ const AddProvider = () => {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      id: profile?.id || "", // Thêm giá trị mặc định cho id
       name: profile?.name || "",
       dob: profile?.dob || "",
       sex: profile?.sex || "",
@@ -60,23 +58,26 @@ const AddProvider = () => {
       price: profile?.price || "",
       image: profile?.images || [],
       service: profile?.serviceProviders || [],
-      freeService: [],
-      mainService: {}, // Thêm giá trị mặc định cho mainService
-      otherService: [], // Add an empty array for otherService
+      freeService: profile?.freeService || [],
+      mainService: profile?.mainService || [],
+      otherService: profile?.otherService || [],
     },
     onSubmit: async (values) => {
       const { freeService, mainService, otherService, ...rest } = values;
       const serviceArray = [...freeService, mainService, ...otherService];
       const id = serviceArray.map((item) => item.id);
-      const updatedProvider = {
+      const newProvider = {
         ...rest,
         service: id,
+        id: profile?.id,
       };
       if (profile) {
-        await dispatch(editProvider(updatedProvider));
+        let aaa = await dispatch(editProvider({id: profile.id,data: newProvider}));
+
       } else {
-        await dispatch(addProvider(updatedProvider));
+        await dispatch(addProvider(newProvider));
       }
+
       setIsSnackbarOpen(true);
     },
   });
@@ -84,6 +85,10 @@ const AddProvider = () => {
   const handleCloseSnackbar = () => {
     setIsSnackbarOpen(false);
   };
+  console.log(formik.values,765)
+
+
+  useEffect(() => {}, [profile]);
 
   return (
       <Stack p={2}>
@@ -135,12 +140,7 @@ const AddProvider = () => {
               <Divider />
               <Describe formik={formik} name="desc" />
               <Divider />
-              <Button
-                  color="primary"
-                  variant="contained"
-                  fullWidth
-                  type="submit"
-              >
+              <Button color="primary" variant="contained" fullWidth type="submit">
                 {profile ? "Cập nhật" : "Đăng bài"}
               </Button>
             </Stack>

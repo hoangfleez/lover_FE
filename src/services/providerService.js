@@ -16,30 +16,16 @@ export const getProvider = createAsyncThunk(
   }
 );
 
-// export const editProvider = createAsyncThunk(
-//   "provider/editProvider",
-//   async (profile) => {
-//     return axios
-//       .put(`http://127.0.0.1:8181/providers/${profile.id}`, profile)
-//       .then((res) => {
-//         console.log(res.data)
-//         return res.data.data;
-//       })
-//       .catch((err) => {
-//         console.error(err);
-//       });
-//   }
-// );
+
 export const editProvider = createAsyncThunk(
   "provider/editProvider",
   async (provider) => {
     try {
-      const res = await axios.put(
-        `http://127.0.0.1:8181/providers/${profile.id}`,
-        provider
-      );
-        console.log(res,7767)
-      return res.data;
+        console.log(provider.data,666)
+      const res = await customAPI().put(
+        `providers/${provider.id}`
+      , provider.data);
+        return res.data
     } catch (err) {
       return err.response.data.payload;
     }
@@ -68,19 +54,6 @@ export const getProviderDetail = createAsyncThunk(
       return err.response.data.payload;
     }
   }
-);
-
-
-export const editProvider = createAsyncThunk(
-    "provider/editProvider",
-    async (api) => {
-        try {
-            const res = await customAPI().put(`providers/${api.id}`, api);
-            return res.data;
-        } catch (err) {
-            return err.response.data.payload;
-        }
-    }
 );
 
 

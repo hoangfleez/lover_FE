@@ -39,7 +39,7 @@ const providerSlice = createSlice({
     });
 
     builder.addCase(editProvider.fulfilled, (state, action) => {
-      state.showOneProvider = action.payload;
+      state.listProvider = action.payload;
     });
 
     builder.addCase(getProviderDetail.fulfilled, (state, action) => {
