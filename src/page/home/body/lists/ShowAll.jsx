@@ -121,7 +121,7 @@ export default function ShowAll() {
                     onClick={handleMale}>
                     Nam
                 </Button>
-                <Button
+                <utton
                     style={{
                         backgroundColor: "#000000FB",
                         border: "none",
@@ -137,7 +137,7 @@ export default function ShowAll() {
                     }}
                     onClick={handleFemale}>
                     Nữ
-                </Button>
+                </utton>
 
             </Box>
 
