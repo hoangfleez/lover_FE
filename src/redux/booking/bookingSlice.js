@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
     acceptBooking,
     acceptListBooking, acceptListBookingProvider,
-    addBooking,
+    addBooking, allProviderBooking, allUserBooking,
     detailBooking, detailBookingProvider, doneBooking, doneListBooking,
     pendingListBookingProvider, rejectBooking, rejectListBookingProvider,
     rentalListBooking
@@ -56,9 +56,18 @@ const bookingSlice = createSlice({
             state.booking = action.payload;
         });
 
+        builder.addCase(allProviderBooking.fulfilled, (state, action) => {
+            state.booking = action.payload;
+        });
+
+        builder.addCase(allUserBooking.fulfilled, (state, action) => {
+            state.booking = action.payload;
+        });
+
         builder.addCase(acceptListBookingProvider.fulfilled, (state, action) => {
             state.booking = action.payload;
         });
+
 
         builder.addCase(rejectListBookingProvider.fulfilled, (state, action) => {
             state.booking = action.payload;

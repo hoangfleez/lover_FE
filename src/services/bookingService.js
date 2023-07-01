@@ -67,6 +67,36 @@ export const acceptListBooking = createAsyncThunk(
 );
 
 
+export const allProviderBooking = createAsyncThunk(
+    "booking/allProviderBooking",
+    async (id) => {
+        try {
+            const res = await customAPI().get(`bookings/all-text/bill/history/${id}` );
+            return res.data;
+        } catch (err) {
+            return err.response.data.payload;
+        }
+    }
+);
+
+
+export const allUserBooking = createAsyncThunk(
+    "booking/allUserBooking",
+    async (id) => {
+        try {
+            const res = await customAPI().get(`bookings/all-text-user/order/${id}` );
+            return res.data;
+        } catch (err) {
+            return err.response.data.payload;
+        }
+    }
+);
+
+
+
+
+
+
 export const detailBookingProvider = createAsyncThunk(
     "booking/detailBookingProvider",
     async (id) => {
