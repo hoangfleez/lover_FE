@@ -16,6 +16,7 @@ import BasicModal from "../../user/Modal";
 import { searchProviders } from "../../../services/providerService";
 import { useNavigate } from "react-router-dom";
 import { clearLocalStorage } from "../../../utils";
+import { io } from "socket.io-client";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -56,7 +57,6 @@ export default function NavBar() {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
 
-
   const handleOpen = () => setOpen(true);
 
   const goHome = () => {
@@ -76,7 +76,15 @@ export default function NavBar() {
     }
   };
 
-
+  useEffect(() => {
+    const socket = io("http://localhost:5000");
+    console.log(socket)
+    console.log(
+      socket.on("fistEvent", (m) => {
+        console.log(m);
+      })
+    );
+  }, []);
 
   return (
     <Box>

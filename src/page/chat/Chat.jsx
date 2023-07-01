@@ -12,6 +12,7 @@ import {
 import ChatIcon from "@mui/icons-material/Chat";
 import SendIcon from "@mui/icons-material/Send";
 import CloseIcon from "@mui/icons-material/Close";
+// const { io } = require("socket.io-client");
 
 const ChatComponent = () => {
   const [message, setMessage] = useState("");
