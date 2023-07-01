@@ -13,159 +13,236 @@ import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { findAllUser } from "../../services/adminService";
+import { useEffect, useState } from "react";
+import { findAllUser, lockAccount, openAccount } from "../../services/adminService";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Button } from "@mui/material";
+import Swal from "sweetalert2";
+import {allProviderBooking, allUserBooking} from "../../services/bookingService.js";
+
+const styles = {
+    tableCell: {
+        padding: "8px",
+        borderBottom: "none",
+    },
+};
 
 function Row(props) {
-  const { row } = props;
-  const [open, setOpen] = React.useState(false);
+    const dispatch = useDispatch();
+    const { row, onUpdate, dataUpdated, setDataUpdated} = props;
+    const [open, setOpen] = useState(false);
 
-  return (
-    <React.Fragment>
-      <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
-        <TableCell>
-          <IconButton
-            aria-label="expand row"
-            size="small"
-            onClick={() => setOpen(!open)}
-          >
-            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-          </IconButton>
-        </TableCell>
-        <TableCell component="th" scope="row">
-          {row.username}
-        </TableCell>
-        <TableCell align="right">{row.email}</TableCell>
-        <TableCell align="right">{row.firstname}</TableCell>
-        <TableCell align="right">{row.numberCard}</TableCell>
-        <TableCell align="right">{row.phoneNumber}</TableCell>
-        <TableCell
-          sx={{ display: "flex", gap: "5px", justifyContent: "center" }}
-        >
-          <Button
-            variant="contained"
-            onClick={() => handleBlockUsers(item.id)}
-            sx={{
-              backgroundColor: "red",
-              "&:hover": { backgroundColor: "red", color: "white" },
-            }}
-          >
-            Khoá
-          </Button>
-          <Button
-            variant="contained"
-            onClick={() => handleOpenUsers(item.id)}
-          >
-            Mở
-          </Button>
-        </TableCell>
-      </TableRow>
-      <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box sx={{ margin: 1 }}>
-              <Typography variant="h6" gutterBottom component="div">
-                Lịc sử đã thuê
-              </Typography>
-              <Table size="small" aria-label="purchases">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Thời gian</TableCell>
-                    <TableCell>Địa điểm</TableCell>
-                    <TableCell align="right">Tên người cho thuê</TableCell>
-                    <TableCell align="right">Số giờ thuê</TableCell>
-                    <TableCell align="right">Tổng tiền (Đ)</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {/* {row.history.map((historyRow) => (
-                    <TableRow key={historyRow.date}>
-                      <TableCell component="th" scope="row">
-                        {historyRow.date}
-                      </TableCell>
-                      <TableCell>{historyRow.customerId}</TableCell>
-                      <TableCell align="right">{historyRow.amount}</TableCell>
-                      <TableCell align="right">
-                        {Math.round(historyRow.amount * row.price * 100) / 100}
-                      </TableCell>
-                    </TableRow>
-                  ))} */}
-                </TableBody>
-              </Table>
-            </Box>
-          </Collapse>
-        </TableCell>
-      </TableRow>
-    </React.Fragment>
-  );
+    const handleOpenUsers = (id) => {
+        Swal.fire({
+            title: "Bạn có muốn mở tài khoản?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Mở",
+            cancelButtonText: "Hủy",
+            reverseButtons: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                dispatch(openAccount(id))
+                    .then(() => {
+                        toast.success("Mở thành công");
+                        const updatedRow = { ...row, isLocked: 0 };
+                        onUpdate(updatedRow);
+                        setDataUpdated(!dataUpdated);
+                    })
+                    .catch(() => {
+                        toast.error("Mở không thành công");
+                    });
+            }
+        });
+    };
+
+    const handleBlockUsers = (id) => {
+        Swal.fire({
+            title: "Bạn có muốn khóa tài khoản?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Khóa",
+            cancelButtonText: "Hủy",
+            reverseButtons: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                dispatch(lockAccount(id))
+                    .then(() => {
+                        toast.success("Khóa thành công");
+                        const updatedRow = { ...row, isLocked: 1 };
+                        onUpdate(updatedRow);
+                        setDataUpdated(!dataUpdated);
+                    })
+                    .catch(() => {
+                        toast.error("Khóa không thành công");
+                    });
+            }
+        });
+    };
+
+    const allUser = useSelector((state) => {
+        return state.booking.booking;
+    });
+
+    const fetchUserBooking = async (id) => {
+        await dispatch(allUserBooking(id));
+    };
+
+
+    const handleCollapseOpen = async (id) => {
+        if (!open && id) {
+            await fetchUserBooking(id);
+        }
+
+        if (allUser && allUser.length > 0) {
+            setOpen(!open);
+        } else {
+            setOpen(false);
+        }
+    };
+
+    return (
+        <React.Fragment>
+            <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
+                <TableCell>
+                    <IconButton
+                        aria-label="expand row"
+                        size="small"
+                        onClick={() => handleCollapseOpen(row.id)}
+                    >
+                        {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                    </IconButton>
+                </TableCell>
+                <TableCell style={styles.tableCell}>{row.username}</TableCell>
+                <TableCell style={styles.tableCell} align="left">
+                    {row.email}
+                </TableCell>
+                <TableCell style={styles.tableCell} align="left">
+                    {row.firstname}
+                </TableCell>
+                <TableCell style={styles.tableCell} align="left">
+                    {row.numberCard}
+                </TableCell>
+                <TableCell style={styles.tableCell} align="left">
+                    {row.phoneNumber}
+                </TableCell>
+                <TableCell style={styles.tableCell} align="center">
+                    {row.isLocked === 0 ? (
+                        <Button
+                            variant="contained"
+                            onClick={() => handleBlockUsers(row.id)}
+                            sx={{
+                                backgroundColor: "red",
+                                "&:hover": { backgroundColor: "red", color: "white" },
+                            }}
+                        >
+                            Khóa
+                        </Button>
+                    ) : (
+                        <Button variant="contained" onClick={() => handleOpenUsers(row.id)}>
+                            Mở
+                        </Button>
+                    )}
+                </TableCell>
+            </TableRow>
+            <TableRow>
+                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
+                    <Collapse in={open} timeout="auto" unmountOnExit>
+                        <Box sx={{ margin: 1 }}>
+                            <Typography variant="h6" gutterBottom component="div">
+                                Lịch sử đã thuê
+                            </Typography>
+                            <Table size="small" aria-label="purchases">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Thời gian</TableCell>
+                                        <TableCell>Địa điểm</TableCell>
+                                        <TableCell align="left">Tên người cho thuê</TableCell>
+                                        <TableCell align="left">Số giờ thuê</TableCell>
+                                        <TableCell align="left">Tổng tiền (Đ)</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {allUser &&
+                                        allUser.map((item) => (
+                                            <TableRow key={item.id}>
+                                                <TableCell>{item.startTime}</TableCell>
+                                                <TableCell>{item.address}</TableCell>
+                                                <TableCell align="left">{item.user.username}</TableCell>
+                                                <TableCell align="left">{item.hour}</TableCell>
+                                                <TableCell align="left">{item.cost}</TableCell>
+                                                <TableCell align="left">{item.status}</TableCell>
+                                            </TableRow>
+                                        ))}
+                                </TableBody>
+                            </Table>
+                        </Box>
+                    </Collapse>
+                </TableCell>
+            </TableRow>
+        </React.Fragment>
+    );
 }
 
 export default function ShowAccountUser() {
-  const dispatch = useDispatch();
+    const dispatch = useDispatch();
+    const [users, setUsers] = useState([]);
+    const [dataUpdated, setDataUpdated] = useState(false);
 
-  const allUser = useSelector((state) => {
-    return state.admin.listUser;
-  });
+    const allUser = useSelector((state) => {
+        return state.admin.listUser;
+    });
 
-  const users = allUser.filter((item) => item.role.name === "user");
-  console.log(users);
+    useEffect(() => {
+        dispatch(findAllUser());
+    }, [dispatch]);
 
-    const handleBlockUsers = (id) => {
-        dispatch(lockAccount(id))
-            .then(() => {
-                toast.success("Block thành công");
-                // Nạp lại danh sách user sau khi block thành công
-                dispatch(findAllUser());
-            })
-            .catch(() => {
-                toast.error("Block không thành công");
-            });
+    useEffect(() => {
+        if (Array.isArray(allUser)) {
+            setUsers(allUser.filter((item) => item.role.name === "user"));
+        }
+    }, [allUser]);
+
+    const handleUpdateList = (updatedRow) => {
+        const updatedUsers = users.map((provider) =>
+            provider.id === updatedRow.id ? { ...updatedRow } : provider
+        );
+        setUsers(updatedUsers);
     };
 
-    const handleOpenUsers = (id) => {
-        dispatch(openAccount(id))
-            .then(() => {
-                toast.success("Open thành công");
-                // Nạp lại danh sách user sau khi block thành công
-                dispatch(findAllUser());
-            })
-            .catch(() => {
-                toast.error("Open không thành công");
-            });
-    };
-
-  useEffect(() => {
-    dispatch(findAllUser());
-  }, [dispatch]);
-  return (
-    <>
-      <Typography variant="h4" gutterBottom>
-        Danh sách tài khoản cung cấp dịch vụ
-      </Typography>
-      <TableContainer component={Paper}>
-        <Table aria-label="collapsible table">
-          <TableHead>
-            <TableRow>
-              <TableCell />
-              <TableCell>Tên tài khoản</TableCell>
-              <TableCell align="right">Email</TableCell>
-              <TableCell align="right">Tên</TableCell>
-              <TableCell align="right">Số CCCD/CMTND</TableCell>
-              <TableCell align="right">Số điện thoại</TableCell>
-              <TableCell align="center">Khoá / Mở </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {users?.map((provider) => (
-              <Row key={provider.name} row={provider} />
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <ToastContainer />
-    </>
-  );
+    return (
+        <>
+            <Typography variant="h4" gutterBottom>
+                Danh sách tài khoản cung cấp dịch vụ
+            </Typography>
+            <TableContainer component={Paper}>
+                <Table aria-label="collapsible table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell />
+                            <TableCell>Tên tài khoản</TableCell>
+                            <TableCell align="left">Email</TableCell>
+                            <TableCell align="left">Tên</TableCell>
+                            <TableCell align="left">Số CCCD/CMTND</TableCell>
+                            <TableCell align="left">Số điện thoại</TableCell>
+                            <TableCell align="center">Khoá / Mở </TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {users.map((provider) => (
+                            <Row
+                                key={provider.id}
+                                row={provider}
+                                onUpdate={handleUpdateList}
+                                dataUpdated={dataUpdated}
+                                setDataUpdated={setDataUpdated}
+                            />
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+            <ToastContainer />
+        </>
+    );
 }

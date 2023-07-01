@@ -16,20 +16,19 @@ export const getProvider = createAsyncThunk(
   }
 );
 
-
 export const editProvider = createAsyncThunk(
-  "provider/editProvider",
-  async (provider) => {
-    try {
-        console.log(provider.data,666)
-      const res = await customAPI().put(
-        `providers/${provider.id}`
-      , provider.data);
-        return res.data
-    } catch (err) {
-      return err.response.data.payload;
+    "provider/editProvider",
+    async (provider) => {
+        try {
+            console.log(provider.data,666)
+            const res = await customAPI().put(
+                `providers/${provider.id}`
+                , provider.data);
+            return res.data
+        } catch (err) {
+            return err.response.data.payload;
+        }
     }
-  }
 );
 
 export const addProvider = createAsyncThunk(
@@ -55,7 +54,6 @@ export const getProviderDetail = createAsyncThunk(
     }
   }
 );
-
 
 export const searchProviders = createAsyncThunk(
   "provider/searchProviders",
