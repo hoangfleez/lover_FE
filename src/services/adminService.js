@@ -10,21 +10,6 @@ export const findAllUser = createAsyncThunk("admin/findAllUser", async () => {
   }
 });
 
-// export const changeRole = createAsyncThunk(
-//   "admin/changeRole",
-//   async ({ users, id, newRoleId }) => {
-//     console.log(users, id, newRoleId);
-//     try {
-//       const updatedUser = await customAPI().put(`admin/${id}`, { role: newRoleId });
-//       return {
-//         users,
-//         updatedUser,
-//       };
-//     } catch (err) {
-//       return err.response?.data?.payload;
-//     }
-//   }
-// );
 
 export const changeRole = createAsyncThunk(
   "admin/changeRole",

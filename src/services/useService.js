@@ -55,18 +55,7 @@ export const showUser = createAsyncThunk("users/showUser", async (id) => {
   }
 });
 
-// export const editUser = createAsyncThunk(
-//   "users/editUser",
-//   async (arg) => {
-//     try {
-//       const res = await customAPI().put(`/users/${arg.id}`, arg);
-//       console.log(res)
-//       return res.data;
-//     } catch (err) {
-//       return err.response.data.payload;
-//     }
-//   }
-// );
+
 export const editUser = createAsyncThunk("users/editUser", async (profile) => {
   return axios
     .put(`http://127.0.0.1:8181/users/${profile.id}`, profile)

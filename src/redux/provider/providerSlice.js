@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
-  addProvider,
+  addProvider, editProvider,
   filterProvider,
   getProvider,
   getProviderDetail, newlyJoinedProviders,
@@ -36,6 +36,10 @@ const providerSlice = createSlice({
 
     builder.addCase(addProvider.fulfilled, (state, action) => {
       state.lease = action.payload;
+    });
+
+    builder.addCase(editProvider.fulfilled, (state, action) => {
+      state.listProvider = action.payload;
     });
 
     builder.addCase(getProviderDetail.fulfilled, (state, action) => {
