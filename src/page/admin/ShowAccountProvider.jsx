@@ -1,171 +1,264 @@
-import * as React from "react";
-import Box from "@mui/material/Box";
-import Collapse from "@mui/material/Collapse";
-import IconButton from "@mui/material/IconButton";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Typography from "@mui/material/Typography";
-import Paper from "@mui/material/Paper";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import React, { useEffect, useState } from "react";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Typography,
+    Paper,
+    IconButton,
+    Collapse,
+    Box,
+    Button,
+} from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { findAllUser } from "../../services/adminService";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Button } from "@mui/material";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import Swal from "sweetalert2";
+import {
+    findAllUser,
+    lockAccount,
+    openAccount,
+} from "../../services/adminService";
+import { allProviderBooking } from "../../services/bookingService.js";
 
-function Row(props) {
-  const { row } = props;
-  const [open, setOpen] = React.useState(false);
+const styles = {
+    tableCell: {
+        padding: "8px",
+        borderBottom: "none",
+    },
+};
 
-  return (
-    <React.Fragment>
-      <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
-        <TableCell>
-          <IconButton
-            aria-label="expand row"
-            size="small"
-            onClick={() => setOpen(!open)}
-          >
-            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-          </IconButton>
-        </TableCell>
-        <TableCell component="th" scope="row">
-          {row.username}
-        </TableCell>
-        <TableCell align="right">{row.email}</TableCell>
-        <TableCell align="right">{row.firstname}</TableCell>
-        <TableCell align="right">{row.numberCard}</TableCell>
-        <TableCell align="right">{row.phoneNumber}</TableCell>
-        <TableCell
-          sx={{ display: "flex", gap: "5px", justifyContent: "center" }}
-        >
-          <Button
-            variant="contained"
-            onClick={() => handleBlockProvider(item.id)}
-            sx={{
-              backgroundColor: "red",
-              "&:hover": { backgroundColor: "red", color: "white" },
-            }}
-          >
-            Khoá
-          </Button>
-          <Button
-            variant="contained"
-            onClick={() => handleOpenkProvider(item.id)}
-          >
-            Mở
-          </Button>
-        </TableCell>
-      </TableRow>
-      <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box sx={{ margin: 1 }}>
-              <Typography variant="h6" gutterBottom component="div">
-                Lịc sử thuê
-              </Typography>
-              <Table size="small" aria-label="purchases">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Thời gian</TableCell>
-                    <TableCell>Địa điểm</TableCell>
-                    <TableCell align="right">Tên người thuê</TableCell>
-                    <TableCell align="right">Số giờ thuê thuê</TableCell>
-                    <TableCell align="right">Tổng tiền (Đ)</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {/* {row.history.map((historyRow) => (
-                    <TableRow key={historyRow.date}>
-                      <TableCell component="th" scope="row">
-                        {historyRow.date}
-                      </TableCell>
-                      <TableCell>{historyRow.customerId}</TableCell>
-                      <TableCell align="right">{historyRow.amount}</TableCell>
-                      <TableCell align="right">
-                        {Math.round(historyRow.amount * row.price * 100) / 100}
-                      </TableCell>
-                    </TableRow>
-                  ))} */}
-                </TableBody>
-              </Table>
-            </Box>
-          </Collapse>
-        </TableCell>
-      </TableRow>
-    </React.Fragment>
-  );
+function Row({ row, onUpdate, dataUpdated, setDataUpdated }) {
+    const dispatch = useDispatch();
+    const [open, setOpen] = useState(false);
+
+    const handleOpenProvider = (id) => {
+        Swal.fire({
+            title: "Bạn có muốn mở tài khoản?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Mở",
+            cancelButtonText: "Hủy",
+            reverseButtons: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                dispatch(openAccount(id))
+                    .then(() => {
+                        toast.success("Mở thành công");
+                        const updatedRow = { ...row, isLocked: 0 };
+                        onUpdate(updatedRow);
+                        setDataUpdated(!dataUpdated);
+                    })
+                    .catch(() => {
+                        toast.error("Mở không thành công");
+                    });
+            }
+        });
+    };
+
+    const handleBlockProvider = (id) => {
+        Swal.fire({
+            title: "Bạn có muốn khóa tài khoản?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Khóa",
+            cancelButtonText: "Hủy",
+            reverseButtons: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                dispatch(lockAccount(id))
+                    .then(() => {
+                        toast.success("Khóa thành công");
+                        const updatedRow = { ...row, isLocked: 1 };
+                        onUpdate(updatedRow);
+                        setDataUpdated(!dataUpdated);
+                    })
+                    .catch(() => {
+                        toast.error("Khóa không thành công");
+                    });
+            }
+        });
+    };
+
+    const allProvider = useSelector((state) => {
+        return state.booking.booking;
+    });
+
+    const fetchProviderBooking = async (id) => {
+        await dispatch(allProviderBooking(id));
+    };
+
+    const handleCollapseOpen = async (id) => {
+        if (!open && id) {
+            await fetchProviderBooking(id);
+        }
+
+        if (allProvider && allProvider.length > 0) {
+            setOpen(!open);
+        } else {
+            setOpen(false);
+        }
+    };
+
+
+    return (
+        <>
+            <TableRow>
+                <TableCell>
+                    <IconButton
+                        aria-label="expand row"
+                        size="small"
+                        onClick={() => handleCollapseOpen(row.id)}
+                    >
+                        {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                    </IconButton>
+                </TableCell>
+                <TableCell component="th" scope="row" style={styles.tableCell}>
+                    {row.username}
+                </TableCell>
+                <TableCell align="left" style={styles.tableCell}>
+                    {row.email}
+                </TableCell>
+                <TableCell align="left" style={styles.tableCell}>
+                    {row.firstname}
+                </TableCell>
+                <TableCell align="left" style={styles.tableCell}>
+                    {row.numberCard}
+                </TableCell>
+                <TableCell align="left" style={styles.tableCell}>
+                    {row.phoneNumber}
+                </TableCell>
+                <TableCell
+                    style={{
+                        ...styles.tableCell,
+                        display: "flex",
+                        gap: "5px",
+                        justifyContent: "center",
+                    }}
+                >
+                    {row.isLocked === 0 ? (
+                        <Button
+                            variant="contained"
+                            onClick={() => handleBlockProvider(row.id)}
+                            sx={{
+                                backgroundColor: "red",
+                                "&:hover": { backgroundColor: "red", color: "white" },
+                            }}
+                        >
+                            Khóa
+                        </Button>
+                    ) : (
+                        <Button variant="contained" onClick={() => handleOpenProvider(row.id)}>
+                            Mở
+                        </Button>
+                    )}
+                </TableCell>
+            </TableRow>
+            <TableRow>
+                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
+                    <Collapse in={open} timeout="auto" unmountOnExit>
+                        <Box sx={{ margin: 1 }}>
+                            {open && (
+                                <>
+                                    <Typography variant="h6" gutterBottom component="div">
+                                        Lịch sử thuê
+                                    </Typography>
+                                    <Table size="small" aria-label="purchases">
+                                        <TableHead>
+                                            <TableRow>
+                                                <TableCell>Thời gian</TableCell>
+                                                <TableCell>Địa điểm</TableCell>
+                                                <TableCell align="left">Tên người thuê</TableCell>
+                                                <TableCell align="left">Số giờ thuê thuê</TableCell>
+                                                <TableCell align="left">Tổng tiền (Đ)</TableCell>
+                                                <TableCell align="left">Trạng Thái</TableCell>
+                                            </TableRow>
+                                        </TableHead>
+                                        <TableBody>
+                                            {allProvider &&
+                                                allProvider.map((item) => (
+                                                    <TableRow key={item.id}>
+                                                        <TableCell>{item.startTime}</TableCell>
+                                                        <TableCell>{item.address}</TableCell>
+                                                        <TableCell align="left">{item.user.username}</TableCell>
+                                                        <TableCell align="left">{item.hour}</TableCell>
+                                                        <TableCell align="left">{item.cost}</TableCell>
+                                                        <TableCell align="left">{item.status}</TableCell>
+                                                    </TableRow>
+                                                ))}
+                                        </TableBody>
+                                    </Table>
+                                </>
+                            )}
+                        </Box>
+                    </Collapse>
+                </TableCell>
+            </TableRow>
+        </>
+    );
 }
 
 export default function ShowAccountProvider() {
-  const dispatch = useDispatch();
+    const dispatch = useDispatch();
+    const [providers, setProviders] = useState([]);
+    const [dataUpdated, setDataUpdated] = useState(false);
 
-  const allUser = useSelector((state) => {
-    return state.admin.listUser;
-  });
-
-  const providers = allUser.filter((item) => item.role.name === "provider");
-
-
-  const handleBlockProvider = (id) => {
-    dispatch(lockAccount(id))
-      .then(() => {
-        toast.success("Block thành công");
-        // Nạp lại danh sách user sau khi block thành công
+    useEffect(() => {
         dispatch(findAllUser());
-      })
-      .catch(() => {
-        toast.error("Block không thành công");
-      });
-  };
+    }, [dispatch]);
 
-  const handleOpenProvider = (id) => {
-    dispatch(openAccount(id))
-      .then(() => {
-        toast.success("Open thành công");
-        // Nạp lại danh sách user sau khi block thành công
-        dispatch(findAllUser());
-      })
-      .catch(() => {
-        toast.error("Open không thành công");
-      });
-  };
+    const allUser = useSelector((state) => state.admin.listUser);
 
-  useEffect(() => {
-    dispatch(findAllUser());
-  }, [dispatch]);
-  return (
-    <>
-      <Typography variant="h4" gutterBottom>
-        Danh sách tài khoản cung cấp dịch vụ
-      </Typography>
-      <TableContainer component={Paper}>
-        <Table aria-label="collapsible table">
-          <TableHead>
-            <TableRow>
-              <TableCell />
-              <TableCell>Tên tài khoản</TableCell>
-              <TableCell align="right">Email</TableCell>
-              <TableCell align="right">Tên</TableCell>
-              <TableCell align="right">Số CCCD/CMTND</TableCell>
-              <TableCell align="right">Số điện thoại</TableCell>
-              <TableCell align="center">Khoá / Mở </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {providers?.map((provider) => (
-              <Row key={provider.name} row={provider} />
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <ToastContainer />
-    </>
-  );
+    useEffect(() => {
+        if (Array.isArray(allUser)) {
+            setProviders(allUser.filter((item) => item.role.name === "provider"));
+        }
+    }, [allUser]);
+
+    const handleUpdateList = (updatedRow) => {
+        const updatedProviders = providers.map((provider) =>
+            provider.id === updatedRow.id ? { ...updatedRow } : provider
+        );
+        setProviders(updatedProviders);
+    };
+
+    return (
+        <div>
+            <Typography variant="h4" gutterBottom component="div">
+                Danh sách người cung cấp dịch vụ
+            </Typography>
+            <TableContainer component={Paper}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell />
+                            <TableCell>Tên đăng nhập</TableCell>
+                            <TableCell>Email</TableCell>
+                            <TableCell>Tên</TableCell>
+                            <TableCell>Số địa chỉ thẻ</TableCell>
+                            <TableCell>Số điện thoại</TableCell>
+                            <TableCell>Thao tác</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {providers.map((row) => (
+                            <Row
+                                key={row.id}
+                                row={row}
+                                onUpdate={handleUpdateList}
+                                dataUpdated={dataUpdated}
+                                setDataUpdated={setDataUpdated}
+                            />
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+            <ToastContainer />
+        </div>
+    );
 }

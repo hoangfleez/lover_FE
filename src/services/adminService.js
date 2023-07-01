@@ -25,7 +25,8 @@ export const changeRole = createAsyncThunk(
 
 export const lockAccount = createAsyncThunk("admin/lockAccount", async (id) => {
   try {
-    await customAPI().put(`/admin/lock-user/${id}`);
+    let res = await customAPI().put(`/admin/lock-user/${id}`);
+    return res.data;
   } catch (err) {
     return err.response?.data?.payload;
   }
@@ -33,7 +34,8 @@ export const lockAccount = createAsyncThunk("admin/lockAccount", async (id) => {
 
 export const openAccount = createAsyncThunk("admin/openAccount", async (id) => {
   try {
-    await customAPI().put(`/admin/open-user/${id}`);
+    let res = await customAPI().put(`/admin/open-user/${id}`);
+    return res.data;
   } catch (err) {
     return err.response?.data?.payload;
   }

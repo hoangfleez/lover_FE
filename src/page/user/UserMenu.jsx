@@ -109,7 +109,7 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem>
+        <MenuItem key={1}>
           <Box sx={{ display: "flex" }} onClick={handlePage}>
             <Avatar src={user?.avatar} />
             <Box>
@@ -137,7 +137,7 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
         </MenuItem>
         <Divider />
         {user?.role?.name === "admin" && (
-          <MenuItem onClick={goAdminPage}>
+          <MenuItem key={2} onClick={goAdminPage}>
             <ListItemIcon>
               <ManageAccountsIcon />
             </ListItemIcon>
@@ -147,6 +147,7 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
         {user?.role?.name === "provider" && (
           <>
             <MenuItem
+                key={3}
               onClick={() => {
                 navigate("/provider_setting");
               }}
@@ -157,7 +158,9 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
               Đến trang dịch vụ
             </MenuItem>
             {profile ? (
-              <MenuItem>
+              <MenuItem
+                  key={4}
+              >
                 <Stack
                   direction={"row"}
                   onClick={handleSwitchClick}
@@ -175,7 +178,7 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
           </>
         )}
         {user?.role?.name === "user" && (
-          <MenuItem onClick={handleClickOpen}>
+          <MenuItem key={5} onClick={handleClickOpen}>
             <ListItemIcon>
               <HowToRegIcon />
             </ListItemIcon>
@@ -184,21 +187,21 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
         )}
         <Divider />
 
-        <MenuItem onClick={() => navigate("/done")}>
+        <MenuItem key={6} onClick={() => navigate("/done")}>
           <ListItemIcon>
             <WatchLaterIcon fontSize="small" />
           </ListItemIcon>
           Lịch sử giao dịch
         </MenuItem>
 
-        <MenuItem onClick={changeProfile}>
+        <MenuItem key={7} onClick={changeProfile}>
           <ListItemIcon>
             <Settings fontSize="small" />
           </ListItemIcon>
           Cài đặt tài khoản
         </MenuItem>
 
-        <MenuItem onClick={handleLogout}>
+        <MenuItem key={8} onClick={handleLogout}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>

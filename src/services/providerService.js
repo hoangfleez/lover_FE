@@ -17,18 +17,18 @@ export const getProvider = createAsyncThunk(
 );
 
 export const editProvider = createAsyncThunk(
-  "provider/editProvider",
-  async (provider) => {
-    try {
-      const res = await axios.put(
-        `http://127.0.0.1:8181/providers/${profile.id}`,
-        provider
-      );
-      return res.data;
-    } catch (err) {
-      return err.response.data.payload;
+    "provider/editProvider",
+    async (provider) => {
+        try {
+            console.log(provider.data,666)
+            const res = await customAPI().put(
+                `providers/${provider.id}`
+                , provider.data);
+            return res.data
+        } catch (err) {
+            return err.response.data.payload;
+        }
     }
-  }
 );
 
 export const addProvider = createAsyncThunk(
