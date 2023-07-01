@@ -16,20 +16,6 @@ export const getProvider = createAsyncThunk(
   }
 );
 
-// export const editProvider = createAsyncThunk(
-//   "provider/editProvider",
-//   async (profile) => {
-//     return axios
-//       .put(`http://127.0.0.1:8181/providers/${profile.id}`, profile)
-//       .then((res) => {
-//         console.log(res.data)
-//         return res.data.data;
-//       })
-//       .catch((err) => {
-//         console.error(err);
-//       });
-//   }
-// );
 export const editProvider = createAsyncThunk(
   "provider/editProvider",
   async (provider) => {

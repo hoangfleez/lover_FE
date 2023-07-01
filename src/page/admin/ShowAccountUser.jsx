@@ -111,7 +111,7 @@ export default function ShowAccountUser() {
   });
 
   const users = allUser.filter((item) => item.role.name === "user");
-  console.log(users);
+
 
     const handleBlockUsers = (id) => {
         dispatch(lockAccount(id))

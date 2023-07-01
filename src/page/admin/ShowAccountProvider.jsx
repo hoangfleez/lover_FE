@@ -111,7 +111,7 @@ export default function ShowAccountProvider() {
   });
 
   const providers = allUser.filter((item) => item.role.name === "provider");
-  console.log(providers);
+
 
   const handleBlockProvider = (id) => {
     dispatch(lockAccount(id))
