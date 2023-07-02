@@ -76,15 +76,15 @@ export default function NavBar() {
     }
   };
 
-  useEffect(() => {
-    const socket = io("http://localhost:5000");
-    console.log(socket)
-    console.log(
-      socket.on("fistEvent", (m) => {
-        console.log(m);
-      })
-    );
-  }, []);
+  // useEffect(() => {
+  //   const socket = io("http://localhost:5000");
+  //   console.log(socket)
+  //   console.log(
+  //     socket.on("fistEvent", (m) => {
+  //       console.log(m);
+  //     })
+  //   );
+  // }, []);
 
   return (
     <Box>

@@ -13,29 +13,30 @@ import {
 import ChatIcon from "@mui/icons-material/Chat";
 import SendIcon from "@mui/icons-material/Send";
 import CloseIcon from "@mui/icons-material/Close";
-import socket from "../../socket/socket";
+// import socket from "../../socket/socket";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { showAllChat } from "../../services/chatService";
+import UserProfile from "./UserProfile";
 
-const ChatComponent = () => {
+const ChatComponent = ({ openChat, setOpenChat }) => {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => {
+    return state.user.currentUser;
+  });
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [showChat, setShowChat] = useState(false);
+  const [conversations, setConversations] = useState([]);
 
   useEffect(() => {
-    socket;
-    socket.on("message", (newMessage) => {
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
-    });
-
-    socket.on("disconnect", () => {
-      // Handle logic when disconnected
-    });
-
-    return () => {
-      if (socket) {
-        socket.disconnect();
-      }
+    const getConversations = async () => {
+      const res = await dispatch(showAllChat());
+      setConversations(res.payload);
     };
-  }, []);
+
+    getConversations();
+  }, [user]);
 
   const handleMessageChange = (event) => {
     setMessage(event.target.value);
@@ -50,12 +51,15 @@ const ChatComponent = () => {
   };
 
   const handleToggleChat = () => {
-    setShowChat(!showChat);
+    setOpenChat(false);
+  };
+  const clickIcon = () => {
+    setOpenChat(true);
   };
 
   return (
     <div>
-      {!showChat ? (
+      {!openChat ? (
         <div
           style={{
             position: "fixed",
@@ -63,7 +67,14 @@ const ChatComponent = () => {
             right: "20px",
           }}
         >
-          <Fab color="secondary" aria-label="add" onClick={handleToggleChat}>
+          <Fab
+            color="secondary"
+            aria-label="add"
+            onClick={() => {
+              handleToggleChat;
+              clickIcon();
+            }}
+          >
             <ChatIcon />
           </Fab>
         </div>
@@ -84,21 +95,15 @@ const ChatComponent = () => {
           >
             <div
               style={{
-                width: "150px",
+                width: "200px",
                 height: "100%",
                 borderRight: "1px solid #ccc",
               }}
             >
               <List>
-                <ListItem button>
-                  <ListItemText primary="User 1" />
-                </ListItem>
-                <ListItem button>
-                  <ListItemText primary="User 2" />
-                </ListItem>
-                <ListItem button>
-                  <ListItemText primary="User 3" />
-                </ListItem>
+                {conversations.map((conversations) => {
+                  <UserProfile  conversations={conversations}/>;
+                })}
               </List>
             </div>
             <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
@@ -127,7 +132,8 @@ const ChatComponent = () => {
                     key={index}
                     style={{
                       display: "flex",
-                      justifyContent: msg.sender === "me" ? "flex-end" : "flex-start",
+                      justifyContent:
+                        msg.sender === "me" ? "flex-end" : "flex-start",
                       marginBottom: "10px",
                     }}
                   >
@@ -136,7 +142,10 @@ const ChatComponent = () => {
                       style={{
                         maxWidth: "70%",
                         padding: "5px 10px",
-                        borderRadius: msg.sender === "me" ? "5px 5px 0 5px" : "5px 5px 5px 0",
+                        borderRadius:
+                          msg.sender === "me"
+                            ? "5px 5px 0 5px"
+                            : "5px 5px 5px 0",
                         background: msg.sender === "me" ? "#e0e0e0" : "#3f51b5",
                         color: msg.sender === "me" ? "black" : "white",
                       }}

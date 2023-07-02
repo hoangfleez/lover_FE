@@ -61,7 +61,7 @@ const Rent = (props) => {
       const cost = parseFloat(selectedOption) * parseFloat(dataProvider.price);
       setTotalCost(cost);
     }
-  }, [selectedOption, dataProvider.price]);
+  }, [selectedOption, dataProvider?.price]);
 
   const apiGoogle = useSelector((state) => state.booking.apiG.results);
   const idProvince = `${address.province}`;
@@ -82,9 +82,9 @@ const Rent = (props) => {
 
   useEffect(() => {
     if (address.province) {
-      dispatch(apiGetDistrict(address.province));
+      dispatch(apiGetDistrict(address?.province));
     }
-  }, [dispatch, address.province]);
+  }, [dispatch, address?.province]);
 
   return (
     <>
@@ -113,7 +113,7 @@ const Rent = (props) => {
               </Grid>
               <Grid item xs={4}>
                 <Typography variant="body1" gutterBottom>
-                  {dataProvider.name}
+                  {dataProvider?.name}
                 </Typography>
               </Grid>
             </Grid>

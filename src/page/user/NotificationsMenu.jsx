@@ -27,7 +27,6 @@ const NotificationsMenu = ({
   const listUser = useSelector((state) => {
     return state.admin?.listUser;
   });
-  const user = useSelector((state) => {console.log(state)})
 
 
   useEffect(() => {

@@ -22,18 +22,29 @@ import NotFound from "./page/404/NotFound";
 import AdminContent from "./page/admin/AdminContent";
 import ShowAccountProvider from "./page/admin/ShowAccountProvider";
 import DoneProvider from "./page/booking/DoneProvider.jsx";
+import { useState } from "react";
 
 function App() {
   let user = useUserProfile();
+  
+  const [openChat, setOpenChat] = useState(false);
+  const homeProps = {
+    openChat,
+    setOpenChat
+  };
 
+  const detailProviderProps = {
+    openChat,
+    setOpenChat
+  };
   return (
     <>
       <Routes>
-        <Route path="" element={<Home />}>
+        <Route path="" element={<Home {...homeProps} />}  >
           <Route path="" element={<Body />}>
             <Route path="" element={<ShowAll />} />
           </Route>
-          <Route path="detail-provider/:id" element={<DetailProvider />} />
+          <Route path="detail-provider/:id" element={<DetailProvider {...detailProviderProps} />} />
           {user ? (
             <>
               <Route path="page" element={<PersonalPage />} />

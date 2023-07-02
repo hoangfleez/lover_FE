@@ -21,16 +21,18 @@ import Rent from "../booking/Rent.jsx";
 import Evaluate from "./Evaluate";
 import BasicModal from "../user/Modal";
 import { useUserProfile } from "../../customHook/useUserProfile";
+import { createRoom } from "../../services/chatService";
 
-const DetailProvider = () => {
-  const { id } = useParams();
+const DetailProvider = (props) => {
   const dispatch = useDispatch();
+  const { id } = useParams();
+  const user = useUserProfile();
   const [showRent, setShowRent] = useState(false);
   const [dataProvider, setDataProvider] = useState({});
   const [open, setOpen] = useState(false);
   const [disabled, setDisabled] = useState(false);
 
-  const user = useUserProfile();
+
 
   const detailProviderDetail = useSelector((state) => {
     return state.provider.showOneProvider;
@@ -40,7 +42,10 @@ const DetailProvider = () => {
     return state.provider.profile;
   });
 
-
+  const handleOpenChat = () => {
+    dispatch(createRoom(detailProviderDetail?.user.id))
+    props.setOpenChat(true);
+  };
 
   const [ready, setReady] = useState(detailProviderDetail?.ready);
 
@@ -67,12 +72,12 @@ const DetailProvider = () => {
   }, [detailProviderDetail?.ready]);
 
   useEffect(() => {
-    if(detailProviderDetail?.id === profile?.id){
+    if (detailProviderDetail?.id === profile?.id) {
       setDisabled(true);
-    }else {
+    } else {
       setDisabled(false);
     }
-  },[user, detailProviderDetail?.id, profile?.id])
+  }, [user, detailProviderDetail?.id, profile?.id]);
 
   return (
     <Box
@@ -314,6 +319,9 @@ const DetailProvider = () => {
                       color: "black",
                     },
                   }}
+                  onClick={() => {
+                    handleOpenChat();
+                  }}
                 >
                   <ChatBubbleIcon />
                   Chat
@@ -329,6 +337,7 @@ const DetailProvider = () => {
         dataProvider={dataProvider}
       />
       <BasicModal open={open} setOpen={setOpen} />
+      {/* <FirsChat openChat={openChat} setOpenChat={setOpenChat}/> */}
     </Box>
   );
 };
