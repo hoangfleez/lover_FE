@@ -16,7 +16,7 @@ import BasicModal from "../../user/Modal";
 import { searchProviders } from "../../../services/providerService";
 import { useNavigate } from "react-router-dom";
 import { clearLocalStorage } from "../../../utils";
-import { io } from "socket.io-client";
+// import { io } from "socket.io-client";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
