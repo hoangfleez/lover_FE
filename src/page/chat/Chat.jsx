@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+
 import {
   Paper,
   Typography,
@@ -12,12 +13,29 @@ import {
 import ChatIcon from "@mui/icons-material/Chat";
 import SendIcon from "@mui/icons-material/Send";
 import CloseIcon from "@mui/icons-material/Close";
-// const { io } = require("socket.io-client");
+import socket from "../../socket/socket";
 
 const ChatComponent = () => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
-  const [showChat, setShowChat] = useState(false); // Trạng thái ẩn/hiện khung chat
+  const [showChat, setShowChat] = useState(false);
+
+  useEffect(() => {
+    socket;
+    socket.on("message", (newMessage) => {
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
+    });
+
+    socket.on("disconnect", () => {
+      // Handle logic when disconnected
+    });
+
+    return () => {
+      if (socket) {
+        socket.disconnect();
+      }
+    };
+  }, []);
 
   const handleMessageChange = (event) => {
     setMessage(event.target.value);
@@ -25,13 +43,14 @@ const ChatComponent = () => {
 
   const handleSendMessage = () => {
     if (message.trim() !== "") {
-      setMessages([...messages, message]);
+      socket.emit("message", message);
+      setMessages([...messages, { text: message, sender: "me" }]);
       setMessage("");
     }
   };
 
   const handleToggleChat = () => {
-    setShowChat(!showChat); // Toggle trạng thái ẩn/hiện khi click vào
+    setShowChat(!showChat);
   };
 
   return (
@@ -68,11 +87,9 @@ const ChatComponent = () => {
                 width: "150px",
                 height: "100%",
                 borderRight: "1px solid #ccc",
-                backgroundColor: "customColorSchemes.backgroundColor",
               }}
             >
               <List>
-                {/* Hiển thị danh sách người chat */}
                 <ListItem button>
                   <ListItemText primary="User 1" />
                 </ListItem>
@@ -82,7 +99,6 @@ const ChatComponent = () => {
                 <ListItem button>
                   <ListItemText primary="User 3" />
                 </ListItem>
-                {/* Thêm các mục người chat khác ở đây */}
               </List>
             </div>
             <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
@@ -91,8 +107,7 @@ const ChatComponent = () => {
                   display: "flex",
                   justifyContent: "space-between",
                   padding: "10px",
-                  backgroundColor: "customColorSchemes.backgroundColor",
-                  borderBottom:"1px solid #ccc"
+                  borderBottom: "1px solid #ccc",
                 }}
               >
                 <Typography variant="h6">Chat</Typography>
@@ -105,27 +120,39 @@ const ChatComponent = () => {
                   height: "300px",
                   overflowY: "scroll",
                   padding: "10px",
-                  backgroundColor: "customColorSchemes.backgroundColor",
                 }}
               >
-                <ul>
-                  {messages.map((msg, index) => (
-                    <li key={index}>{msg}</li>
-                  ))}
-                </ul>
+                {messages.map((msg, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      display: "flex",
+                      justifyContent: msg.sender === "me" ? "flex-end" : "flex-start",
+                      marginBottom: "10px",
+                    }}
+                  >
+                    <Paper
+                      elevation={2}
+                      style={{
+                        maxWidth: "70%",
+                        padding: "5px 10px",
+                        borderRadius: msg.sender === "me" ? "5px 5px 0 5px" : "5px 5px 5px 0",
+                        background: msg.sender === "me" ? "#e0e0e0" : "#3f51b5",
+                        color: msg.sender === "me" ? "black" : "white",
+                      }}
+                    >
+                      {msg.text}
+                    </Paper>
+                  </div>
+                ))}
               </div>
-              <div
-                style={{
-                  padding: "2px",
-                  backgroundColor: "customColorSchemes.backgroundColor",
-                }}
-              >
+              <div style={{ padding: "2px" }}>
                 <TextField
                   fullWidth
                   type="text"
                   value={message}
                   onChange={handleMessageChange}
-                  placeholder="Type your message..."
+                  placeholder="Hãy viết gì đó..."
                   InputProps={{
                     endAdornment: (
                       <IconButton

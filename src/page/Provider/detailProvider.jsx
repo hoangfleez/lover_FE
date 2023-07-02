@@ -39,6 +39,7 @@ const DetailProvider = () => {
   const profile = useSelector((state) => {
     return state.provider.profile;
   });
+
   const [ready, setReady] = useState(detailProviderDetail?.ready);
 
   const handleClose = () => {
