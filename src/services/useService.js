@@ -60,7 +60,6 @@ export const editUser = createAsyncThunk("users/editUser", async (profile) => {
   return axios
     .put(`http://127.0.0.1:8181/users/${profile.id}`, profile)
     .then((data) => {
-      console.log(data.data.data);
       return data.data.data;
     })
     .catch((err) => {

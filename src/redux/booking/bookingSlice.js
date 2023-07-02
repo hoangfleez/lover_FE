@@ -3,7 +3,7 @@ import {
     acceptBooking,
     acceptListBooking, acceptListBookingProvider,
     addBooking, allProviderBooking, allUserBooking,
-    detailBooking, detailBookingProvider, doneBooking, doneListBooking,
+    detailBooking, detailBookingProvider, doneBooking, doneListBooking, doneListProviderBooking,
     pendingListBookingProvider, rejectBooking, rejectListBookingProvider,
     rentalListBooking
 } from "../../services/bookingService.js";
@@ -39,6 +39,11 @@ const bookingSlice = createSlice({
         builder.addCase(doneListBooking.fulfilled, (state, action) => {
             state.booking = action.payload;
         });
+
+        builder.addCase(doneListProviderBooking.fulfilled, (state, action) => {
+            state.booking = action.payload;
+        });
+
 
         builder.addCase(detailBooking.fulfilled, (state, action) => {
             state.detail = action.payload;
@@ -84,6 +89,8 @@ const bookingSlice = createSlice({
         builder.addCase(doneBooking.fulfilled, (state, action) => {
             state.detail = action.payload;
         });
+
+
     }
 });
 

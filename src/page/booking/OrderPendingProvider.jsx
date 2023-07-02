@@ -1,27 +1,15 @@
-import {Button, Dialog, DialogContent, Toolbar} from "@mui/material";
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-    acceptBooking,
-    detailBookingProvider,
-    pendingListBookingProvider,
-    rejectBooking
-} from "../../services/bookingService.js";
+import { acceptBooking, detailBookingProvider, pendingListBookingProvider, rejectBooking } from "../../services/bookingService.js";
+import { Button, Dialog, DialogContent, Toolbar } from "@mui/material";
 import "./booking.css";
 
 const OrderPendingProvider = () => {
     const dispatch = useDispatch();
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const pendingList = useSelector((state) => {
-        return state.booking.booking;
-    });
-
-    const detailProvider = useSelector((state) => {
-        return state.booking.detail
-    });
-
-
+    const pendingList = useSelector((state) => state.booking.booking);
+    const detailProvider = useSelector((state) => state.booking.detail);
 
     const handleDetailProvider = async (id) => {
         await dispatch(detailBookingProvider(id));
@@ -33,11 +21,16 @@ const OrderPendingProvider = () => {
     };
 
     const handleAccept = async (id) => {
-        await dispatch(acceptBooking(id))
-    }
+        await dispatch(acceptBooking(id));
+        // Fetch the updated pending list after accepting the booking
+        dispatch(pendingListBookingProvider());
+    };
+
     const handleReject = async (id) => {
-        await dispatch(rejectBooking(id))
-    }
+        await dispatch(rejectBooking(id));
+        // Fetch the updated pending list after rejecting the booking
+        dispatch(pendingListBookingProvider());
+    };
 
     useEffect(() => {
         dispatch(pendingListBookingProvider());
@@ -63,6 +56,53 @@ const OrderPendingProvider = () => {
         <>
             <Toolbar />
             <div>
+                <style>
+                    {`
+                        .action-button {
+                            padding: 4px 8px;
+                            font-size: 12px;
+                            border-radius: 4px;
+                            margin-right: 8px;
+                            white-space: nowrap;
+                        }
+
+                        .accept-button {
+                            background-color: #4caf50;
+                            color: white;
+                        }
+
+                        .reject-button {
+                            background-color: #f44336;
+                            color: white;
+                        }
+
+                        .feedback-button {
+                            padding: 4px 8px;
+                            font-size: 12px;
+                            border-radius: 4px;
+                            margin-top: 8px;
+                        }
+
+                        .custom-modal {
+                            max-width: 600px;
+                            width: 100%;
+                            margin: 0 auto;
+                        }
+
+                        .modal-heading {
+                            font-size: 24px;
+                            margin-bottom: 16px;
+                        }
+
+                        .modal-content-item {
+                            margin-bottom: 8px;
+                        }
+
+                        .modal-content-item label {
+                            font-weight: bold;
+                        }
+                    `}
+                </style>
                 <table>
                     <tbody>
                     <tr>
@@ -84,39 +124,54 @@ const OrderPendingProvider = () => {
                                 <td>{calculateEndTime(item.startTime, item.hour)}</td>
                                 <td>{item.cost} VND</td>
                                 <td>{item.status}</td>
-                                <Button onClick={() => handleDetailProvider(item.id)}
-                                >
-                                    Chi tiet don thue
-                                </Button>
-
-                                <Button onClick={() => handleAccept(item.id)}
-                                >
-                                    Chấp nhận
-                                </Button>
-
-                                <Button onClick={() => handleReject(item.id)}
-                                >
-                                    Từ chối
-                                </Button>
+                                <td>
+                                    <Button className="action-button" onClick={() => handleDetailProvider(item.id)}>
+                                        Chi tiết đơn thuê
+                                    </Button>
+                                </td>
+                                <td>
+                                    <Button className="action-button accept-button" onClick={() => handleAccept(item.id)}>
+                                        Chấp nhận
+                                    </Button>
+                                </td>
+                                <td>
+                                    <Button className="action-button reject-button" onClick={() => handleReject(item.id)}>
+                                        Từ chối
+                                    </Button>
+                                </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
-            <Dialog open={isModalOpen} onClose={handleCloseModal}>
+            <Dialog open={isModalOpen} onClose={handleCloseModal} className="custom-modal">
                 <DialogContent>
-                    <h1> Chi tiết đơn thuê</h1>
+                    <h1 className="modal-heading">Chi tiết đơn thuê</h1>
                     {detailProvider && (
-                        <>
-                            <div>Tên (người thuê): {detailProvider.user?.username}</div>
-                            <div>Địa chỉ: {detailProvider.address}</div>
-                            <div>Thời bắt đầu {formatDateTime(detailProvider.startTime)}</div>
-                            <div>Thời kết thúc {calculateEndTime(detailProvider.startTime, detailProvider.hour)}</div>
-                            <div>Thời gian thuê (bao nhiêu tiếng): {detailProvider.hour} giờ</div>
-                            <div>Trạng thái: {detailProvider.status}</div>
-                            <div>Tổng đơn: {detailProvider.cost} VND</div>
-                            <Button>Phản hồi về người thuê</Button>
-                        </>
+                        <div>
+                            <div className="modal-content-item">
+                                <label>Tên (người thuê):</label> {detailProvider.user?.username}
+                            </div>
+                            <div className="modal-content-item">
+                                <label>Địa chỉ:</label> {detailProvider.address}
+                            </div>
+                            <div className="modal-content-item">
+                                <label>Thời bắt đầu:</label> {formatDateTime(detailProvider.startTime)}
+                            </div>
+                            <div className="modal-content-item">
+                                <label>Thời kết thúc:</label> {calculateEndTime(detailProvider.startTime, detailProvider.hour)}
+                            </div>
+                            <div className="modal-content-item">
+                                <label>Thời gian thuê (bao nhiêu tiếng):</label> {detailProvider.hour} giờ
+                            </div>
+                            <div className="modal-content-item">
+                                <label>Trạng thái:</label> {detailProvider.status}
+                            </div>
+                            <div className="modal-content-item">
+                                <label>Tổng đơn:</label> {detailProvider.cost} VND
+                            </div>
+                            <Button className="feedback-button">Phản hồi về người thuê</Button>
+                        </div>
                     )}
                 </DialogContent>
             </Dialog>

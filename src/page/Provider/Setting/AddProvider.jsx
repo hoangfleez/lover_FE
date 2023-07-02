@@ -12,8 +12,6 @@ import {
 import Birthday from "./Birthday";
 import NickName from "./NickName";
 import Interest from "./Interest";
-import OtherService from "./OtherSevicer";
-import FreeService from "./FreeSevicer";
 import Price from "./Price";
 import BasicService from "./BasicService";
 import Describe from "./Describe";
@@ -24,8 +22,8 @@ import Gender from "./Gender";
 import LinkFB from "./LinkFB";
 import AvatarProvider from "./AvatarProvider";
 import ImageUploader from "./Image";
-import axios from "axios";
 import MyNumber from "./MyNumber";
+import OtherService from "./OtherService.jsx";
 
 const AddProvider = () => {
   const dispatch = useDispatch();
@@ -33,49 +31,50 @@ const AddProvider = () => {
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
-  const [isServiceOn, setIsServiceOn] = useState(false); // State lưu trạng thái bật/tắt dịch vụ
 
-  const profile = useSelector((state) => state.provider.showOneProvider);
+  const profile = useSelector((state) => state.provider.profile) || {};
 
   useEffect(() => {
+    dispatch(showProviderByUser());
     dispatch(showProviderByUser());
   }, []);
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      name: profile?.name || "",
-      dob: profile?.dob || "",
-      sex: profile?.sex || "",
-      city: profile?.city || "",
-      country: profile?.country || "",
-      avatarProvider: profile?.avatarProvider || "",
-      height: profile?.height || "",
-      weight: profile?.weight || "",
-      hobby: profile?.hobby || "",
-      desc: profile?.desc || "",
-      linkFB: profile?.linkFB || "",
-      price: profile?.price || "",
-      image: profile?.images || [],
-      service: profile?.serviceProviders || [],
-      freeService: profile?.freeService || [],
-      mainService: profile?.mainService || [],
-      otherService: profile?.otherService || [],
+      name: profile && profile.name ? profile.name : "",
+      dob: profile && profile.dob ? profile.dob : "",
+      sex: profile && profile.sex ? profile.sex : "",
+      city: profile && profile.city ? profile.city : "",
+      country: profile && profile.country ? profile.country : "",
+      avatarProvider: profile && profile.avatarProvider ? profile.avatarProvider : "",
+      height: profile && profile.height ? profile.height : "",
+      weight: profile && profile.weight ? profile.weight : "",
+      hobby: profile && profile.hobby ? profile.hobby : "",
+      desc: profile && profile.desc ? profile.desc : "",
+      linkFB: profile && profile.linkFB ? profile.linkFB : "",
+      price: profile && profile.price ? profile.price : "",
+      image: profile && profile.images ? profile.images : [],
+      service: profile && profile.serviceProviders ? profile.serviceProviders.map(item => item.id) : [],
+      otherService: profile && profile.otherService ? profile.otherService : [],
+      mainService: profile && profile.mainService ? profile.mainService : [],
     },
     onSubmit: async (values) => {
-      const { freeService, mainService, otherService, ...rest } = values;
-      const serviceArray = [...freeService, mainService, ...otherService];
+      const { otherService, mainService, ...rest } = values;
+      const serviceArray = [...otherService, mainService];
       const id = serviceArray.map((item) => item.id);
       const newProvider = {
         ...rest,
         service: id,
         id: profile?.id,
       };
-      if (profile) {
-        let aaa = await dispatch(editProvider({id: profile.id,data: newProvider}));
 
-      } else {
+      if (Object.keys(profile).length === 0) {
+        // Add provider
         await dispatch(addProvider(newProvider));
+      } else {
+        // Edit provider
+        await dispatch(editProvider({ id: profile.id, data: newProvider }));
       }
 
       setIsSnackbarOpen(true);
@@ -85,10 +84,6 @@ const AddProvider = () => {
   const handleCloseSnackbar = () => {
     setIsSnackbarOpen(false);
   };
-  console.log(formik.values,765)
-
-
-  useEffect(() => {}, [profile]);
 
   return (
       <Stack p={2}>
@@ -111,7 +106,6 @@ const AddProvider = () => {
               <Stack>
                 <Stack direction="column" gap={2}>
                   <OtherService formik={formik} />
-                  <FreeService formik={formik} />
                 </Stack>
               </Stack>
               <Divider />
@@ -141,7 +135,7 @@ const AddProvider = () => {
               <Describe formik={formik} name="desc" />
               <Divider />
               <Button color="primary" variant="contained" fullWidth type="submit">
-                {profile ? "Cập nhật" : "Đăng bài"}
+                {Object.keys(profile).length === 0 ? "Đăng bài" : "Cập nhật"}
               </Button>
             </Stack>
           </form>
@@ -156,7 +150,7 @@ const AddProvider = () => {
               severity="success"
               sx={{ width: "100%" }}
           >
-            Đăng bài thành công!
+            {Object.keys(profile).length === 0 ? "Đăng bài" : "Cập nhật"} thành công!
           </MuiAlert>
         </Snackbar>
       </Stack>

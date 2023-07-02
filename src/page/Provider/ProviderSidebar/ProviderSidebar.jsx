@@ -8,6 +8,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import BlockIcon from "@mui/icons-material/Block";
 import HistoryIcon from "@mui/icons-material/History";
 import { useNavigate } from "react-router-dom";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 
 export default function ProviderSidebar() {
   const [expanded, setExpanded] = React.useState(
@@ -90,6 +91,14 @@ export default function ProviderSidebar() {
             onClick={() => {
               navigate("/provider_setting/rejectProvider");
             }}
+          />
+          <TreeItem
+              nodeId="15"
+              label="Danh sách thành công"
+              icon={<CheckCircleIcon />}
+              onClick={() => {
+                navigate("/provider_setting/doneProvider");
+              }}
           />
         </TreeItem>
       </TreeView>

@@ -42,6 +42,19 @@ export const doneListBooking = createAsyncThunk(
 );
 
 
+export const doneListProviderBooking = createAsyncThunk(
+    "booking/doneListProviderBooking",
+    async () => {
+        try {
+            const res = await customAPI().get(`bookings/provider/done` );
+            return res.data;
+        } catch (err) {
+            return err.response.data.payload;
+        }
+    }
+);
+
+
 export const detailBooking = createAsyncThunk(
     "booking/detailBooking",
     async (id) => {

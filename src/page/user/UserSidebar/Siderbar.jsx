@@ -8,7 +8,9 @@ import HistoryToggleOffIcon from "@mui/icons-material/HistoryToggleOff";
 import SettingsIcon from "@mui/icons-material/Settings";
 import BlockIcon from "@mui/icons-material/Block";
 import HistoryIcon from "@mui/icons-material/History";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import { useNavigate } from "react-router-dom";
+
 
 export default function UserSiderbar() {
   const [expanded, setExpanded] = React.useState(
@@ -84,6 +86,15 @@ export default function UserSiderbar() {
               navigate("/customer_info/accept");
             }}
             icon={<HistoryIcon />}
+          />
+
+          <TreeItem
+              nodeId="17"
+              label="Đơn đang đã hoàn thành"
+              onClick={() => {
+                navigate("/customer_info/done");
+              }}
+              icon={<CheckCircleIcon />}
           />
         </TreeItem>
 

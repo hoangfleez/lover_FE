@@ -21,6 +21,7 @@ import { useUserProfile } from "./customHook/useUserProfile";
 import NotFound from "./page/404/NotFound";
 import AdminContent from "./page/admin/AdminContent";
 import ShowAccountProvider from "./page/admin/ShowAccountProvider";
+import DoneProvider from "./page/booking/DoneProvider.jsx";
 
 function App() {
   let user = useUserProfile();
@@ -40,6 +41,7 @@ function App() {
                 <Route path="" element={<ShowAndEditInfo />} />
                 <Route path="order" element={<Order />} />
                 <Route path="accept" element={<OrderAccept />} />
+                <Route path="done" element={<Done />} />
               </Route>
               {user?.role.name === "provider" ? (
                 <>
@@ -56,6 +58,10 @@ function App() {
                     <Route
                       path="acceptProvider"
                       element={<OrderAcceptProvider />}
+                    />
+                    <Route
+                        path="doneProvider"
+                        element={<DoneProvider />}
                     />
                   </Route>
                 </>

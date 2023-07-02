@@ -20,7 +20,6 @@ export const editProvider = createAsyncThunk(
     "provider/editProvider",
     async (provider) => {
         try {
-            console.log(provider.data,666)
             const res = await customAPI().put(
                 `providers/${provider.id}`
                 , provider.data);
@@ -114,7 +113,6 @@ export const newlyJoinedProviders = createAsyncThunk(
       const res = await axios.get(
         `http://127.0.0.1:8181/providers/newlyJoinedProviders`
       );
-      console.log(res.data, 7777);
       return res.data.data;
     } catch (err) {
       return err.response.data.payload;
