@@ -25,6 +25,8 @@ import {
     openAccount,
 } from "../../services/adminService";
 import { allProviderBooking } from "../../services/bookingService.js";
+import ReactPaginate from "react-paginate";
+import {getProvider} from "../../services/providerService.js";
 
 const styles = {
     tableCell: {
@@ -104,6 +106,7 @@ function Row({ row, onUpdate, dataUpdated, setDataUpdated }) {
             setOpen(false);
         }
     };
+
 
 
     return (
@@ -207,12 +210,20 @@ export default function ShowAccountProvider() {
     const dispatch = useDispatch();
     const [providers, setProviders] = useState([]);
     const [dataUpdated, setDataUpdated] = useState(false);
+    const [totalUsers, setTotalUsers] = useState(0);
+    const [totalPage, setTotalPage] = useState(0);
 
-    useEffect(() => {
-        dispatch(findAllUser());
-    }, [dispatch]);
 
-    const allUser = useSelector((state) => state.admin.listUser);
+
+    const allUser = useSelector((state) => {
+        let userList =  state.admin.listUser.docs;
+        if (!userList) return [];
+        if (userList && totalPage === 0) {
+            setTotalPage(state.admin.listUser.meta.totalPage);
+            setTotalUsers(state.admin.listUser.meta.total);
+        }
+        return userList;
+    });
 
     useEffect(() => {
         if (Array.isArray(allUser)) {
@@ -227,7 +238,17 @@ export default function ShowAccountProvider() {
         setProviders(updatedProviders);
     };
 
+
+    useEffect(() => {
+        dispatch(findAllUser());
+    }, [dispatch]);
+
+    const handlePageClick = (event) => {
+        dispatch(findAllUser(+event.selected + 1));
+    };
+
     return (
+        <>
         <div>
             <Typography variant="h4" gutterBottom component="div">
                 Danh sách người cung cấp dịch vụ
@@ -259,6 +280,48 @@ export default function ShowAccountProvider() {
                 </Table>
             </TableContainer>
             <ToastContainer />
+            <ReactPaginate
+                breakLabel="..."
+                nextLabel="next >"
+                onPageChange={handlePageClick}
+                pageRangeDisplayed={5}
+                pageCount={totalPage}
+                previousLabel="< previous"
+                renderOnZeroPageCount={null}
+                containerClassName="pagination-container"
+                activeClassName="active-page"
+            />
+            <style>
+                {`
+          .pagination-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            list-style: none;
+            padding: 0;
+          }
+
+          .pagination-container li {
+            display: inline-block;
+            margin: 0 5px;
+          }
+
+          .pagination-container li a {
+            display: block;
+            padding: 5px 10px;
+            color: #000;
+            text-decoration: none;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+          }
+
+          .active-page a {
+            background-color: #2e6c30;
+            color: #fff;
+          }
+        `}
+            </style>
         </div>
+        </>
     );
 }

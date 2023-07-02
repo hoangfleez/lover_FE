@@ -1,14 +1,26 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import customAPI from "./customAPI.js";
+import axios from "axios";
 
-export const findAllUser = createAsyncThunk("admin/findAllUser", async () => {
+export const findAllUser = createAsyncThunk("admin/findAllUser", async (page) => {
   try {
-    const res = await customAPI().get("/admin/find-all");
-    return res.data.data.docs;
+    const res = await customAPI().get(`/admin/find-all?page=${page}`);
+    return res.data.data;
   } catch (err) {
     return err.response?.data?.payload;
   }
 });
+
+export const findAllUsers = createAsyncThunk("admin/findAllUsers", async (page) => {
+  try {
+    const res = await customAPI().get(`/admin/allUser-vip?page=${page}`);
+    return res.data;
+  } catch (err) {
+    return err.response?.data?.payload;
+  }
+});
+
+
 
 
 export const changeRole = createAsyncThunk(
