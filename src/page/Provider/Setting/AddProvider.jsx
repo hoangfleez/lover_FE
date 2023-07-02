@@ -32,6 +32,7 @@ const AddProvider = () => {
   const [selectedCity, setSelectedCity] = useState("");
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
 
+
   const profile = useSelector((state) => state.provider.profile) || {};
 
   useEffect(() => {

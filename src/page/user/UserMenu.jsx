@@ -22,7 +22,6 @@ import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import RegisterService from "./Dialog/RegisterService";
 import { useState } from "react";
 import { showProviderByUser } from "../../services/providerService";
-import Switch from "@mui/material/Switch";
 import CustomizedSwitches from "./Swich";
 
 const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
@@ -147,7 +146,7 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
         {user?.role?.name === "provider" && (
           <>
             <MenuItem
-                key={3}
+              key={3}
               onClick={() => {
                 navigate("/provider_setting");
               }}
@@ -157,10 +156,8 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
               </ListItemIcon>
               Đến trang dịch vụ
             </MenuItem>
-            {profile ? (
-              <MenuItem
-                  key={4}
-              >
+            {Object.keys(profile).length !== 0 && (
+              <MenuItem key={4}>
                 <Stack
                   direction={"row"}
                   onClick={handleSwitchClick}
@@ -168,12 +165,9 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
                   gap={7}
                 >
                   <Box>Trạng thái</Box>
-
-                  <CustomizedSwitches profile={profile}/>
+                  <CustomizedSwitches profile={profile} />
                 </Stack>
               </MenuItem>
-            ) : (
-              ""
             )}
           </>
         )}

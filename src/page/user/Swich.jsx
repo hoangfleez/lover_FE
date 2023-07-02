@@ -46,7 +46,9 @@ export default function CustomizedSwitches() {
   const [isServiceOn, setIsServiceOn] = useState(false); // State lưu trạng thái bật/tắt dịch vụ
 
   const profile = useSelector((state) => state.provider.profile);
+
   const ready = profile?.ready || null;
+
 
   const handleOn = async () => {
     try {

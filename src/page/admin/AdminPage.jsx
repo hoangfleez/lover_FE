@@ -24,10 +24,14 @@ import {
   Button,
   Typography,
 } from "@mui/material";
+import { editUser } from "../../services/useService";
 
 const HomeAdmin = () => {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.admin.listUser);
+
+  
+
   const [notification, setNotification] = React.useState({
     open: false,
     message: "",
@@ -36,10 +40,12 @@ const HomeAdmin = () => {
     React.useState(false);
   const [selectedUserId, setSelectedUserId] = React.useState(null);
   const [selectedUserRole, setSelectedUserRole] = React.useState(null);
+  const [userUpdate, setUserUpdate] = React.useState(false);
 
   useEffect(() => {
     dispatch(findAllUser());
-  }, [dispatch]);
+  }, [dispatch, userUpdate]);
+  
 
   const handleRoleChange = (userId, userRoleId) => {
     setSelectedUserId(userId);
@@ -65,7 +71,13 @@ const HomeAdmin = () => {
     const selectedUser = updatedUsers.find(
       (user) => user.id === selectedUserId
     );
+    const newProfile = {
+      id: selectedUser.id,
+      update:"OK",
+    };
     dispatch(changeRole({ users: updatedUsers, user: selectedUser }));
+    dispatch(editUser(newProfile))
+    setUserUpdate(true)
     showNotification("");
     closeConfirmationDialog();
   };
@@ -82,6 +94,7 @@ const HomeAdmin = () => {
       open: false,
       message: "",
     });
+    setUserUpdate(false)
   };
 
   const openConfirmationDialog = () => {
@@ -91,6 +104,7 @@ const HomeAdmin = () => {
   const closeConfirmationDialog = () => {
     setConfirmationDialogOpen(false);
   };
+
 
   return (
     <Box
@@ -120,17 +134,17 @@ const HomeAdmin = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.map((item) => {
+            {users?.map((item) => {
               const switchStyle =
                 item.role.id === 3 ? { cursor: "no-drop" } : {};
               return (
-                <TableRow key={item.id}>
+                <TableRow key={`${item.id}-${item.update}`}>
                   <TableCell>{item.id}</TableCell>
                   <TableCell>{item.username}</TableCell>
                   <TableCell>{item.email}</TableCell>
                   <TableCell>{item.phoneNumber || "N/A"}</TableCell>
                   <TableCell>{item.numberCard || "N/A"}</TableCell>
-                  <TableCell>{item.update}</TableCell>
+                  <TableCell sx={{color: item.update === "pending" ? "red" : "green", cursor:"pointer"}}>{item.update }</TableCell>
                   <TableCell>
                     {item.role.id === 2 ? (
                       item.role.name
@@ -160,7 +174,7 @@ const HomeAdmin = () => {
                       </Grid>
                     )}
                   </TableCell>
-                  <TableCell>{item.update}</TableCell>
+                  <TableCell></TableCell>
                 </TableRow>
               );
             })}
