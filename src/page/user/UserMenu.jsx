@@ -32,7 +32,7 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
   const user = useUserProfile();
 
   const profile = useSelector((state) => state.provider.showOneProvider);
-
+  console.log(profile);
   const [openRegister, setOpenRegister] = useState(false);
 
   const handleClickOpen = (event) => {
@@ -147,7 +147,7 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
         {user?.role?.name === "provider" && (
           <>
             <MenuItem
-                key={3}
+              key={3}
               onClick={() => {
                 navigate("/provider_setting");
               }}
@@ -157,10 +157,8 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
               </ListItemIcon>
               Đến trang dịch vụ
             </MenuItem>
-            {profile ? (
-              <MenuItem
-                  key={4}
-              >
+            {Object.keys(profile).length !== 0 && (
+              <MenuItem key={4}>
                 <Stack
                   direction={"row"}
                   onClick={handleSwitchClick}
@@ -168,12 +166,9 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
                   gap={7}
                 >
                   <Box>Trạng thái</Box>
-
-                  <CustomizedSwitches profile={profile}/>
+                  <CustomizedSwitches profile={profile} />
                 </Stack>
               </MenuItem>
-            ) : (
-              ""
             )}
           </>
         )}

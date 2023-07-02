@@ -33,7 +33,7 @@ const AddProvider = () => {
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
-  const [isServiceOn, setIsServiceOn] = useState(false); // State lưu trạng thái bật/tắt dịch vụ
+  
 
   const profile = useSelector((state) => state.provider.showOneProvider);
 

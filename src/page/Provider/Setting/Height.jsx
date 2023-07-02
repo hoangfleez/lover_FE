@@ -10,7 +10,7 @@ export default function Height({ formik }) {
           Chiều cao
         </Typography>
         <TextField
-          sx={{ width: 300 }}
+          sx={{ width: 100 }}
           multiline
           placeholder="cm"
           name="height"

@@ -10,7 +10,7 @@ export default function ProviderContent() {
       sx={{
         display: "flex",
         marginTop: "64px",
-        height: "250vh",
+        height: "270vh",
       }}
     >
       <Box

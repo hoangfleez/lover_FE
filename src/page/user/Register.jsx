@@ -10,8 +10,8 @@ import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
 import * as yup from "yup";
 import { useDispatch } from "react-redux";
 import { otp, register } from "../../services/useService";
-import {  Snackbar, TextField } from "@mui/material";
-import IconButton from '@mui/material/IconButton';
+import { Snackbar, TextField } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
 import { useFormik } from "formik";
 import MuiAlert from "@mui/material/Alert";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -56,7 +56,7 @@ export default function Register(props) {
   const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
   const [messAlert, setMessAlert] = React.useState(false);
-    const [errorMessage, setErrorMessage] = React.useState("");
+  const [errorMessage, setErrorMessage] = React.useState("");
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -74,8 +74,6 @@ export default function Register(props) {
   const handleChangeLogin = () => {
     props.setSignIn(false);
   };
-
-
 
   const formik = useFormik({
     initialValues: {
@@ -95,9 +93,11 @@ export default function Register(props) {
             setErrorMessage("");
             setErrRegex("Sai mã OTP hãy kiểm tra lại!");
           } else {
-            setMessAlert("Đăng ký thành công.")
+            setMessAlert("Đăng ký thành công.");
             setOpen(true);
-            handleChangeLogin();
+            setTimeout(() => {
+              handleChangeLogin();
+            }, 1000);
           }
         })
         .catch(() => {});
@@ -113,7 +113,7 @@ export default function Register(props) {
             setErrRegex("Email này đã được sử dụng");
           } else {
             setErrRegex("");
-            setMessAlert("OTP đã được gửi hãy kiểm tra email của bạn.")
+            setMessAlert("OTP đã được gửi hãy kiểm tra email của bạn.");
             setOpen(true);
             setStyle(true);
             setShowInput(true);

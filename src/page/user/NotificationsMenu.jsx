@@ -1,24 +1,18 @@
-import React from "react";
-import {
-  Avatar,
-  Box,
-  Divider,
-  ListItemIcon,
-  Menu,
-  MenuItem,
-  Stack,
-  Typography,
-} from "@mui/material";
-import WatchLaterIcon from "@mui/icons-material/WatchLater";
+import React, { useEffect } from "react";
+import { Menu, Typography } from "@mui/material";
+
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import HowToRegIcon from "@mui/icons-material/HowToReg";
-import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import RegisterService from "./Dialog/RegisterService";
-import { useState } from "react";
-import CustomizedSwitches from "./Swich";
 
-const NotificationsMenu = ({ anchorNotificationsMenu, setAnchorNotificationsMenu }) => {
+import { useState } from "react";
+import { findAllUser } from "../../services/adminService";
+
+const NotificationsMenu = ({
+  anchorNotificationsMenu,
+  setAnchorNotificationsMenu,
+  mess,
+  setMess,
+}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -26,13 +20,24 @@ const NotificationsMenu = ({ anchorNotificationsMenu, setAnchorNotificationsMenu
     setAnchorNotificationsMenu(null);
   };
 
-  const handlePage = () => {
-    navigate("/profile"); // Replace "/profile" with the desired route
-    handleCloseNotificationsMenu();
-  };
+  const role = useSelector((state) => {
+    return state.user?.profile?.data?.role.name;
+  });
+  const listUser = useSelector((state) => {
+    return state.admin?.listUser;
+  });
 
-;
+  useEffect(() => {
+    dispatch(findAllUser());
+  }, [dispatch]);
 
+  useEffect(() => {
+    setMess(
+      listUser
+        ?.filter((user) => user.update === "pending")
+        .map((user) => user.username)
+    );
+  }, [listUser]);
   return (
     <>
       <Menu
@@ -71,11 +76,27 @@ const NotificationsMenu = ({ anchorNotificationsMenu, setAnchorNotificationsMenu
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem key={1}>
-          <Box sx={{ display: "flex" }} >
-          sađâsd
-          </Box>
-        </MenuItem>
+        <div>
+          {role === "admin" ? (
+            mess && mess.length > 0 ? (
+              mess.map((item, index) => (
+                <Typography variant="subtitle1" gutterBottom p={2}>
+                  Tài khoản{" "}
+                  {item && <span style={{ color: "red" }}>{item}</span>} muốn
+                  trở thành người cung cấp dịch vụ
+                </Typography>
+              ))
+            ) : (
+              <Typography variant="subtitle1" color={"gray"} gutterBottom p={2}>
+                Không có thông báo nào.
+              </Typography>
+            )
+          ) : (
+            <Typography variant="subtitle1" color={"gray"} gutterBottom p={2}>
+              Không có thông báo nào.
+            </Typography>
+          )}
+        </div>
       </Menu>
     </>
   );

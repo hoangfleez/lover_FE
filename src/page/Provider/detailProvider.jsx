@@ -39,6 +39,11 @@ const DetailProvider = () => {
   const profile = useSelector((state) => {
     return state.provider.profile;
   });
+  const abc = useSelector((state) => {console.log(state)});
+  console.log(user,11)
+  console.log(detailProviderDetail,22)
+  console.log(profile,33)
+
 
   const [ready, setReady] = useState(detailProviderDetail?.ready);
 
