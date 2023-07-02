@@ -115,7 +115,6 @@ export default function InforButton() {
         startIcon={<HomeIcon />}
         sx={{
           marginTop: "5px",
-          backgroundColor: "red",
           color: "white",
           padding: "10px",
           backgroundColor: "red",

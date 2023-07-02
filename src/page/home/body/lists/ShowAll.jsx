@@ -136,7 +136,7 @@ export default function ShowAll() {
                         marginLeft: 10
                     }}
                     onClick={handleFemale}>
-                    Nữ
+                    NỮ
                 </utton>
 
             </Box>
