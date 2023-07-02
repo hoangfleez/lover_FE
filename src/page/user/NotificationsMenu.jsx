@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 import { useState } from "react";
 import { findAllUser } from "../../services/adminService";
+import { showProviderByUser } from "../../services/providerService";
 
 const NotificationsMenu = ({
   anchorNotificationsMenu,
@@ -26,10 +27,16 @@ const NotificationsMenu = ({
   const listUser = useSelector((state) => {
     return state.admin?.listUser;
   });
+  const user = useSelector((state) => {console.log(state)})
+
 
   useEffect(() => {
     dispatch(findAllUser());
   }, [dispatch]);
+  
+  useEffect(() => {
+    dispatch(showProviderByUser());
+  }, []);
 
   useEffect(() => {
     setMess(
@@ -80,7 +87,7 @@ const NotificationsMenu = ({
           {role === "admin" ? (
             mess && mess.length > 0 ? (
               mess.map((item, index) => (
-                <Typography variant="subtitle1" gutterBottom p={2}>
+                <Typography variant="subtitle1" gutterBottom p={2} onClick={()=>{navigate("/admin")}} sx={{cursor:"pointer"}}>
                   Tài khoản{" "}
                   {item && <span style={{ color: "red" }}>{item}</span>} muốn
                   trở thành người cung cấp dịch vụ

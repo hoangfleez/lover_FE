@@ -22,7 +22,6 @@ import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import RegisterService from "./Dialog/RegisterService";
 import { useState } from "react";
 import { showProviderByUser } from "../../services/providerService";
-import Switch from "@mui/material/Switch";
 import CustomizedSwitches from "./Swich";
 
 const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
@@ -32,7 +31,7 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
   const user = useUserProfile();
 
   const profile = useSelector((state) => state.provider.showOneProvider);
-  console.log(profile);
+
   const [openRegister, setOpenRegister] = useState(false);
 
   const handleClickOpen = (event) => {
