@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-
+import React, { useState, useEffect, useRef } from "react";
 import {
   Paper,
   Typography,
@@ -8,54 +7,108 @@ import {
   IconButton,
   List,
   ListItem,
-  ListItemText,
 } from "@mui/material";
 import ChatIcon from "@mui/icons-material/Chat";
 import SendIcon from "@mui/icons-material/Send";
 import CloseIcon from "@mui/icons-material/Close";
-// import socket from "../../socket/socket";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { showAllChat } from "../../services/chatService";
-import UserProfile from "./UserProfile";
+import { showAllChat, getChat, sendMessage } from "../../services/chatService";
+import Message from "./Message";
+import Conversation from "./Conversation";
+import { io } from "socket.io-client";
 
 const ChatComponent = ({ openChat, setOpenChat }) => {
   const dispatch = useDispatch();
+
   const user = useSelector((state) => {
     return state.user.currentUser;
   });
-  const [message, setMessage] = useState("");
+  const me = useSelector((state) => {
+    return state.user.profile.data;
+  });
+
   const [messages, setMessages] = useState([]);
-  const [showChat, setShowChat] = useState(false);
   const [conversations, setConversations] = useState([]);
+  const [currentChat, setCurrentChat] = useState(null);
+  const [newMsg, setNewMsg] = useState("");
+  const [arrivalMessage, setArrivalMessage] = useState(null);
+  const socket = useRef();
+  const scrollRef = useRef(null);
+
+  useEffect(() => {
+    socket.current = io("http://localhost:5555");
+    socket.current.on("getMessage", (data) => {
+      setArrivalMessage({
+        sender: data.senderId,
+        content: data.content,
+        createdAt: Date.now(),
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    socket.current.emit("addUser", me?.id);
+    socket.current.on("getUsers", (users) => {
+      console.log(users);
+    });
+  }, [user]);
 
   useEffect(() => {
     const getConversations = async () => {
       const res = await dispatch(showAllChat());
       setConversations(res.payload);
     };
-
     getConversations();
   }, [user]);
 
-  const handleMessageChange = (event) => {
-    setMessage(event.target.value);
-  };
-
-  const handleSendMessage = () => {
-    if (message.trim() !== "") {
-      socket.emit("message", message);
-      setMessages([...messages, { text: message, sender: "me" }]);
-      setMessage("");
-    }
-  };
+  useEffect(() => {
+    const getMessages = async () => {
+      try {
+        const res = await dispatch(getChat(currentChat?.id));
+        setMessages(res.payload);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getMessages();
+  }, [currentChat]);
 
   const handleToggleChat = () => {
     setOpenChat(false);
   };
+
   const clickIcon = () => {
     setOpenChat(true);
   };
+
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+    const message = {
+      content: newMsg,
+      conversationId: currentChat.id,
+    };
+
+    const receiverId = currentChat.user1 !== me.id ? currentChat.user1 : currentChat.user2;
+
+    socket.current.emit("sendMessage", {
+      id: me.id,
+      receiverId,
+      content: newMsg,
+    });
+
+    try {
+      const res = await dispatch(sendMessage(message));
+      setNewMsg("");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   return (
     <div>
@@ -71,7 +124,7 @@ const ChatComponent = ({ openChat, setOpenChat }) => {
             color="secondary"
             aria-label="add"
             onClick={() => {
-              handleToggleChat;
+              handleToggleChat();
               clickIcon();
             }}
           >
@@ -101,9 +154,16 @@ const ChatComponent = ({ openChat, setOpenChat }) => {
               }}
             >
               <List>
-                {conversations.map((conversations) => {
-                  <UserProfile  conversations={conversations}/>;
-                })}
+                {conversations.map((c) => (
+                  <ListItem
+                    button
+                    sx={{ gap: "10px" }}
+                    onClick={() => setCurrentChat(c)}
+                    key={c.id}
+                  >
+                    <Conversation conversation={c} me={me} />
+                  </ListItem>
+                ))}
               </List>
             </div>
             <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
@@ -121,47 +181,35 @@ const ChatComponent = ({ openChat, setOpenChat }) => {
                 </IconButton>
               </div>
               <div
+                ref={scrollRef}
                 style={{
                   height: "300px",
                   overflowY: "scroll",
                   padding: "10px",
                 }}
               >
-                {messages.map((msg, index) => (
-                  <div
-                    key={index}
-                    style={{
-                      display: "flex",
-                      justifyContent:
-                        msg.sender === "me" ? "flex-end" : "flex-start",
-                      marginBottom: "10px",
-                    }}
-                  >
-                    <Paper
-                      elevation={2}
-                      style={{
-                        maxWidth: "70%",
-                        padding: "5px 10px",
-                        borderRadius:
-                          msg.sender === "me"
-                            ? "5px 5px 0 5px"
-                            : "5px 5px 5px 0",
-                        background: msg.sender === "me" ? "#e0e0e0" : "#3f51b5",
-                        color: msg.sender === "me" ? "black" : "white",
-                      }}
-                    >
-                      {msg.text}
-                    </Paper>
-                  </div>
-                ))}
+                {currentChat ? (
+                  <>
+                    {messages?.map((m) => (
+                      <div key={m.id}>
+                        <Message
+                          message={m}
+                          own={m?.sender?.id === me?.id}
+                        />
+                      </div>
+                    ))}
+                  </>
+                ) : (
+                  <span>Không có tin nhắn</span>
+                )}
               </div>
               <div style={{ padding: "2px" }}>
                 <TextField
                   fullWidth
                   type="text"
-                  value={message}
-                  onChange={handleMessageChange}
-                  placeholder="Hãy viết gì đó..."
+                  value={newMsg}
+                  onChange={(e) => setNewMsg(e.target.value)}
+                  placeholder="Hãy viết gì đó..."
                   InputProps={{
                     endAdornment: (
                       <IconButton
