@@ -224,7 +224,7 @@ export default function ShowAll() {
                                 </CardActionArea>
 
                                 <CardContent>
-                                    <ShowRating />
+                                    {/*<ShowRating />*/}
                                 </CardContent>
                             </Card>
                         );

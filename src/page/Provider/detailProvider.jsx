@@ -253,7 +253,7 @@ const DetailProvider = (props) => {
               </Stack>
             </Box>
             <Divider />
-            <Evaluate />
+            {/*<Evaluate />*/}
           </Box>
           <Box sx={{ width: "20%" }}>
             <Box
@@ -266,7 +266,7 @@ const DetailProvider = (props) => {
             >
               <Typography variant="h4" gutterBottom sx={{ color: "red" }}>
                 {detailProviderDetail?.price} đ/1h
-                <Rating readOnly />
+                {/*<Rating readOnly />*/}
               </Typography>
               <Box sx={{ flexWrap: "wrap", gap: "15px", display: "flex" }}>
                 <Button
