@@ -26,11 +26,10 @@ import {
   TextField,
 } from "@mui/material";
 import ReactPaginate from "react-paginate";
-import { getProvider } from "../../services/providerService.js";
+import {editUser} from "../../services/useService.js";
 
 const HomeAdmin = () => {
   const dispatch = useDispatch();
-  const users = useSelector((state) => state.admin.listUser);
   const [notification, setNotification] = React.useState({
     open: false,
     message: "",
@@ -39,9 +38,9 @@ const HomeAdmin = () => {
       React.useState(false);
   const [selectedUserId, setSelectedUserId] = React.useState(null);
   const [selectedUserRole, setSelectedUserRole] = React.useState(null);
-  const [totalUser, setTotalUser] = useState(0);
-  const [totalPage, setTotalPage] = useState(0);
-  const [selectedUser, setSelectedUser] = useState(null);
+  const [totalUser, setTotalUser] = React.useState(0);
+  const [totalPage, setTotalPage] = React.useState(0);
+  const [selectedUser, setSelectedUser] = React.useState(null);
 
   const users = useSelector((state) => {
     const UserList = state.admin.listUser.docs;
@@ -167,15 +166,8 @@ const HomeAdmin = () => {
                         <TableCell>{item.email}</TableCell>
                         <TableCell>{item.phoneNumber || "N/A"}</TableCell>
                         <TableCell>{item.numberCard || "N/A"}</TableCell>
-                        <TableCell onClick={() => openEditModal(item)}>
-                          <Button
-                              variant="contained"
-                              color="primary"
-                              style={{ backgroundColor: "#2e6c30", color: "#fff" }}
-                          >
-                            {item.update}
-                          </Button>
-                        </TableCell>
+                          <TableCell sx={{color: item.update === "pending" ? "red" : "green", cursor:"pointer"}} onClick={() => openEditModal(item)}>{item.update }</TableCell>
+
                         <TableCell>
                           {item.role.id === 2 ? (
                               item.role.name

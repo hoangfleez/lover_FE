@@ -24,8 +24,9 @@ const NotificationsMenu = ({
   const role = useSelector((state) => {
     return state.user?.profile?.data?.role.name;
   });
-  const listUser = useSelector((state) => {
-    return state.admin?.listUser;
+  const listsUser = useSelector((state) => {
+    console.log(state)
+    return state.admin?.listUser?.docs;
   });
 
 
@@ -39,11 +40,11 @@ const NotificationsMenu = ({
 
   useEffect(() => {
     setMess(
-      listUser
+      listsUser
         ?.filter((user) => user.update === "pending")
         .map((user) => user.username)
     );
-  }, [listUser]);
+  }, [listsUser]);
   return (
     <>
       <Menu
