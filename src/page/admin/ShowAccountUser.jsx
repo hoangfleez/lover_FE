@@ -14,12 +14,13 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { findAllUser, lockAccount, openAccount } from "../../services/adminService";
+import {findAllUser, findAllUsers, lockAccount, openAccount} from "../../services/adminService";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Button } from "@mui/material";
 import Swal from "sweetalert2";
-import {allProviderBooking, allUserBooking} from "../../services/bookingService.js";
+import {allUserBooking} from "../../services/bookingService.js";
+import ReactPaginate from "react-paginate";
 
 const styles = {
     tableCell: {
@@ -189,26 +190,34 @@ export default function ShowAccountUser() {
     const dispatch = useDispatch();
     const [users, setUsers] = useState([]);
     const [dataUpdated, setDataUpdated] = useState(false);
+    const [totalUsers, setTotalUsers] = useState(0);
+    const [totalPage, setTotalPage] = useState(0);
+
 
     const allUser = useSelector((state) => {
-        return state.admin.listUser;
+       const Users = state.admin.listUser.docs;
+        if (!Users) return [];
+        if (Users && totalPage === 0) {
+            setTotalPage(state.admin.listUser.meta.totalPage);
+            setTotalUsers(state.admin.listUser.meta.total);
+        }
+        return Users;
     });
 
-    useEffect(() => {
-        dispatch(findAllUser());
-    }, [dispatch]);
-
-    useEffect(() => {
-        if (Array.isArray(allUser)) {
-            setUsers(allUser.filter((item) => item.role.name === "user"));
-        }
-    }, [allUser]);
 
     const handleUpdateList = (updatedRow) => {
         const updatedUsers = users.map((provider) =>
             provider.id === updatedRow.id ? { ...updatedRow } : provider
         );
         setUsers(updatedUsers);
+    };
+
+    useEffect(() => {
+        dispatch(findAllUsers());
+    }, [dispatch]);
+
+    const handlePageClick = (event) => {
+        dispatch(findAllUsers(+event.selected + 1));
     };
 
     return (
@@ -229,18 +238,61 @@ export default function ShowAccountUser() {
                             <TableCell align="center">Khoá / Mở </TableCell>
                         </TableRow>
                     </TableHead>
-                    <TableBody>
-                        {users.map((provider) => (
-                            <Row
-                                key={provider.id}
-                                row={provider}
-                                onUpdate={handleUpdateList}
-                                dataUpdated={dataUpdated}
-                                setDataUpdated={setDataUpdated}
-                            />
-                        ))}
-                    </TableBody>
+
+                        <TableBody>
+                            {allUser && allUser.map((provider) => (
+                                <Row
+                                    key={provider.id}
+                                    row={provider}
+                                    onUpdate={handleUpdateList}
+                                    dataUpdated={dataUpdated}
+                                    setDataUpdated={setDataUpdated}
+                                />
+                            ))}
+                        </TableBody>
+
                 </Table>
+                <ReactPaginate
+                    breakLabel="..."
+                    nextLabel="next >"
+                    onPageChange={handlePageClick}
+                    pageRangeDisplayed={5}
+                    pageCount={totalPage}
+                    previousLabel="< previous"
+                    renderOnZeroPageCount={null}
+                    containerClassName="pagination-container"
+                    activeClassName="active-page"
+                />
+                <style>
+                    {`
+          .pagination-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            list-style: none;
+            padding: 0;
+          }
+
+          .pagination-container li {
+            display: inline-block;
+            margin: 0 5px;
+          }
+
+          .pagination-container li a {
+            display: block;
+            padding: 5px 10px;
+            color: #000;
+            text-decoration: none;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+          }
+
+          .active-page a {
+            background-color: #2e6c30;
+            color: #fff;
+          }
+        `}
+                </style>
             </TableContainer>
             <ToastContainer />
         </>
